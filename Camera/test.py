@@ -6,6 +6,7 @@ import base64
 import json
 from PIL import Image
 from io import BytesIO
+'''
 address=('',9999)
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 sock.bind(address)
@@ -20,4 +21,7 @@ while True:
     if key == 27:
         cv2.destroyWindow("haha")
         break
+        '''
+sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+sock.sendto('{"command":"analyze"}'.encode(),("127.0.0.1",9998))
 

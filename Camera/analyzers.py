@@ -1,7 +1,6 @@
 #encoding=utf-8
 import cv2
 from items import MessageItem
-import numpy as np
 class MoveAnalyzer(object):
     #运动检测分析器
     def __init__(self,frame=None):

@@ -138,38 +138,52 @@ class WindowManager(object):
             self.keypressCallback(keycode)
     def processCommandEvents(self):
         #命令时间处理函数
-        command = self.commandManager.getCommand()
-        if self.commandCallback is not None and command is not None:
-            self.commandCallback(command)
+        if self.commandManager:
+            command = self.commandManager.getCommand()
+            if self.commandCallback is not None and command is not None:
+                self.commandCallback(command)
 class CommandManager(object):
-    def __init__(self,ip,port):
+    '''
+    命令管理类,监听一个指定的端口传来的命令,命令为json格式,使用键"command"取出命令
+    当传来over命令时候结束监听
+    '''
+    def __init__(self,port=9998,ip=""):
+        '''
+        :param port:监听的端口 
+        :param ip: 监听的ip(一般不指定)
+        '''
         self.ip = ip
+        print(self.ip)
         self.port = port
+        #构建套接字
         self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        #监听端口
+        print(type(self.ip))
         self.sock.bind((self.ip,self.port))
+        #初始化命令
         self.command = None
-        self._isWorking = True
-        self._task = None
-        self.startWorking()
+        #工作线程初始化,放在init函数中,一个管理类只需要初始化一次线程
+        self._task = threading.Thread(target=self._listenCommand)
     def _listenCommand(self):
         #开启侦听
-        while self._isWorking:
+        while True:
             data, addr = self.sock.recvfrom(1024 * 1024)
             jsondata = json.loads(data.decode())
             self.command = jsondata["command"]
-            print(self.command)
+            #如果接收到over指令,结束侦听
+            if self.command == "over":
+                break
     def startWorking(self):
-        #开始工作
-        self._task = threading.Thread(target=self._listenCommand)
+        #开始工作,启动侦听线程
         self._task.start()
     def stopWorking(self):
-        #结束工作
+        #发送over信号结束工作
         self._isWorking = False
-        self.sock.close()
-        self._task = None
+        self.sock.sendto('{"command":"over"}'.encode(),("127.0.0.1",9998))
     def getCommand(self):
         #获得发送的命令
         result = self.command
+        #获取命令之前将本地命令置空,防止命令重复执行
         self.command = None
         return result
 

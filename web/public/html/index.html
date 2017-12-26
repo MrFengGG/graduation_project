@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Websocket test</title>
+	</head>
+	<body>
+		<h1>测试监控</h1>
+		<canvas id="main" width="600" height="600">你的浏览器暂不支持Canvas,请更换浏览器后再试</canvas>
+		<script type="text/javascript" src="../plug-in/socket.io.js"></script>
+		<script type="text/javascript" src="../plug-in/jquery-3.2.1.js"></script>
+		<script type="text/javascript">
+			$(function(){				
+				var image = new Image()
+				var canvas = document.getElementById("main");
+				var ctx = canvas.getContext("2d");
+    			var socket=io.connect('192.168.2.234:3000')//与服务器进行连接
+    			socket.on("message",function(msg){
+    				image.src = "data:image/jpg;base64,"+msg.frame;
+    				image.onload = function(){
+    					ctx.drawImage(image,0,0);
+    				}
+    			});
+			})
+
+		</script>
+	</body>
+</html>

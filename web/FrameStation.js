@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //设置访问静态页面
 app.get("/",function(req,res){
-	res.sendfile("public/html/index.html");
+	res.sendfile("public/index.html");
 })
 //监听websocket连接
 io.on("connection",function(socket){

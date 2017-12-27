@@ -9,6 +9,9 @@
 		},
 		{
 			"path": "informant"
+		},
+		{
+			"path": "monitor"
 		}
 	]
 }

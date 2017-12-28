@@ -8,7 +8,7 @@ from dispatchers import Dispatcher
 from analyzers import MoveAnalyzer
 class Camera(object):
     #主控程序
-    def __init__(self,windowManager = None,captureManager = None,dispatcher = None,analyzers=None):
+    def __init__(self,windowManager = None,captureManager = None,dispatcher = None,analyzers=None,):
         '''
         :param windowManager: 窗口管理器
         :param captureManager: 视屏采集器
@@ -19,6 +19,7 @@ class Camera(object):
         self.captureManager = captureManager
         self.dispatcher = dispatcher
         self.analyzers = analyzers
+        self
         if not windowManager:
             self.windowManager = WindowManager("cameo",keypressCallback=self.onKeypress,commandCallback=self.onCommand,commandManager=CommandManager(9998))
         if not captureManager:

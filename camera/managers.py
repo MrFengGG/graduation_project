@@ -43,6 +43,7 @@ class CameraManager(object):
         self._isShow = True
         #是否开启工作
         self._isWorking = True
+        self._fps = 30
     def getFrame(self):
         #返回当前的帧
         return self._frame
@@ -54,8 +55,11 @@ class CameraManager(object):
         return self._videoFilename is not None
     def nextFrame(self):
         #读取下一个页面
+        timer = cv2.getTickCount()
         if self._capture is not None:
             _,self._frame = self._capture.read()
+        self._fps = int(cv2.getTickFrequency() / (cv2.getTickCount() - timer)/100);
+        print(self._fps)
     def processFrame(self):
         #处理每一帧图像的函数,其中可以运行包括写入视频,写入图片,显示视频的钩子函数
         if self._windowManager is not None and self._isWorking:
@@ -93,7 +97,7 @@ class CameraManager(object):
             filename = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
         filename += videoformat
         self._videoFilename = os.path.join(self.video_dir,filename)
-        self.fps = fps
+        self._fps = fps
         self._videoEncoding = encoding
     def stopWriteVideo(self):
         #关闭视频写入
@@ -104,7 +108,7 @@ class CameraManager(object):
         #写入视频文件
         if self._videoWriter is None:
             self._fps = self._videoWriter = self._capture.get(cv2.CAP_PROP_FPS)
-            self._fps = self._fps if self._fps!=0 else self.fps
+            self._fps = self._fps if self._fps!=0 else 30
             size = (int(self._capture.get(cv2.CAP_PROP_FRAME_WIDTH)),int(self._capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
             print(self._fps)
             self._videoWriter = cv2.VideoWriter(self._videoFilename,self._videoEncoding,self._fps,size)

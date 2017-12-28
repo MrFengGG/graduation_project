@@ -4,6 +4,9 @@ import numpy
 import socket
 import json
 import threading
+import os
+import time
+from settings import *
 
 '''
 管理者模块,负责控制信息获取,命令获取
@@ -15,6 +18,13 @@ class CameraManager(object):
         :param capture: 摄像头对象
         :param windowManager: 钩子类,窗口管理,按键
         :param isMirror: 是否开启镜像
+        '''
+
+        #从配置文件中读取截图目录和录像目录
+        self.screenshot_dir = SCREENSHOT_DIR
+        self.video_dir = VIDEO_DIR
+        '''
+        添加创建文件夹逻辑
         '''
         self._windowManager = windowManager
         self._isMirror = isMirror
@@ -60,17 +70,29 @@ class CameraManager(object):
                     self._windowManager.show(self._frame)
             if self.isWritingImage():
                 #是否写入图片
-                cv2.imwrite(self._imageFilename,self._frame)
-                self._imageFilename = None
+                self.writeImage(self._imageFilename,self._frame)
             if self.isWritingVideo():
                 #是否写入视频
                 self.writeVideo()
-    def initWriteImage(self,filename):
-        #初始化写入图片文件
-        self._imageFilename = filename
-    def initWriteVideo(self,filename,fps=60,encoding=cv2.VideoWriter_fourcc("I","4","2","0")):
+    def initWriteImage(self,filename=None,imageformat=".png"):
+        #初始化写入图片文件,默认文件名为当前时间
+        if not filename:
+            filename = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+        filename += imageformat
+        self._imageFilename = os.path.join(self.screenshot_dir,filename)
+
+    def writeImage(self,filename,frame):
+        #写入图片文件
+        print("写入一个图片文件,路径为:"+self._imageFilename)
+        cv2.imwrite(self._imageFilename,self._frame)
+        self._imageFilename = None
+
+    def initWriteVideo(self,filename=None,fps=60,encoding=cv2.VideoWriter_fourcc("I","4","2","0"),videoformat=".avi"):
         #初始化写入视频文件
-        self._videoFilename = filename
+        if not filename:
+            filename = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+        filename += videoformat
+        self._videoFilename = os.path.join(self.video_dir,filename)
         self.fps = fps
         self._videoEncoding = encoding
     def stopWriteVideo(self):

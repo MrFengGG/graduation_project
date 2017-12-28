@@ -34,43 +34,37 @@
     <title>监控</title>
 </head>
 <body>
-    <div id="preloader">
-	<div id="status">
-    	<p class="center-text">
-            加载页面中...
-            <em>页面加载中,请稍候...</em>
-        </p>
-    </div>
-    </div>
-    <div class="top-deco"></div>
-
-    <div class="content">
-	<div class="header">
-    	<a href="#" class="homepage-logo">
-        	<img src="images/misc/logo.png" alt="img">
+   <div class="content">
+    <div class="header">
+        <a href="#" class="homepage-logo">
+            <img src="images/misc/logo.png" alt="img">
         </a>
-        <a href="index.html" class="go-home">HOME</a>
+        <a href="home.html" class="go-home">HOME</a>
         <a href="#" class="go-menu">MENU</a>
         <a href="#" class="go-back">CLOSE</a>
     </div>
+    <div class="decoration"></div>
     
     <div class="navigation">
-    	<div class="corner-deco"></div>
-    	<div class="navigation-wrapper">
+        <div class="corner-deco"></div>
+        <div class="navigation-wrapper">
+            <div class="navigation">
+        <div class="corner-deco"></div>
+        <div class="navigation-wrapper">
             <div class="navigation-item">
-                <a href="index.html">首页</a>
+                <a href="home.html">首页</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="#">离线下载</a>
+                <a href="download.html">离线下载</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="#">云存储</a>
+                <a href="storage.html">云存储</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="videos.html">家庭影院</a>
+                <a href="theatra.html">家庭影院</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
@@ -83,7 +77,9 @@
             </div>
         </div>
     </div>
+        </div>
     </div>
+</div>
 
 <div class="content">
 	<div class="decoration"></div>
@@ -117,12 +113,12 @@
         var image = new Image();
         var canvas = document.getElementById("display");
         if(!isPC())
-            //如果为pc端,调制canvas宽度
+            //如果不为pc端,调制canvas宽度
             canvas.width = windowWidth*0.9;
 
         var ctx = canvas.getContext("2d");
         //建立websocket连接
-        var socket=io.connect('192.168.1.110:3000')
+        var socket=io.connect('192.168.2.234:3000')
         //设置缩放比例
         var scale = 3/4
         //接收udp信息,转发给客户端
@@ -131,8 +127,9 @@
             image.onload = function(){
                 if(displayWidth == null){
                     //初始化
-                    displayWidth = windowWidth < image.width?windowWidth*0.9:image.width
+                    displayWidth = windowWidth < image.width?windowWidth*0.9:image.width;
                 }
+
                 ctx.drawImage(image,0,0,displayWidth,displayWidth * scale);
             }
         });

@@ -49,11 +49,11 @@ class Camera(object):
         #按钮回调函数
         if keycode == 32:
             #空格键截图
-            self.captureManager.initWriteImage("screenshoot.png")
+            self.captureManager.initWriteImage()
         elif keycode == 9:
             #tab键开启录像
           if not self.captureManager.isWritingVideo():
-              self.captureManager.initWriteVideo("screencast.avi")
+              self.captureManager.initWriteVideo()
           else:
               self.captureManager.stopWriteVideo()
         elif keycode == 27:
@@ -74,11 +74,11 @@ class Camera(object):
         # 按钮回调函数
         if command == "screensheet":
             # 空格键截图
-            self.captureManager.initWriteImage("screenshoot.png")
+            self.captureManager.initWriteImage()
         elif command == "recording":
             # tab键开启录像
             if not self.captureManager.isWritingVideo():
-                self.captureManager.initWriteVideo("screencast.avi")
+                self.captureManager.initWriteVideo()
             else:
                 self.captureManager.stopWriteVideo()
         elif command == "over":

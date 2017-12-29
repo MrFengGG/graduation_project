@@ -17,7 +17,8 @@ class MessageItem(object):
         return self._message
     def getBase64Frame(self):
         #返回base64格式的图片
-        jepg = IOUtil.array_to_bytes(self._frame)
+        
+        jepg = IOUtil.array_to_bytes(self._frame[...,::-1])
         return IOUtil.bytes_to_base64(jepg)
     def getBase64FrameByte(self):
         #返回base64格式图片的bytes

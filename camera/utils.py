@@ -31,3 +31,9 @@ class IOUtil(object):
         :return: 
         '''
         return base64.b64encode(byte)
+    @staticmethod
+    def transport_rgb(frame):
+        '''
+        将bgr图像转化为rgb图像,或者将rgb图像转化为bgr图像
+        '''
+        return frame[...,::-1]

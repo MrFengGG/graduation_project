@@ -40,7 +40,7 @@ class CameraManager(object):
         #视频写入工具
         self._videoWriter = None
         #是否开启延时
-        self._isShow = True
+        self._isShow = False
         #是否开启工作
         self._isWorking = True
         self._fps = 30
@@ -59,7 +59,6 @@ class CameraManager(object):
         if self._capture is not None:
             _,self._frame = self._capture.read()
         self._fps = int(cv2.getTickFrequency() / (cv2.getTickCount() - timer)/100);
-        print(self._fps)
     def processFrame(self):
         #处理每一帧图像的函数,其中可以运行包括写入视频,写入图片,显示视频的钩子函数
         if self._windowManager is not None and self._isWorking:
@@ -110,7 +109,6 @@ class CameraManager(object):
             self._fps = self._videoWriter = self._capture.get(cv2.CAP_PROP_FPS)
             self._fps = self._fps if self._fps!=0 else 30
             size = (int(self._capture.get(cv2.CAP_PROP_FRAME_WIDTH)),int(self._capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-            print(self._fps)
             self._videoWriter = cv2.VideoWriter(self._videoFilename,self._videoEncoding,self._fps,size)
         self._videoWriter.write(self._frame)
     def changeMirror(self):
@@ -182,12 +180,11 @@ class CommandManager(object):
         :param ip: 监听的ip(一般不指定)
         '''
         self.ip = ip
-        print(self.ip)
+        print("开始监听来自%s的命令"%(self.ip+":"+str(port)))
         self.port = port
         #构建套接字
         self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         #监听端口
-        print(type(self.ip))
         self.sock.bind((self.ip,self.port))
         #初始化命令
         self.command = None

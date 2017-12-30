@@ -33,9 +33,10 @@ class WatchDog(object):
             if cv2.contourArea(c) < 1500:
                 continue
             (x,y,w,h) = cv2.boundingRect(c)
-            coordinate.append({"x":x,"y":y,"w":w,"h":h})
-            cv2.rectangle(frame,(x,y),(x+w,y+h), (255, 255, 0), 2)
-        return MessageItem(frame,coordinate)
+            coordinate.append(((x,y),(x+w,y+h)))
+        message = {"coord":coordinate}
+        message['msg'] = None
+        return MessageItem(frame,message)
 
 class Tracker(object):
     '''
@@ -89,14 +90,11 @@ class Tracker(object):
         if self.isWorking:
             status,self.coord = self.tracker.update(frame)
             if status:
-                message = {"coord":self.coord}
+                message = {"coord":[((int(self.coord[0]), int(self.coord[1])),(int(self.coord[0] + self.coord[2]), int(self.coord[1] + self.coord[3])))]}
                 if self.draw_coord:
                     p1 = (int(self.coord[0]), int(self.coord[1]))
                     p2 = (int(self.coord[0] + self.coord[2]), int(self.coord[1] + self.coord[3]))
-                    cv2.rectangle(frame, p1, p2, (255,0,0), 10)
-                    cv2.putText(frame, self.tracker_type + " is tracking", (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
-            else:
-                cv2.putText(frame, tracker_type + " lose the target", (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
+                    message['msg'] = "is tracking"
         return MessageItem(frame,message)
 
 if __name__ == '__main__' :

@@ -3,15 +3,17 @@ import cv2
 from managers import WindowManager
 from managers import CameraManager
 from managers import CommandManager
+from managers import DisplayManager
 from items import MessageItem
 from transmitters import Dispatcher
 from monitors import WatchDog
+print(cv2.__version__)
 '''
 主控程序
 '''
 class Camera(object):
     #主控程序
-    def __init__(self,windowManager = None,captureManager = None,dispatcher = None,watchDog=None):
+    def __init__(self,windowManager = None,captureManager = None,displayManager=None,dispatcher = None,watchDog=None):
         '''
         :param windowManager: 窗口管理器
         :param captureManager: 视屏采集器
@@ -20,12 +22,15 @@ class Camera(object):
         '''
         self.windowManager = windowManager
         self.captureManager = captureManager
+        self.displayManager = displayManager
         self.dispatcher = dispatcher
         self.watchDog = watchDog
         if not windowManager:
             self.windowManager = WindowManager("cameo",keypressCallback=self.onKeypress,commandCallback=self.onCommand,commandManager=CommandManager(9998))
         if not captureManager:
             self.captureManager = CameraManager(cv2.VideoCapture(0),self.windowManager,True)
+        if not displayManager:
+            self.displayManager = DisplayManager()
         if not dispatcher:
             self.dispatcher = Dispatcher()
         if not watchDog:
@@ -40,6 +45,7 @@ class Camera(object):
                 if not self.watDog.isWorking():
                     self.watDog.startWorking(frame)
                 item = self.watDog.analyze(frame)
+            self.displayManager.conpose(item)
             self.dispatcher.dispense(item)
             self.dispatcher.dispense(item,("127.0.0.1",9997))
             self.captureManager.processFrame()

@@ -16,8 +16,7 @@ class MessageItem(object):
         #文字信息,json格式
         return self._message
     def getBase64Frame(self):
-        #返回base64格式的图片
-        
+        #返回base64格式的图片,将BGR图像转化为RGB图像
         jepg = IOUtil.array_to_bytes(self._frame[...,::-1])
         return IOUtil.bytes_to_base64(jepg)
     def getBase64FrameByte(self):

@@ -1,0 +1,622 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"coo",
+				"coords〔variable〕"
+			],
+			[
+				"dis",
+				"dispense"
+			],
+			[
+				"D",
+				"DisplayManager"
+			],
+			[
+				"ms",
+				"msgs〔variable〕"
+			],
+			[
+				"co",
+				"coord〔variable〕"
+			],
+			[
+				"coord",
+				"coords"
+			],
+			[
+				"c",
+				"coordinate"
+			],
+			[
+				"dir",
+				"video_dir〔variable〕"
+			],
+			[
+				"for",
+				"format〔function〕"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"W",
+				"WatchDog"
+			],
+			[
+				"trac",
+				"tracker_type"
+			],
+			[
+				"f",
+				"frame"
+			],
+			[
+				"T",
+				"True"
+			],
+			[
+				"t",
+				"track〔function〕"
+			],
+			[
+				"tra",
+				"tracker〔variable〕"
+			],
+			[
+				"me",
+				"message〔variable〕"
+			],
+			[
+				"M",
+				"MessageItem"
+			],
+			[
+				"E",
+				"Exception"
+			],
+			[
+				"mi",
+				"minor_ver〔variable〕"
+			],
+			[
+				"a",
+				"action\tAttr"
+			],
+			[
+				"se",
+				"sendfile"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"sc",
+				"screen"
+			],
+			[
+				"win",
+				"windowHeight"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"im",
+				"imageMsg"
+			],
+			[
+				"le",
+				"letter"
+			],
+			[
+				"MIME",
+				"MIMEImage〔module〕"
+			],
+			[
+				"s",
+				"sendEmail"
+			],
+			[
+				"SMTP",
+				"SMTP_SSL〔class〕"
+			],
+			[
+				"ax",
+				"axisLabel"
+			],
+			[
+				"inte",
+				"interval〔variable〕"
+			],
+			[
+				"buf",
+				"bufferToJason〔function〕"
+			],
+			[
+				"con",
+				"connectionid〔variable〕"
+			],
+			[
+				"d",
+				"dgram"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "camera/managers.py",
+			"settings":
+			{
+				"buffer_size": 7755,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "camera/scheduler.py",
+			"settings":
+			{
+				"buffer_size": 3873,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "camera/test.py",
+			"settings":
+			{
+				"buffer_size": 138,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/JACK/Desktop/参考1/cam-track.py",
+			"settings":
+			{
+				"buffer_size": 17614,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/nodejs/Nodejs.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/nodejs/Nodejs.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Pack",
+				"Install Package Control"
+			]
+		],
+		"width": 540.0
+	},
+	"console":
+	{
+		"height": 130.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/F/STUDY/graduation",
+		"/F/STUDY/graduation/camera",
+		"/F/STUDY/graduation/camera/videos",
+		"/F/STUDY/graduation/server"
+	],
+	"file_history":
+	[
+		"/F/STUDY/graduation/camera/scheduler.py",
+		"/C/Users/JACK/Desktop/参考1/cam-track-multi.py",
+		"/C/Users/JACK/Desktop/cam-track-master/cam-track.py",
+		"/C/Users/JACK/Desktop/motion-track-master/motion-track.py",
+		"/F/STUDY/graduation/camera/monitors.py",
+		"/F/STUDY/graduation/camera/managers.py",
+		"/F/STUDY/graduation/camera/items.py",
+		"/F/STUDY/graduation/camera/settings.py",
+		"/F/STUDY/graduation/camera/utils.py",
+		"/F/STUDY/graduation/server/public/camera.html",
+		"/F/STUDY/graduation/managers.py",
+		"/F/STUDY/graduation/items.py",
+		"/F/STUDY/graduation/utils.py",
+		"/F/STUDY/graduation/transmitters.py",
+		"/F/STUDY/graduation/monitors.py",
+		"/F/STUDY/graduation/scheduler.py",
+		"/F/STUDY/graduation/server/FrameStation.js",
+		"/F/STUDY/graduation/web/server.js",
+		"/F/STUDY/graduation/monitor/tracker.py",
+		"/F/STUDY/graduation/imagecollection/camera.py",
+		"/F/STUDY/graduation/imagecollection/managers.py",
+		"/F/STUDY/graduation/imagecollection/sentinel.py",
+		"/F/STUDY/graduation/monitor/init.py",
+		"/F/STUDY/graduation/web/public/camera.html",
+		"/F/STUDY/graduation/web/public/download.html",
+		"/F/STUDY/graduation/web/public/login.html",
+		"/F/STUDY/graduation/web/public/storage.html",
+		"/F/STUDY/graduation/web/public/styles/app.css",
+		"/F/STUDY/graduation/web/public/theatra.html",
+		"/F/STUDY/graduation/web/public/music.html",
+		"/F/STUDY/graduation/web/public/setting.html",
+		"/F/STUDY/graduation/web/public/index.html",
+		"/F/STUDY/graduation/web/public/homepage.html",
+		"/F/STUDY/graduation/web/public/styles/style.css",
+		"/F/STUDY/graduation/web/public/styles/owl.carousel.css",
+		"/F/STUDY/graduation/web/public/styles/framework.css",
+		"/F/STUDY/graduation/web/public/styles/colorbox.css",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/homepage.html",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/index.html",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/styles/style.css",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/misc/homepage.png",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/misc/logo.png",
+		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/colorbox/controls.png",
+		"/F/STUDY/graduation/web/public/html/index.html",
+		"/F/STUDY/graduation/informant/Email.py",
+		"/F/STUDY/graduation/imagecollection/test.py",
+		"/C/Users/JACK/Desktop/cat.jpg",
+		"/F/STUDY/graduation/informant/email.py",
+		"/F/graduation/proj.sublime-project",
+		"/F/STUDY/graduation/JS/FrameStation.js",
+		"/F/STUDY/graduation/JS/public/html/index.html",
+		"/F/STUDY/javascript插件/content/plug/echart/存储图.html",
+		"/F/STUDY/javascript插件/content/plug/echart/存储图.js",
+		"/F/STUDY/graduation/JS/public/index.html",
+		"/H/ceshi.py",
+		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/User/node.sublime-build",
+		"/F/STUDY/graduation/JS/t.py",
+		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/nodejs/Nodejs.sublime-build",
+		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/nodejs/Nodejs.sublime-settings",
+		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/User/untitled.sublime-build"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			" createWindow",
+			"createWindow",
+			"logging.info",
+			"print",
+			"fps",
+			"analyzers",
+			"isAnalyze",
+			"req",
+			"email",
+			"doc-ipt-email-1",
+			"myapp-login-logo",
+			"am-icon-jsfiddle",
+			"portfolio-icon",
+			"(major_ver, minor_ver, subminor_ver)"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"isWatching"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "camera/managers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7755,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6074,
+								6074
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 236.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "camera/scheduler.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3873,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								676,
+								676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 378.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "camera/test.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 138,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								138,
+								138
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/JACK/Desktop/参考1/cam-track.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17614,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13275,
+								13275
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6823.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 151.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 157.0
+	},
+	"pinned_build_system": "",
+	"project": "graduation_peoject.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 201.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

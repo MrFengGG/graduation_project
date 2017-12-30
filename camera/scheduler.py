@@ -47,7 +47,6 @@ class Camera(object):
                 item = self.watDog.analyze(frame)
             self.displayManager.conpose(item)
             self.dispatcher.dispense(item)
-            self.dispatcher.dispense(item,("127.0.0.1",9997))
             self.captureManager.processFrame()
             self.windowManager.processKeyEvents()
             self.windowManager.processCommandEvents()

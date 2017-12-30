@@ -180,7 +180,7 @@ class CommandManager(object):
         :param ip: 监听的ip(一般不指定)
         '''
         self.ip = ip
-        print(self.ip)
+        print("开始监听来自%s的命令"%(self.ip+":"+str(port)))
         self.port = port
         #构建套接字
         self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -212,6 +212,7 @@ class CommandManager(object):
         #获取命令之前将本地命令置空,防止命令重复执行
         self.command = None
         return result
+<<<<<<< HEAD
 class DisplayManager(object):
     '''
     图像控制程序,用于将信息写入图片中
@@ -239,3 +240,5 @@ class DisplayManager(object):
         if msgs:
             cv2.putText(frame,msg, (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
         return frame
+=======
+>>>>>>> cbcdf103e1af2deb01e8ff770897f344cfdcb3a5

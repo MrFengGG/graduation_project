@@ -4,6 +4,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="viewport"
+    content="width=device-width,
+    initial-scale=1.0,
+    minimum-scale=1.0,
+    maximum-scale=1.0,
+    user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -87,9 +93,16 @@
     	<h3>监控页面</h3>
         <div class="display">
             <canvas id="display" width="640" height="480">你的浏览器暂不支持Canvas,请更换浏览器后再试</canvas>
+            <div class="control">
+                    <button id="right" class="mobile-detector-button">右</button>
+                    <button id="left" class="mobile-detector-button">左</button>
+                    <button id="up" class="mobile-detector-button">上</button>
+                    <button id="down" class="mobile-detector-button">下</button>
+            </div>
         </div>
     </div>
-      
+        陀螺仪测试
+      <p id="arrow"></p>
     <div class="decoration"></div>         
     
     <div class="footer">
@@ -105,10 +118,13 @@
 <div class="bottom-deco"></div>
 <script type="text/javascript">
     $(function(){    
-
-        displayWidth = null;
-
-        //初始化屏幕宽度
+        //window.addEventListener("deviceorientation", sendCommand, false);
+        //显示宽度
+        var displayWidth = null;
+        //初始化陀螺仪信息
+        var initLevel = null;
+        var initVirt = null 
+        //屏幕宽度
         var windowWidth = screen.width;
         var image = new Image();
         var canvas = document.getElementById("display");
@@ -118,9 +134,14 @@
 
         var ctx = canvas.getContext("2d");
         //建立websocket连接
-        var socket=io.connect('192.168.137.39:3000')
+        var socket=io.connect('192.168.2.234:3000')
         //设置缩放比例
         var scale = 3/4
+        //方向映射
+        var direction = {"right":'{"module":2,"command":0}',
+                          "left":'{"module":2,"command":1}',
+                            "up":'{"module":2,"command":2}',
+                          "down":'{"module":2,"command":3}'}
         //接收udp信息,转发给客户端
         socket.on("message",function(msg){
             image.src = "data:image/jpg;base64,"+msg.frame;
@@ -133,6 +154,15 @@
                 ctx.drawImage(image,0,0,displayWidth,displayWidth * scale);
             }
         });
+
+        function init(){
+            bindButton()
+        }
+        function bindButton(){
+            $("div.control").children("button").each(function(){
+                $(this).click(moveButtonAction)
+            });
+        }
         function isPC() {
             //判断客户端是否为PC
             var userAgentInfo = navigator.userAgent;
@@ -148,6 +178,31 @@
             }
             return flag;
         }
+        function sendCommand(event){
+            //控制方式3,监听陀螺仪信息,发送到控制端
+            virtAngle = parseInt(event.beta) >= 179?179:parseInt(event.beta);
+            virtAngle = virtAngle <= 21?21:virtAngle
+            levelAngle = parseInt(event.alpha) >= 179?179:parseInt(event.alpha)
+            levelAngle = levelAngle < 1?1:levelAngle
+            if(!initLevel){
+                //如果陀螺仪信息为初始化,初始化信息,移动以此为基准
+                initLevel = levelAngle;
+                initVirt = virtAngle;
+                return;
+            }else{
+                if(Math.abs(initVirt - virtAngle) > 10 || Math.abs(initLevel - levelAngle) > 10){
+                    socket.emit("command",
+                        '{"module":1,"command":{"level":{"angle":'+levelAngle+',"speed":"10"},"virt":{"angle":'+virtAngle+',"speed":"10"}}}');
+                    initLevel = levelAngle;
+                    initVirt = virtAngle;
+                }
+            }
+        }
+        function moveButtonAction(){
+            //按钮事件
+            socket.emit("command",direction[$(this).attr('id')])
+        }
+        init();
     })
 </script>
 </body>

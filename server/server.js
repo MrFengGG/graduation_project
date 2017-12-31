@@ -49,7 +49,13 @@ io.on("connection",function(socket){
 	connections[socket.id] = socket;
 	connectionid.add(socket.id);
 	console.log("增加一个连接,当前连接数量为"+connectionid.size)
-
+	//获得来自网页的陀螺仪信息,转发
+	socket.on("command",function(msg,info){
+		console.log(msg);
+		if(msg){
+			serverSocket.send(msg,0,msg.length,9997,"192.168.137.39");
+		}
+	});
 	//断开连接时,将连接从连接池中删除
 	socket.on("disconnect",function(){
 		delete connections[socket.id];
@@ -76,4 +82,9 @@ function bufferToJason(bufferdata){
 }
 function vaildate(request){
 	return true;
+}
+function sendCommand(msg){
+	var serverSocket = dgram.createSocket('udp4');
+	serverSocket.send(msg,0,msg.length,9997,"127.0.0.1")
+	console.log("send a message");
 }

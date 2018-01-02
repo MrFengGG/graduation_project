@@ -163,11 +163,13 @@
         }
         function bindButton(){
             $("div.control").children("button").each(function(){
-                //$(this).click(moveButtonAction)
+                $(this).click(moveButtonAction)
                 $(this).mousedown(moveButtonPressed)
                 $(this).mouseup(moveButtonUp)
+                $(this).on("touchstart",moveButtonPressed);
+                $(this).on("touchend",moveButtonUp);
             });
-            window.setInterval(sendButtonCommand,100);
+            window.setInterval(sendButtonCommand,40);
         }
         function isPC() {
             //判断客户端是否为PC

@@ -108,6 +108,11 @@ io.on("connection",function(socket){
 			serverSocket.send(msg,0,msg.length,9997,"192.168.137.39");
 		}
 	});
+	socket.on("imageCommand",function(msg,info){
+		if(msg){
+			serverSocket.send(msg,0,msg.length,9998,"192.168.137.39")
+		}
+	});
 	//断开连接时,将连接从连接池中删除
 	socket.on("disconnect",function(){
 		delete connections[socket.id];

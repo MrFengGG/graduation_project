@@ -107,10 +107,13 @@
             </div>
         </div>
                 <div class="control" style="position: relative;width:200px;height:120px;">
-                    <div style="position:absolute;left:200px;top:40px"><button id="right" class="layui-btn layui-btn-primary" style="text-align: right;">右</button></div>
-                    <div style="position:absolute;left:10px;top:40px"><button id="left" class="layui-btn layui-btn-primary" style="text-align: left;">左</button></div>
-                    <div style="position:absolute;left:100px;top:1px"><button id="up" class="layui-btn layui-btn-primary" style="text-align: center;">上</button></div>
-                    <div style="position:absolute;left:100px;top:80px"><button id="down" class="layui-btn layui-btn-primary" style="text-align: center;">下</button></div>
+                    <div style="position:absolute;left:110px;top:40px"><button id="right" class="layui-btn layui-btn-primary move" style="text-align: right;">右</button></div>
+                    <div style="position:absolute;left:10px;top:40px"><button id="left" class="layui-btn layui-btn-primary move" style="text-align: left;">左</button></div>
+                    <div style="position:absolute;left:60px;top:1px"><button id="up" class="layui-btn layui-btn-primary move" style="text-align: center;">上</button></div>
+                    <div style="position:absolute;left:60px;top:80px"><button id="down" class="layui-btn layui-btn-primary move" style="text-align: center;">下</button></div>
+                    <div style="position: absolute;left: 220px;top:1px"><button id="analyze" class="layui-btn layui-btn-primary image" value="开始分析">停止分析</button></div>
+                    <div style="position: absolute;left: 250px;top:42px"><button id="screensheet" class="layui-btn layui-btn-primary image" value="照相">照相</button></div>
+                    <div style="position: absolute;left: 250px;top:83px"><button id="recording" class="layui-btn layui-btn-primary image" value="停止录像">开始录像</button></div>
                 </div>
             </div>
         </div>
@@ -182,13 +185,16 @@
                 bindTabs();
             }
             function bindButton(){
-                $("div.control").find("button").each(function(){
+                $("div.control").find("button.move").each(function(){
                     $(this).click(moveButtonAction)
                     $(this).mousedown(moveButtonPressed)
                     $(this).mouseup(moveButtonUp)
                     $(this).on("touchstart",moveButtonPressed);
                     $(this).on("touchend",moveButtonUp);
                 });
+                $("div.control").find("button.image").each(function(){
+                    $(this).click(sendImageCommand);
+                })
                 window.setInterval(sendButtonCommand,40);
             }
             function bindTabs(){
@@ -246,6 +252,13 @@
                         socket.emit("command",direction[type]);
                     }
                 }
+            }
+            function sendImageCommand(){
+                //发送图像控制命令
+                socket.emit("imageCommand",'{"command":"'+$(this).attr("id")+'"}');
+                var value = $(this).attr("value");
+                $(this).attr("value",$(this).html());
+                $(this).html(value);
             }
             function moveButtonPressed(){
                 //按钮按下事件

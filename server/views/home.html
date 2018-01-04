@@ -14,7 +14,7 @@
 <link rel="apple-touch-startup-image" sizes="1536x2008" href="images/splash/splash-screen-ipad-portrait-retina.png"   media="(device-width: 768px)	and (orientation: portrait)	and (-webkit-device-pixel-ratio: 2)"/>
 <link rel="apple-touch-startup-image" sizes="1496x2048" href="images/splash/splash-screen-ipad-landscape-retina.png"   media="(device-width: 768px)	and (orientation: landscape)	and (-webkit-device-pixel-ratio: 2)"/>
 
-<title>离线下载</title>
+<title>首页</title>
 
 <link href="styles/style.css"     		rel="stylesheet" type="text/css">
 <link href="styles/framework.css" 		rel="stylesheet" type="text/css">
@@ -23,11 +23,12 @@
 <link href="styles/swipebox.css"		 rel="stylesheet" type="text/css">
 <link href="styles/colorbox.css"		 rel="stylesheet" type="text/css">
 
+
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/jqueryui.js"></script>
 <script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.swipebox.js"></script>
-<script type="text/javascript" src="scripts/colorbox.js"></script>
+<script type="text/javascript" src="scripts/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="scripts/snap.js"></script>
 <script type="text/javascript" src="scripts/contact.js"></script>
 <script type="text/javascript" src="scripts/custom.js"></script>
@@ -39,79 +40,82 @@
 <body>
 
 <div id="preloader">
-	<div id="preloader">
-    <div id="status">
-        <p class="center-text">
-            加载页面中...
+	<div id="status">
+    	<p class="center-text">
+			加载页面中...
             <em>页面加载中,请稍候...</em>
         </p>
     </div>
 </div>
-</div>
 
 <div class="top-deco"></div>
 
-<div class="content">
-	<div class="header">
-    	<a href="#" class="homepage-logo">
-        	<img src="images/misc/logo.png" alt="img">
+<div class="landing-page">
+	<a class="landing-logo" href="#">
+    	<img src="images/misc/logo.png" alt="img">
+    </a>
+    
+    <div class="decoration"></div>
+      
+     
+    <div class="landing-navigation">
+    <div class="landing-navigation-tablet-top-adjustment"></div> 
+    	<a href="camera">
+        	<img class="nav-icon" src="images/icons/misc/home.png" alt="img">
+            <div class="nav-overlay"></div>
+        	<img class="nav-image" src="images/general-nature/1s.jpg" alt="img">
+            <em>查看监控</em>
         </a>
-        <a href="home.html" class="go-home">HOME</a>
-        <a href="#" class="go-menu">MENU</a>
-        <a href="#" class="go-back">CLOSE</a>
+    	<a href="download">
+        	<img class="nav-icon" src="images/icons/misc/infoabout.png" alt="img">
+            <div class="nav-overlay"></div>
+        	<img class="nav-image" src="images/general-nature/3s.jpg" alt="img">
+            <em>离线下载</em>
+        </a>
+    	<a href="storage">
+        	<img class="nav-icon" src="images/icons/electrical/camera.png" alt="img">
+            <div class="nav-overlay"></div>
+        	<img class="nav-image" src="images/general-nature/4s.jpg" alt="img">
+            <em>云存储</em>
+        </a>
+    	<a href="theatra">
+        	<img class="nav-icon" src="images/icons/media/image2.png" alt="img">
+            <div class="nav-overlay"></div>
+        	<img class="nav-image" src="images/general-nature/5s.jpg" alt="img">
+            <em>家庭影院</em>
+        </a>
+    	<a href="music">
+        	<img class="nav-icon" src="images/icons/misc/mail.png" alt="img">
+            <div class="nav-overlay"></div>
+        	<img class="nav-image" src="images/general-nature/6s.jpg" alt="img">
+            <em>音乐播放</em>
+        </a>
+        <a href="setting">
+            <img class="nav-icon" src="images/icons/settings/cog4.png" alt="img">
+            <div class="nav-overlay"></div>
+            <img class="nav-image" src="images/general-nature/2s.jpg" alt="img">
+            <em>设定</em>
+        </a>
+        <div class="clear"></div>
+        <div class="landing-navigation-tablet-bottom-adjustment"></div> 
     </div>
+    
+  
     <div class="decoration"></div>
     
-    <div class="navigation">
-    	<div class="corner-deco"></div>
-    	<div class="navigation-wrapper">
-            <div class="navigation">
-        <div class="corner-deco"></div>
-        <div class="navigation-wrapper">
-            <div class="navigation-item">
-                <a href="home.html">首页</a>
-                <em class="active-menu"></em>
-            </div>
-            <div class="navigation-item">
-                <a href="camera.html">查看监控</a>
-                <em class="active-menu"></em>
-            </div>
-            <div class="navigation-item">
-                <a href="storage.html">云存储</a>
-                <em class="active-menu"></em>
-            </div>
-            <div class="navigation-item">
-                <a href="theatra.html">家庭影院</a>
-                <em class="active-menu"></em>
-            </div>
-            <div class="navigation-item">
-                <a href="contact.html">音乐</a>
-                <em class="active-menu"></em>
-            </div>
-            <div class="navigation-item">
-                <a href="jquery.html">设定</a>
-                <em class="activen-menu"></em>
-            </div>
-        </div>
-    </div>
-        </div>
-    </div>
-</div>
-
-   
-<div class="content">
-<div class="decoration"></div>            
     <div class="footer">
+    
         <div class="clear"></div>
         <p class="copyright">
-            COPYRIGHT 2015.<br>
+        	COPYRIGHT 2018.<br>
             ALL RIGHTS RESERVED
         </p>
-    </div> 
-    
+        
+    </div>  
 </div>
-<div class="bottom-deco"></div>
 
+<div style="height:28px;"></div>
+<div class="bottom-deco"></div>
 
 </body>
 </html>

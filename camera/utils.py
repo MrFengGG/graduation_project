@@ -10,18 +10,18 @@ from io import BytesIO
 class IOUtil(object):
     #流操作工具类
     @staticmethod
-    def array_to_bytes(pic,formatter="jpeg"):
+    def array_to_bytes(pic,formatter="jpeg",quality=70):
         '''
         静态方法,将numpy数组转化二进制流
         :param pic: numpy数组
         :param format: 图片格式
+        :param quality:压缩比,压缩比越高,产生的二进制数据越短
         :return: 
         '''
         stream = BytesIO()
         picture = Image.fromarray(pic)
-        picture.save(stream,format=formatter)
+        picture.save(stream,format=formatter,quality=quality)
         jepg = stream.getvalue()
-        print("压缩后图片长度为"+str(len(jepg)))
         stream.close()
         return jepg
     @staticmethod

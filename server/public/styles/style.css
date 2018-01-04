@@ -294,7 +294,21 @@ and (min-device-height: 801px){
 	padding-top:40px;
 	font-family:'Dosis', sans-serif;
 }
-
+.go-out{
+	color:#3d3e42;
+	background-image:url(../images/misc/exit-button.png);
+	background-size:36px 36px;
+	background-position:8px 0px;
+	background-repeat:no-repeat;
+	position:absolute;
+	right:120px;
+	top:0px;
+	height:50px;
+	width:50px;
+	text-align:center;
+	padding-top:40px;
+	font-family:'Dosis', sans-serif;
+}
 .go-menu{
 	color:#3d3e42;
 	background-image:url(../images/misc/menu-button.png);

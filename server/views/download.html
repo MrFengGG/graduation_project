@@ -12,9 +12,9 @@
 <link rel="apple-touch-startup-image" sizes="1024x748" href="images/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
 <link rel="apple-touch-startup-image" sizes="768x1004" href="images/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
 <link rel="apple-touch-startup-image" sizes="1536x2008" href="images/splash/splash-screen-ipad-portrait-retina.png"   media="(device-width: 768px)	and (orientation: portrait)	and (-webkit-device-pixel-ratio: 2)"/>
-<link rel="apple-touch-startup-image" sizes="1496x2048" href="images/splash/splash-screen-ipad-landscape-retina.png"   media="(device-width: 768px)	and (orientation: landscape)	and (-webkit-device-pixel-ratio: 2)"/>
+<link rel="apple-touch-startup-image" sizes="1496x2048" href="images/splash/splash-screen-ipad-landscape-retina.png"   media="(device-width: 768px)	and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)"/>
 
-<title>云存储</title>
+<title>离线下载</title>
 
 <link href="styles/style.css"     		rel="stylesheet" type="text/css">
 <link href="styles/framework.css" 		rel="stylesheet" type="text/css">
@@ -27,7 +27,7 @@
 <script type="text/javascript" src="scripts/jqueryui.js"></script>
 <script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.swipebox.js"></script>
-<script type="text/javascript" src="scripts/colorbox.js"></script>
+<script type="text/javascript" src="scripts/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="scripts/snap.js"></script>
 <script type="text/javascript" src="scripts/contact.js"></script>
 <script type="text/javascript" src="scripts/custom.js"></script>
@@ -39,12 +39,14 @@
 <body>
 
 <div id="preloader">
+	<div id="preloader">
     <div id="status">
         <p class="center-text">
             加载页面中...
             <em>页面加载中,请稍候...</em>
         </p>
     </div>
+</div>
 </div>
 
 <div class="top-deco"></div>
@@ -54,9 +56,10 @@
     	<a href="#" class="homepage-logo">
         	<img src="images/misc/logo.png" alt="img">
         </a>
-        <a href="home.html" class="go-home">HOME</a>
-        <a href="#" class="go-menu">MENU</a>
-        <a href="#" class="go-back">CLOSE</a>
+        <a href="/" class="go-home">首页</a>
+        <a href="#" class="go-menu">菜单</a>
+        <a href="#" class="go-back">关闭</a>
+        <a href="logout" class="go-out">退出</a>
     </div>
     <div class="decoration"></div>
     
@@ -67,27 +70,27 @@
         <div class="corner-deco"></div>
         <div class="navigation-wrapper">
             <div class="navigation-item">
-                <a href="home.html">首页</a>
+                <a href="/">首页</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="camera.html">查看监控</a>
+                <a href="camera">查看监控</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="download.html">离线下载</a>
+                <a href="storage">云存储</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="theatra.html">家庭影院</a>
+                <a href="theatra">家庭影院</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="music.html">音乐</a>
+                <a href="contact">音乐</a>
                 <em class="active-menu"></em>
             </div>
             <div class="navigation-item">
-                <a href="setting.html">设定</a>
+                <a href="setting">设定</a>
                 <em class="activen-menu"></em>
             </div>
         </div>

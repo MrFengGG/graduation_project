@@ -4,12 +4,128 @@
 		"selected_items":
 		[
 			[
-				"coo",
-				"coords〔variable〕"
+				"bu",
+				"button\tTag"
+			],
+			[
+				"st",
+				"style\tAttr"
+			],
+			[
+				"he",
+				"height"
 			],
 			[
 				"dis",
-				"dispense"
+				"display: 〔property〕"
+			],
+			[
+				"se",
+				"session"
+			],
+			[
+				"re",
+				"require"
+			],
+			[
+				"req",
+				"require〔function〕"
+			],
+			[
+				"bind",
+				"bindTabs"
+			],
+			[
+				"add",
+				"addClass〔function〕"
+			],
+			[
+				"c",
+				"children〔function〕"
+			],
+			[
+				"sc",
+				"scripts"
+			],
+			[
+				"ali",
+				"text-align"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"a",
+				"absolute"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"le",
+				"left"
+			],
+			[
+				"s",
+				"style\tAttr"
+			],
+			[
+				"move",
+				"moveButtonUp"
+			],
+			[
+				"mo",
+				"mouseup〔function〕"
+			],
+			[
+				"send",
+				"sendButtonCommand"
+			],
+			[
+				"t",
+				"type"
+			],
+			[
+				"button",
+				"buttonStatus〔variable〕"
+			],
+			[
+				"but",
+				"buttonStatus"
+			],
+			[
+				"ap",
+				"alpha"
+			],
+			[
+				"pic",
+				"picture"
+			],
+			[
+				"ini",
+				"initVirt〔variable〕"
+			],
+			[
+				"parse",
+				"parseInt〔function〕"
+			],
+			[
+				"init",
+				"initLevel〔variable〕"
+			],
+			[
+				"vi",
+				"virtAngle"
+			],
+			[
+				"createS",
+				"dgram.createSocket"
+			],
+			[
+				"coo",
+				"coords〔variable〕"
 			],
 			[
 				"D",
@@ -26,10 +142,6 @@
 			[
 				"coord",
 				"coords"
-			],
-			[
-				"c",
-				"coordinate"
 			],
 			[
 				"dir",
@@ -60,10 +172,6 @@
 				"True"
 			],
 			[
-				"t",
-				"track〔function〕"
-			],
-			[
 				"tra",
 				"tracker〔variable〕"
 			],
@@ -84,14 +192,6 @@
 				"minor_ver〔variable〕"
 			],
 			[
-				"a",
-				"action\tAttr"
-			],
-			[
-				"se",
-				"sendfile"
-			],
-			[
 				"w",
 				"width"
 			],
@@ -100,32 +200,16 @@
 				"width"
 			],
 			[
-				"sc",
-				"screen"
-			],
-			[
 				"win",
 				"windowHeight"
-			],
-			[
-				"he",
-				"height"
 			],
 			[
 				"im",
 				"imageMsg"
 			],
 			[
-				"le",
-				"letter"
-			],
-			[
 				"MIME",
 				"MIMEImage〔module〕"
-			],
-			[
-				"s",
-				"sendEmail"
 			],
 			[
 				"SMTP",
@@ -156,39 +240,39 @@
 	"buffers":
 	[
 		{
-			"file": "camera/managers.py",
+			"file": "server/server.js",
 			"settings":
 			{
-				"buffer_size": 7755,
+				"buffer_size": 3456,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/scheduler.py",
+			"file": "server/views/camera.html",
 			"settings":
 			{
-				"buffer_size": 3873,
+				"buffer_size": 12905,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/test.py",
+			"file": "server/views/login.html",
 			"settings":
 			{
-				"buffer_size": 138,
+				"buffer_size": 1690,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/JACK/Desktop/参考1/cam-track.py",
+			"file": "server/views/storage.html",
 			"settings":
 			{
-				"buffer_size": 17614,
+				"buffer_size": 4869,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -287,21 +371,42 @@
 	[
 		"/F/STUDY/graduation",
 		"/F/STUDY/graduation/camera",
-		"/F/STUDY/graduation/camera/videos",
-		"/F/STUDY/graduation/server"
+		"/F/STUDY/graduation/control",
+		"/F/STUDY/graduation/server",
+		"/F/STUDY/graduation/server/node_modules",
+		"/F/STUDY/graduation/server/public",
+		"/F/STUDY/graduation/server/public/images",
+		"/F/STUDY/graduation/server/public/scripts",
+		"/F/STUDY/graduation/server/public/styles",
+		"/F/STUDY/graduation/server/views"
 	],
 	"file_history":
 	[
-		"/F/STUDY/graduation/camera/scheduler.py",
+		"/F/STUDY/graduation/server/views/download.html",
+		"/F/STUDY/graduation/server/views/music.html",
+		"/F/STUDY/graduation/server/views/setting.html",
+		"/F/STUDY/graduation/server/views/storage.html",
+		"/F/STUDY/graduation/server/views/theatra.html",
+		"/F/STUDY/graduation/server/views/camera.html",
+		"/F/STUDY/graduation/server/views/login.html",
+		"/F/STUDY/graduation/server/public/styles/style.css",
+		"/F/STUDY/graduation/server/views/home.html",
+		"/F/STUDY/graduation/camera/transmitters.py",
+		"/F/STUDY/graduation/camera/items.py",
+		"/F/STUDY/graduation/camera/test.py",
+		"/F/STUDY/graduation/camera/utils.py",
+		"/F/STUDY/graduation/server/public/camera.html",
 		"/C/Users/JACK/Desktop/参考1/cam-track-multi.py",
+		"/C/Users/JACK/Desktop/参考1/cam-track.py",
+		"/F/STUDY/graduation/server/server.js",
+		"/F/STUDY/graduation/camera/managers.py",
+		"/F/STUDY/graduation/server/public/test.html",
+		"/F/STUDY/graduation/server/test.js",
+		"/F/STUDY/graduation/camera/scheduler.py",
 		"/C/Users/JACK/Desktop/cam-track-master/cam-track.py",
 		"/C/Users/JACK/Desktop/motion-track-master/motion-track.py",
 		"/F/STUDY/graduation/camera/monitors.py",
-		"/F/STUDY/graduation/camera/managers.py",
-		"/F/STUDY/graduation/camera/items.py",
 		"/F/STUDY/graduation/camera/settings.py",
-		"/F/STUDY/graduation/camera/utils.py",
-		"/F/STUDY/graduation/server/public/camera.html",
 		"/F/STUDY/graduation/managers.py",
 		"/F/STUDY/graduation/items.py",
 		"/F/STUDY/graduation/utils.py",
@@ -370,6 +475,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"header",
+			"back",
+			"go-home",
+			"go-back",
 			" createWindow",
 			"createWindow",
 			"logging.info",
@@ -385,7 +494,7 @@
 			"portfolio-icon",
 			"(major_ver, minor_ver, subminor_ver)"
 		],
-		"highlight": true,
+		"highlight": false,
 		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
@@ -402,91 +511,91 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "camera/managers.py",
+					"file": "server/server.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7755,
+						"buffer_size": 3456,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6074,
-								6074
+								2235,
+								2235
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1311.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "server/views/camera.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12905,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3426,
+								3426
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 236.0,
+						"translation.y": 57.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "camera/scheduler.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 3873,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								676,
-								676
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 378.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
 					"buffer": 2,
-					"file": "camera/test.py",
+					"file": "server/views/login.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 138,
+						"buffer_size": 1690,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								138,
-								138
+								1315,
+								1315
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -497,33 +606,32 @@
 				},
 				{
 					"buffer": 3,
-					"file": "/C/Users/JACK/Desktop/参考1/cam-track.py",
+					"file": "server/views/storage.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 17614,
+						"buffer_size": 4869,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13275,
-								13275
+								3011,
+								2983
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6823.0,
+						"translation.y": 855.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -531,7 +639,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -562,7 +670,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 151.0
+		"height": 120.0
 	},
 	"output.find_results":
 	{
@@ -576,7 +684,7 @@
 	"project": "graduation_peoject.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -614,7 +722,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 201.0,
+	"side_bar_width": 369.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

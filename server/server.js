@@ -132,6 +132,7 @@ http.listen(3000,function(socket){
 	console.log("listening on 80")
 });
 
+
 //工具函数
 function bufferToJason(bufferdata){
 	//将buf转化为json格式数据
@@ -145,3 +146,7 @@ function sendCommand(msg){
 	var serverSocket = dgram.createSocket('udp4');
 	serverSocket.send(msg,0,msg.length,9997,"127.0.0.1")
 }
+function queryMongo(document,condition){
+	//查询mongodb数据库,document为查询的目标文档,condition为条件
+}
+

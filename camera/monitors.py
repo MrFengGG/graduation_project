@@ -8,21 +8,25 @@ class WatchDog(object):
   #入侵检测者模块,用于入侵检测
     def __init__(self,frame=None):
         #运动检测器构造函数
-        if frame:
-            self._background = cv2.GaussianBlur(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY),(21,21),0)
         self._background = None
+        if frame is not None:
+            self._background = cv2.GaussianBlur(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY),(21,21),0)
         self.es = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
     def isWorking(self):
         #运动检测器是否工作
         return self._background is not None
     def startWorking(self,frame):
         #运动检测器开始工作
-        self._background = cv2.GaussianBlur(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (21, 21), 0)
+        if frame is not None:
+            self._background = cv2.GaussianBlur(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (21, 21), 0)
     def stopWorking(self):
         #运动检测器结束工作
         self._background = None
     def analyze(self,frame):
         #运动检测
+        if frame is None or self._background is None:
+            return
+        print("is ana");
         sample_frame = cv2.GaussianBlur(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY),(21,21),0)
         diff = cv2.absdiff(self._background,sample_frame)
         diff = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)[1]

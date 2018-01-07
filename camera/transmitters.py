@@ -21,7 +21,8 @@ class Dispatcher(object):
         self.fileName = 0
     def dispense(self,item,address = ("127.0.0.1",9999)):
         #分发到指定的地址
-        self._sock.sendto(item.getJson().encode(),address)
+        if item:
+        	self._sock.sendto(item.getJson().encode(),address)
 
 class EmailClient(object):
 	'''

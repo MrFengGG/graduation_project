@@ -37,8 +37,8 @@ class Camera(object):
             self.watDog = WatchDog()
         self.isWatching = True
     def run(self):
+        self.captureManager = self.captureManager.start()
         while self.captureManager.isWorking():
-            self.captureManager.nextFrame()
             frame = self.captureManager.getFrame()
             item = MessageItem(frame,None)
             if self.isWatching:

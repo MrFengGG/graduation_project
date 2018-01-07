@@ -5,6 +5,7 @@ var path = require('path');
 //引入express模块
 var express = require('express');
 
+var fs = require("fs");
 //初始化服务器
 var app = express();
 var http = require("http").Server(app);
@@ -92,7 +93,11 @@ app.get("/storage",function(req,res){
 app.get("/setting",function(req,res){
 	res.render("setting.html");
 });
-
+app.get("/data/text",function(req,res){
+	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+	res.write(loadJsonFile("move.json",page,number));
+	res.end();
+});
 //监听websocket连接
 io.on("connection",function(socket){
 
@@ -105,12 +110,12 @@ io.on("connection",function(socket){
 	socket.on("command",function(msg,info){
 		console.log(msg);
 		if(msg){
-			serverSocket.send(msg,0,msg.length,9997,"192.168.137.39");
+			serverSocket.send(msg,0,msg.length,9997,"127.0.0.1");
 		}
 	});
 	socket.on("imageCommand",function(msg,info){
 		if(msg){
-			serverSocket.send(msg,0,msg.length,9998,"192.168.137.39")
+			serverSocket.send(msg,0,msg.length,9998,"127.0.0.1")
 		}
 	});
 	//断开连接时,将连接从连接池中删除
@@ -148,5 +153,10 @@ function sendCommand(msg){
 }
 function queryMongo(document,condition){
 	//查询mongodb数据库,document为查询的目标文档,condition为条件
+}
+function loadJsonFile(filename){
+	var result = fs.readFileSync(filename,"utf-8");
+	results = result.split("\n");
+	return JSON.stringify(results);
 }
 

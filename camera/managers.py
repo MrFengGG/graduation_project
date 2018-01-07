@@ -7,6 +7,7 @@ import threading
 import os
 import time
 from settings import *
+from threading import Thread
 
 '''
 管理者模块,负责控制信息获取,命令获取
@@ -53,12 +54,20 @@ class CameraManager(object):
     def isWritingVideo(self):
         #是否开启写入视频
         return self._videoFilename is not None
-    def nextFrame(self):
-        #读取下一个页面
-        timer = cv2.getTickCount()
-        if self._capture is not None:
-            _,self._frame = self._capture.read()
-        self._fps = int(cv2.getTickFrequency() / (cv2.getTickCount() - timer)/100);
+    def start(self):
+        #加入多线程支持
+        self.thread = Thread(target = self.update,args=())
+        self.thread.start()
+        return self
+    def stop(self):
+
+        if self.thread:
+            self.thread.close()
+    def update(self):
+        #读取下一个页
+        while True:
+            if self._capture is not None:
+                _,self._frame = self._capture.read()
     def processFrame(self):
         #处理每一帧图像的函数,其中可以运行包括写入视频,写入图片,显示视频的钩子函数
         if self._windowManager is not None and self._isWorking:
@@ -120,6 +129,7 @@ class CameraManager(object):
     def stopWorking(self):
         #结束工作
         self._isWorking = False
+        self.stop()
     def startWorking(self):
         #开启工作
         self._isWorking = True
@@ -212,7 +222,6 @@ class CommandManager(object):
         #获取命令之前将本地命令置空,防止命令重复执行
         self.command = None
         return result
-<<<<<<< HEAD
 class DisplayManager(object):
     '''
     图像控制程序,用于将信息写入图片中
@@ -228,6 +237,8 @@ class DisplayManager(object):
         '''
         合成一张图片
         '''
+        if item is None:
+            return
         message = item.getMessage()
         frame = item.getFrame()
         if not message:
@@ -240,5 +251,3 @@ class DisplayManager(object):
         if msgs:
             cv2.putText(frame,msg, (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
         return frame
-=======
->>>>>>> cbcdf103e1af2deb01e8ff770897f344cfdcb3a5

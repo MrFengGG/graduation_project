@@ -14,11 +14,10 @@ from threading import Thread
 '''
 class CameraManager(object):
     #相机管理类,负责控制信息获取
-    def __init__(self,capture,windowManager = None,isMirror = False):
+    def __init__(self,capture,windowManager = None):
         '''
         :param capture: 摄像头对象
         :param windowManager: 钩子类,窗口管理,按键
-        :param isMirror: 是否开启镜像
         '''
 
         #从配置文件中读取截图目录和录像目录
@@ -28,7 +27,6 @@ class CameraManager(object):
         添加创建文件夹逻辑
         '''
         self._windowManager = windowManager
-        self._isMirror = isMirror
         self._capture = capture
         #当前画面
         self._frame = None
@@ -40,14 +38,17 @@ class CameraManager(object):
         self._videoEncoding = None
         #视频写入工具
         self._videoWriter = None
-        #是否开启延时
+        #是否开启显示
         self._isShow = False
-        #是否开启工作
+        #是否工作
         self._isWorking = True
         self._fps = 30
     def getFrame(self):
         #返回当前的帧
         return self._frame
+    def getFps(self):
+        #获得当前fps
+        return self._fps
     def isWritingImage(self):
         #是否开启写入图片
         return self._imageFilename is not None
@@ -55,17 +56,16 @@ class CameraManager(object):
         #是否开启写入视频
         return self._videoFilename is not None
     def start(self):
-        #加入多线程支持
-        self.thread = Thread(target = self.update,args=())
+        #开始工作
+        self.thread = Thread(target = self._update,args=())
         self.thread.start()
         return self
     def stop(self):
-
-        if self.thread:
-            self.thread.close()
-    def update(self):
-        #读取下一个页
-        while True:
+        #停止工作
+        self._isWorking = False
+    def _update(self):
+        #更新摄像头画面
+        while self.isWorking():
             if self._capture is not None:
                 _,self._frame = self._capture.read()
     def processFrame(self):
@@ -222,6 +222,7 @@ class CommandManager(object):
         #获取命令之前将本地命令置空,防止命令重复执行
         self.command = None
         return result
+        
 class DisplayManager(object):
     '''
     图像控制程序,用于将信息写入图片中

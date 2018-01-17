@@ -7,6 +7,8 @@ from managers import DisplayManager
 from items import MessageItem
 from transmitters import Dispatcher
 from monitors import WatchDog
+from threading import Thread
+import time
 print(cv2.__version__)
 '''
 主控程序
@@ -28,7 +30,7 @@ class Camera(object):
         if not windowManager:
             self.windowManager = WindowManager("cameo",keypressCallback=self.onKeypress,commandCallback=self.onCommand,commandManager=CommandManager(9998))
         if not captureManager:
-            self.captureManager = CameraManager(cv2.VideoCapture(0),self.windowManager,True)
+            self.captureManager = CameraManager(cv2.VideoCapture(0),self.windowManager)
         if not displayManager:
             self.displayManager = DisplayManager()
         if not dispatcher:
@@ -36,6 +38,11 @@ class Camera(object):
         if not watchDog:
             self.watDog = WatchDog()
         self.isWatching = True
+        self.item = None
+    def dispatch(self):
+        while True:
+            if self.item is not None:
+                self.dispatcher.dispense(self.item)
     def run(self):
         self.captureManager = self.captureManager.start()
         while self.captureManager.isWorking():
@@ -43,9 +50,10 @@ class Camera(object):
             item = MessageItem(frame,None)
             if self.isWatching:
                 if not self.watDog.isWorking():
+                    print("init");
                     self.watDog.startWorking(frame)
                 item = self.watDog.analyze(frame)
-            self.displayManager.conpose(item)
+
             self.dispatcher.dispense(item)
             self.captureManager.processFrame()
             self.windowManager.processKeyEvents()
@@ -98,6 +106,7 @@ class Camera(object):
             # 回车键暂停显示
             self.captureManager.changeShow()
         elif command == "analyze":
+            print("状态改变")
             self.isWatching = not self.isWatching
             if self.watDog.isWorking():
                 self.watDog.stopWorking()

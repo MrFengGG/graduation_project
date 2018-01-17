@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from io import BytesIO
 from utils import IOUtil
 from PIL import Image
+import time
 '''
 传递者模块,用于分发需要散布的信息
 '''
@@ -21,9 +22,24 @@ class Dispatcher(object):
         self.fileName = 0
     def dispense(self,item,address = ("127.0.0.1",9999)):
         #分发到指定的地址
-        if item:
-        	self._sock.sendto(item.getJson().encode(),address)
+        if item is not None:
+        
+        	#self._sock.sendto(item.getJson().encode(),address)
+        	self._sock.sendto(item.getBinaryFrame(),address)
 
+class TcpDispatcher(object):
+ 	def __init__(self):
+ 		self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+ 		self.isWorking = False
+ 	def initWorking(self,address = ("127.0.0.1",9999)):
+ 		self.sock.connect(address)
+ 		self.isWorking = True
+ 		print("图片分发器初始化成功")
+
+ 	def dispatcher(self,item):
+ 		if not self.isWorking:
+ 			raise Exception("分发器未初始化,请使用initWorking()进行初始化")
+ 		self.sock(IOUtil.byte_to_pitem.getBinaryFrame)
 class EmailClient(object):
 	'''
 	邮箱分发者,发送邮件信息

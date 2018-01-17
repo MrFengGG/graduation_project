@@ -38,3 +38,16 @@ class IOUtil(object):
         将bgr图像转化为rgb图像,或者将rgb图像转化为bgr图像
         '''
         return frame[...,::-1]
+    @staticmethod
+    def byte_to_package(bytes,cmd,var=1):
+        '''
+        将每一帧的图片流的二进制数据进行分包
+        :param byte: 二进制文件
+        :param cmd:命令
+        :return: 
+        '''
+        head = [ver,len(byte),cmd]
+        headPack = struct.pack("!3I", *head)
+        senddata = headPack+byte
+        return senddata
+

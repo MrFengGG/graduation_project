@@ -26,3 +26,5 @@ class MessageItem(object):
         #获得json数据格式
         dicdata = {"frame":self.getBase64Frame().decode(),"message":self.getMessage()}
         return json.dumps(dicdata)
+    def getBinaryFrame(self):
+        return IOUtil.array_to_bytes(self._frame[...,::-1])

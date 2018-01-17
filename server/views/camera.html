@@ -169,7 +169,8 @@
                                  "down":false}
             //接收udp信息,转发给客户端
             socket.on("message",function(msg){
-                image.src = "data:image/jpg;base64,"+msg.frame;
+                var blob = new Blob([msg],{"type":"image\/jpeg"});
+                image.src = window.URL.createObjectURL(blob);
                 console.log("get message")
                 image.onload = function(){
                     if(displayWidth == null){

@@ -93,9 +93,19 @@
 </div>
 
 <div class="content">
+  <div class="display">
   <script type="text/x-handlebars-template" id="move-tp">
     {{>gallery move}}
   </script>
+</div>
+  <ul data-am-widget="pagination" class="am-pagination am-pagination-select pageSelect" nowPage="0">
+      <li class="am-pagination-prev ">
+        <a href="#" class="pageButton" classification="-1">上一页</a>
+      </li>
+      <li class="am-pagination-next ">
+        <a href="#" class="pageButton" classification="1">下一页</a>
+      </li>
+  </ul>
 	<div class="decoration"></div>            
     <div class="footer">
         <div class="clear"></div>
@@ -134,28 +144,58 @@
                 }
               ]
           }
-        }
-    var content = []
-    $.ajax({
-      url:"http://localhost:3000/data/text",
-      dataType:"json",
-      success:function(data){
-        for(var i = 0;i < data.length;i++){
-          var obj = null
-          try{
-            var obj = JSON.parse(data[i]);
-            content.push({"img":obj['titleImage'],"title":obj['moveName'],"desc":obj['summary']})
-          }catch(err){
-            console.log("err11111111111111");
+    }
+    function queryMoveList(pageNumber){
+      $.ajax({
+        url:"http://localhost:3000/data/move",
+        dataType:"json",
+        type:"post",
+        data:{
+          page:pageNumber,
+          pageSize:10,
+          condition:{}
+        },
+        success:function(data){
+          var content = [];
+          if(data == null){
+            return;
           }
+          for(var i = 0;i < data.length;i++){
+            try{
+              var obj = data[i];
+              content.push({"img":obj['titleImage'],"title":obj['moveName'],"desc":'<p title="'+obj['summary']+'">'+cut(obj['summary'])+'...</p>'})
+            }catch(err){
+              console.log("解析电影失败"+err);
+            }
+          }
+          Hdata.move['content'] = content;
+          html = template(Hdata);
+          $("div.display").html(html);
         }
-        Hdata.move['content'] = content;
-        html = template(Hdata);
-        $tpl.before(html)
-        console.log(Hdata)
-        alert("success")
-      }
-    })
+      })
+    }
+    function refrashPage(classification){
+      var nowPage = parseInt($("ul.pageSelect").attr("nowPage"));
+      queryMoveList(nowPage + classification);
+      $("ul.pageSelect").attr("nowPage",nowPage + classification);
+    }
+    function initButton(){
+        $("a.pageButton").each(function(){
+          $(this).click(function(){
+            var classification = parseInt($(this).attr("classification"))
+            refrashPage(classification);
+          })
+        })
+    }
+    var cut = function(string,lenngth){
+      return string.substring(0,length?length:100)
+    }
+
+    function init(){
+      refrashPage(1);
+      initButton();
+    }
+    init();
   })
 </script>
 </body>

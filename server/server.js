@@ -10,8 +10,13 @@ var fs = require("fs");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
+//session模块
 var session = require('express-session');
-
+//参数解析器
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+	extended:true
+}));
 //初始化udpsocket
 var serverSocket = dgram.createSocket("udp4");
 serverSocket.bind(9999);
@@ -19,7 +24,16 @@ serverSocket.bind(9999);
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
-
+var config = {
+	/*
+	ip:"119.23.210.76",
+	port:27017,
+	db:'film'
+	*/
+	ip:"127.0.0.1",
+	port:"27017",
+	db:"test"
+}
 app.use(session({
     secret: 'hubwiz app', //secret的值建议使用随机字符串
     cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
@@ -30,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine","html");
 app.engine(".html",require("ejs").__express);
-
+var MongoClient = require("mongodb").MongoClient;
 app.use(function (req, res, next) {
 	if (req.session.user) {  // 判断用户是否登录
 		next();
@@ -47,7 +61,7 @@ app.use(function (req, res, next) {
     	}else { 
     		console.log("拦截一次");
       		req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
-      		res.redirect('login');  // 将用户重定向到登录页面
+      		res.redirect('/login');  // 将用户重定向到登录页面
     	}
   	}
 });
@@ -57,6 +71,7 @@ app.get("/login",function(req,res,next){
 });
 //登录请求
 app.post("/login",function(req,res,next){
+	console.log(req.body)
 	req.session.user = {"name":"feng"};  // 将用户信息写入 session
  	if (req.session.originalUrl) {  // 如果存在原始请求路径，将用户重定向到原始请求路径
 		var redirectUrl = req.session.originalUrl;
@@ -95,9 +110,15 @@ app.get("/setting",function(req,res){
 });
 app.get("/data/text",function(req,res){
 	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-	res.write(loadJsonFile("move.json",page,number));
+	res.write(loadJsonFile("move.json",1,10));
 	res.end();
 });
+app.post("/data/move",function(req,res){
+	var page = parseInt(req.body.page);
+	var pageSize = parseInt(req.body.pageSize);
+	var condition = req.body.condition;
+	queryMongo({},page,pageSize,req,res);
+})
 //监听websocket连接
 io.on("connection",function(socket){
 
@@ -108,7 +129,6 @@ io.on("connection",function(socket){
 	console.log("增加一个连接,当前连接数量为"+connectionid.size)
 	//获得来自网页的陀螺仪信息,转发
 	socket.on("command",function(msg,info){
-		console.log(msg);
 		if(msg){
 			serverSocket.send(msg,0,msg.length,9997,"127.0.0.1");
 		}
@@ -128,8 +148,7 @@ io.on("connection",function(socket){
 //监听udp连接,如果有画面,将画面广播出去
 serverSocket.on("message",function(msg,info){
 		for(var a of connectionid){
-
-			connections[a].send(bufferToJason(msg));
+			connections[a].send(msg);
 		}
 	});
 //开启监听网页
@@ -154,9 +173,24 @@ function sendCommand(msg){
 function queryMongo(document,condition){
 	//查询mongodb数据库,document为查询的目标文档,condition为条件
 }
-function loadJsonFile(filename){
+function loadJsonFile(filename,page,pageSize){
 	var result = fs.readFileSync(filename,"utf-8");
-	results = result.split("\n");
+	results = result.split("\n").slice(page * pageSize,(page + 1) * pageSize);
 	return JSON.stringify(results);
+}
+function getdbUrl(){
+	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
+}
+function queryMongo(condition,page,pageSize,req,res){
+	MongoClient.connect(getdbUrl(), function(error, db){
+		var db = db.db('test')
+	    var col = db.collection("move");
+	    console.log(page+":"+pageSize);
+	    var p = col.find(condition).limit(pageSize).skip((page-1)*pageSize).toArray(function(err,doc){
+	    	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+			res.write(JSON.stringify(doc),'utf-8');
+			res.end();
+	    })
+	});
 }
 

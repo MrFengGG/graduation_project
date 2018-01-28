@@ -54,6 +54,7 @@
             <a href="#" style="padding: 15px">
                 <button style="height: 200"></button>
             </a>
+            <a href="#moveClassification" data-am-offcanvas>电影类别>></a>
             <a href="/" class="go-home">首页</a>
             <a href="#" class="go-menu">菜单</a>
             <a href="#" class="go-back">关闭</a>
@@ -94,9 +95,16 @@
 
 <div class="content">
   <div class="display">
-  <script type="text/x-handlebars-template" id="move-tp">
+  <script type="text/x-handlebars-listTemplate" id="move-tp">
     {{>gallery move}}
   </script>
+</div>
+<div id="moveClassification" class="am-offcanvas">
+  <div class="am-offcanvas-bar">
+    <div class="am-offcanvas-content classificationDisplay">
+      
+    </div>
+  </div>
 </div>
   <ul data-am-widget="pagination" class="am-pagination am-pagination-select pageSelect" nowPage="0">
       <li class="am-pagination-prev ">
@@ -118,82 +126,154 @@
 <div class="bottom-deco"></div>
 <script type="text/javascript">
   $(function(){
-    var $tpl = $("#move-tp");
-    tpl = $tpl.text();
-    template = Handlebars.compile(tpl);
-    var Hdata = {
-          move:{
-            // id
-              "id": "",
-              // 自定义 class
-              "className": "",
-              // 主题
-              "theme": "",
-              "options": {
-                "cols": 3,  // 列数
-                "gallery": false // 是否开启点击图片全屏显示大图功能
-              },
-              //内容（*为必备项）
-              "content": [
-                {
-                  "img": "http://www.imageto.org/images/Jbc9T.jpg", // *
-                  "link": "", // 链接
-                  "title": "11111", // *图片标题
-                  "className": "", // 仅在设置了 link 后有效
-                  "desc": "" // 附加信息，支持DOM，为高级定制提供DOM接口
-                }
-              ]
-          }
+    //模板编译器
+    var moveListTemplate = getTemplate($('#move-tp'));
+
+    //获得模板编译器
+    function getTemplate(ele){
+      var $template = ele;
+      var template = $template.text();
+      return  Handlebars.compile(template);
     }
-    function queryMoveList(pageNumber){
+    //去除非中文字符
+    function trim(str){
+      return str.replace(/[^\u4e00-\u9fa5|,]+/,'').replace(/&nbsp;/ig,'')
+    }
+    //截取字符串
+    function cut(string,length){
+      return string?string.substring(0,length?length:100):"None"
+    }
+    //获得电影分类html
+    function getMoveClassifycation(datas){
+      var html = "";
+      for(var i = 0;i < datas.length;i++){
+        html += '<a href="javascript:void(0)" class="classificationButton" value="'+datas[i]+'">'+datas[i]+'</a></br>';
+      }
+      return html;
+    }
+    //渲染电影分类页面
+    function renderMoveClassification(html){
+      $("div.classificationDisplay").html(html);
+    }
+    //电影分类去重
+    function getClassificationList(datas){
+      var classes = []
+      for(var i = 0;i < datas.length;i++){
+        if(datas[i]['classification']){
+          var tempdatas = trim(datas[i]['classification']).split("/");
+          classes.push.apply(classes,tempdatas);
+        }
+      }
+      return Array.from(new Set(classes));
+    }
+    //获得电影列表html
+    function getMoveList(datas,template){
+      var content = [];
+      for(var i = 0;i < datas.length;i++){
+        var data = datas[i];
+        content.push({
+                    "img":data['titleImage'],
+                    "title":data['moveName'],
+                    "link":"javascript:void(0)",
+                    "className":'detail'+data['_id'],
+                    "desc":'<div">'+data['classification']+'</div>'})
+      }
+      return template({
+              move:{
+                "id": "",
+                "className": "",
+                "theme": "",
+                "options": {
+                  "cols": 3,  // 列数
+                },
+                //内容（*为必备项）
+                "content":content
+              }
+            })
+    }  
+    //渲染电影列表界面
+    function renderMoveList(html){
+      $("div.display").html(html);
+      initImg();
+    }
+    //渲染电影分类
+    function querymoveClassifycation(){
       $.ajax({
-        url:"http://localhost:3000/data/move",
+        url:"data/move",
+        dataType:"json",
+        type:"post",
+        data:{
+          condition:{},
+          field:{"classification":1,_id:0}
+        },
+        success:function(data){     
+          data = getClassificationList(data)     
+          renderMoveClassification(getMoveClassifycation(data));
+          initClassificationButton();
+        }
+      })
+    }
+    //绑定图片加载事件
+    function initImg(){
+      $("img").error(function(){
+        $(this).attr("src","images/error.png");
+      });
+    }
+    //渲染电影列表
+    function queryMoveList(pageNumber,condition,isClassifi){
+      $.ajax({
+        url:"data/move",
         dataType:"json",
         type:"post",
         data:{
           page:pageNumber,
-          pageSize:10,
-          condition:{}
+          pageSize:9,
+          condition:condition,
+          field:{titleImage:1,moveName:1,summary:1,classification:1},
         },
         success:function(data){
-          var content = [];
-          if(data == null){
-            return;
-          }
-          for(var i = 0;i < data.length;i++){
-            try{
-              var obj = data[i];
-              content.push({"img":obj['titleImage'],"title":obj['moveName'],"desc":'<p title="'+obj['summary']+'">'+cut(obj['summary'])+'...</p>'})
-            }catch(err){
-              console.log("解析电影失败"+err);
-            }
-          }
-          Hdata.move['content'] = content;
-          html = template(Hdata);
-          $("div.display").html(html);
+          renderMoveList(getMoveList(data,moveListTemplate));
         }
       })
     }
+    //刷新页面
     function refrashPage(classification){
       var nowPage = parseInt($("ul.pageSelect").attr("nowPage"));
-      queryMoveList(nowPage + classification);
+      var condition = $("ul.pageSelect").attr("nowClassification")?{"classification":$("ul.pageSelect").attr("nowClassification")}:{};
+      console.log(condition);
+      queryMoveList(nowPage + classification,condition,0);
       $("ul.pageSelect").attr("nowPage",nowPage + classification);
     }
+    //电影类型按钮事件
+    function classificationButtonAction(){
+      $(this).click(function(){
+        var value = $(this).attr("value");
+          queryMoveList(1,{"classification":value},1)
+          console.log(value);
+          $("ul.pageSelect").attr("nowPage",1);
+          $("ul.pageSelect").attr("nowClassification",value);
+      })
+    }
+    //初始化类型按钮
+    function initClassificationButton(){
+      $("div.classificationDisplay").find("a.classificationButton").each(function(){
+        classificationButtonAction.call($(this));
+      });
+    }
+    //初始化按钮
     function initButton(){
-        $("a.pageButton").each(function(){
-          $(this).click(function(){
-            var classification = parseInt($(this).attr("classification"))
-            refrashPage(classification);
-          })
+      $("a.pageButton").each(function(){
+        $(this).click(function(){
+          var classification = parseInt($(this).attr("classification"))
+          refrashPage(classification);
         })
+      })
     }
-    var cut = function(string,lenngth){
-      return string.substring(0,length?length:100)
-    }
-
     function init(){
       refrashPage(1);
       initButton();
+      querymoveClassifycation();
+      initImg();
     }
     init();
   })

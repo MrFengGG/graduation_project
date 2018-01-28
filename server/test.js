@@ -1,5 +1,21 @@
-var dgram = require('dgram')
-var serverSocket = dgram.createSocket('udp4');
-message = '{"level":{"angle":"179","speed":"10"},"virt":{"angle":"90","speed":"10"}}'
-serverSocket.send(message,0,message.length,9997,"192.168.137.39")
-console.log("send a message");
+var config = {
+	/*
+	ip:"119.23.210.76",
+	port:27017,
+	db:'film'
+	*/
+	ip:"127.0.0.1",
+	port:"27017",
+	db:"test"
+}
+function getdbUrl(){
+	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
+}
+var MongoClient = require("mongodb").MongoClient;
+MongoClient.connect(getdbUrl(), function(error, db){
+		var db = db.db('test')
+	    var col = db.collection("move");
+		var p = col.find({"classification":/动作/}).toArray(function(err,doc){
+		    console.log(doc.length);
+		})
+	});

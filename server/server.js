@@ -108,16 +108,21 @@ app.get("/storage",function(req,res){
 app.get("/setting",function(req,res){
 	res.render("setting.html");
 });
-app.get("/data/text",function(req,res){
-	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-	res.write(loadJsonFile("move.json",1,10));
-	res.end();
-});
 app.post("/data/move",function(req,res){
-	var page = parseInt(req.body.page);
-	var pageSize = parseInt(req.body.pageSize);
-	var condition = req.body.condition;
-	queryMongo({},page,pageSize,req,res);
+	var page = parseInt(req.body.page?req.body.page:1);
+	var pageSize = parseInt(req.body.pageSize?req.body.pageSize:0);
+	var condition = req.body.condition?req.body.condition:{};
+	console.log(condition);
+	for(var c in condition){
+		condition[c] = new RegExp(condition[c]);
+	}
+	console.log(condition)
+	var field = req.body.field?req.body.field:{};
+	var isClass = req.body.isClassifi?parseInt(req.body.isClassifi):0;
+	for(var i in field){
+		field[i] = parseInt(field[i])
+	}
+	queryMongo(condition,field,page,pageSize,req,res);
 })
 //监听websocket连接
 io.on("connection",function(socket){
@@ -153,7 +158,7 @@ serverSocket.on("message",function(msg,info){
 	});
 //开启监听网页
 http.listen(3000,function(socket){
-	console.log("listening on 80")
+	console.log("listening on 3000")
 });
 
 
@@ -181,16 +186,15 @@ function loadJsonFile(filename,page,pageSize){
 function getdbUrl(){
 	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
 }
-function queryMongo(condition,page,pageSize,req,res){
+function queryMongo(condition,field,page,pageSize,req,res){
 	MongoClient.connect(getdbUrl(), function(error, db){
 		var db = db.db('test')
 	    var col = db.collection("move");
-	    console.log(page+":"+pageSize);
-	    var p = col.find(condition).limit(pageSize).skip((page-1)*pageSize).toArray(function(err,doc){
-	    	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+		col.find(condition).limit(pageSize).skip((page-1)*pageSize).project(field).toArray(function(err,doc){
+		    res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
 			res.write(JSON.stringify(doc),'utf-8');
 			res.end();
-	    })
+		})
 	});
 }
 

@@ -4,6 +4,7 @@ import time
 import threading
 import socket
 import json
+
 class Controller(object):
     def __init__(self,levelPin,virtPin,ip="",port=9997,isWarnings = False):
         '''
@@ -100,7 +101,6 @@ class Controller(object):
                     self.printer.printMessage("竖直方向达到极值或当前已在目标位置"+str(self.nowAngle[2])+"度")
         except Exception as e:
             self.printer.printMessage("错误:"+str(e))
-
     def run(self):
         while True:
             data,addr = self.sock.recvfrom(1024)

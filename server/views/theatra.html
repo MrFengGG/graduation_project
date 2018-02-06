@@ -20,6 +20,7 @@
 <link href="styles/swipebox.css" rel="stylesheet" type="text/css">
 <link href="styles/colorbox.css" rel="stylesheet" type="text/css">
 <link href="styles/amazeui.min.css" rel="stylesheet" type="text/css">
+<link href="styles/layui.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/jqueryui.js"></script>
 <script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
@@ -33,6 +34,7 @@
 <script type="text/javascript" src="scripts/amazeui.min.js"></script>
 <script type="text/javascript" src="scripts/handlebars.min.js"></script>
 <script type="text/javascript" src="scripts/amazeui.widgets.helper.js"></script>
+<script type="text/javascript" src="scripts/layui.all.js"></script>
 
 </head>
 <body>
@@ -145,7 +147,8 @@
     }
     //获得电影分类html
     function getMoveClassifycation(datas){
-      var html = "";
+      var html = '';
+
       for(var i = 0;i < datas.length;i++){
         html += '<a href="javascript:void(0)" class="classificationButton" value="'+datas[i]+'">'+datas[i]+'</a></br>';
       }
@@ -175,7 +178,7 @@
                     "img":data['titleImage'],
                     "title":data['moveName'],
                     "link":"javascript:void(0)",
-                    "className":'detail'+data['_id'],
+                    "className":'detail '+data['_id'],
                     "desc":'<div">'+data['classification']+'</div>'})
       }
       return template({
@@ -253,6 +256,10 @@
           $("ul.pageSelect").attr("nowPage",1);
           $("ul.pageSelect").attr("nowClassification",value);
       })
+    }
+    //电影搜索事件
+    function searchMove(condition){
+      queryMoveList(1,condition,0);
     }
     //初始化类型按钮
     function initClassificationButton(){

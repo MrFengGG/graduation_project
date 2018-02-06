@@ -1,50 +1,41 @@
-//引入UDP包
+//引入UDP模块
 var dgram = require("dgram");
-//path工具
+//引入path模块
 var path = require('path');
 //引入express模块
 var express = require('express');
-
-var fs = require("fs");
+//引入session模块
+var session = require('express-session');
+//引入参数解析模块
+var bodyParser = require('body-parser');
+//引入http模块
+var httpServer = require("http");
+//加载配置文件
+var config = require("./config");
 //初始化服务器
 var app = express();
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
-//session模块
-var session = require('express-session');
-//参数解析器
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
 	extended:true
 }));
-//初始化udpsocket
+var http = httpServer.Server(app);
+//初始化socket连接
+var io = require("socket.io")(http);
 var serverSocket = dgram.createSocket("udp4");
 serverSocket.bind(9999);
-
+//初始化mongodb
+var MongoClient = require("mongodb").MongoClient;
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
-var config = {
-	/*
-	ip:"119.23.210.76",
-	port:27017,
-	db:'film'
-	*/
-	ip:"127.0.0.1",
-	port:"27017",
-	db:"test"
-}
 app.use(session({
     secret: 'hubwiz app', //secret的值建议使用随机字符串
     cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
 }));
-
-//设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine","html");
 app.engine(".html",require("ejs").__express);
-var MongoClient = require("mongodb").MongoClient;
+//拦截器
 app.use(function (req, res, next) {
 	if (req.session.user) {  // 判断用户是否登录
 		next();
@@ -59,27 +50,20 @@ app.use(function (req, res, next) {
     	if(arr.length >= 2 && arr[1] == 'login' || arr[1] == 'logout') {
       		next();
     	}else { 
-    		console.log("拦截一次");
       		req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
       		res.redirect('/login');  // 将用户重定向到登录页面
     	}
   	}
 });
+
 //登录页面
 app.get("/login",function(req,res,next){
 	res.render("login.html");
 });
 //登录请求
 app.post("/login",function(req,res,next){
-	console.log(req.body)
-	req.session.user = {"name":"feng"};  // 将用户信息写入 session
- 	if (req.session.originalUrl) {  // 如果存在原始请求路径，将用户重定向到原始请求路径
-		var redirectUrl = req.session.originalUrl;
-		req.session.originalUrl = null;  // 清空 session 中存储的原始请求路径
- 	}else {  // 不存在原始请求路径，将用户重定向到根路径
-		var redirectUrl = '/';
-	}
-	res.redirect(redirectUrl);
+	queryMongo(config.userCollection,{},{},0,0,req,res,vaildate);
+	console.log("wanbihou"+JSON.stringify(req.session.user));
 })
 //登出请求
 app.get("/logout",function(req,res,next){
@@ -112,21 +96,18 @@ app.post("/data/move",function(req,res){
 	var page = parseInt(req.body.page?req.body.page:1);
 	var pageSize = parseInt(req.body.pageSize?req.body.pageSize:0);
 	var condition = req.body.condition?req.body.condition:{};
-	console.log(condition);
 	for(var c in condition){
 		condition[c] = new RegExp(condition[c]);
 	}
-	console.log(condition)
 	var field = req.body.field?req.body.field:{};
 	var isClass = req.body.isClassifi?parseInt(req.body.isClassifi):0;
 	for(var i in field){
 		field[i] = parseInt(field[i])
 	}
-	queryMongo(condition,field,page,pageSize,req,res);
+	queryMongo(config.collection,condition,field,page,pageSize,req,res,sendData);
 })
 //监听websocket连接
 io.on("connection",function(socket){
-
 	//监听到连接时,将socket加入连接池中
 	socket.send("连接成功");
 	connections[socket.id] = socket;
@@ -135,12 +116,12 @@ io.on("connection",function(socket){
 	//获得来自网页的陀螺仪信息,转发
 	socket.on("command",function(msg,info){
 		if(msg){
-			serverSocket.send(msg,0,msg.length,9997,"127.0.0.1");
+			serverSocket.send(msg,0,msg.length,config.commandPort,config.commandIP);
 		}
 	});
 	socket.on("imageCommand",function(msg,info){
 		if(msg){
-			serverSocket.send(msg,0,msg.length,9998,"127.0.0.1")
+			serverSocket.send(msg,0,msg.length,config.imagePort,config.imageIP);
 		}
 	});
 	//断开连接时,将连接从连接池中删除
@@ -157,43 +138,51 @@ serverSocket.on("message",function(msg,info){
 		}
 	});
 //开启监听网页
-http.listen(3000,function(socket){
-	console.log("listening on 3000")
+http.listen(config.listenPort,function(socket){
+	console.log("listening on "+config.listenPort);
 });
-
-
 //工具函数
 function bufferToJason(bufferdata){
 	//将buf转化为json格式数据
 	return JSON.parse(bufferdata.toString("utf-8"));
 }
-function vaildate(request){
-	return true;
-}
-function sendCommand(msg){
-	//转发命令
-	var serverSocket = dgram.createSocket('udp4');
-	serverSocket.send(msg,0,msg.length,9997,"127.0.0.1")
-}
-function queryMongo(document,condition){
-	//查询mongodb数据库,document为查询的目标文档,condition为条件
-}
-function loadJsonFile(filename,page,pageSize){
-	var result = fs.readFileSync(filename,"utf-8");
-	results = result.split("\n").slice(page * pageSize,(page + 1) * pageSize);
-	return JSON.stringify(results);
-}
+
 function getdbUrl(){
+	//获得mongodburl
 	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
 }
-function queryMongo(condition,field,page,pageSize,req,res){
+//发送数据
+function sendData(doc,req,res){
+	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+	res.write(JSON.stringify(doc),'utf-8');
+	res.end();
+}
+//验证登录信息
+function vaildate(doc,req,res){
+	var result = {};
+	var user = req.body;
+	var redirectUrl = '';
+	for(var i = 0;i < doc.length;i++){
+		if(doc[i]['user']==user['user'] && doc[i]['password']==user['password']){
+			req.session.user = {"name":"feng"};
+			result['code']=1;
+			result['note']="登录成功"
+			result['message'] = '/';
+			sendData(result,req,res);
+			return
+		}
+	}
+	result['code']=-1;
+	result['note']="用户名不存在或密码错误"
+	sendData(result,req,res);
+}
+function queryMongo(collection,condition,field,page,pageSize,req,res,callback){
+	//查询数据库
 	MongoClient.connect(getdbUrl(), function(error, db){
-		var db = db.db('test')
-	    var col = db.collection("move");
+		var db = db.db(config.db)
+	    var col = db.collection(collection);
 		col.find(condition).limit(pageSize).skip((page-1)*pageSize).project(field).toArray(function(err,doc){
-		    res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-			res.write(JSON.stringify(doc),'utf-8');
-			res.end();
+			callback(doc,req,res);
 		})
 	});
 }

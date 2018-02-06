@@ -12,6 +12,7 @@
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="stylesheet" href="styles/amazeui.min.css">
   <link rel="stylesheet" href="styles/app.css">
+  <link href="styles/layui.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="am-g myapp-login">
@@ -40,8 +41,8 @@
 					<div class="am-form-group">
 						<input type="password" class="form" id="password" name="password" placeholder="输入密码">
 					</div>
-					<p><button class="am-btn am-btn-default form">登录</button></p>
 			</form>
+			<p><button class="am-btn am-btn-default btnLogin">登录</button></p>
 		</div>
 	</div>
 </div>
@@ -50,8 +51,34 @@
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/amazeui.min.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
+<script type="text/javascript" src="scripts/layui.all.js"></script>
 <script type="text/javascript">
 	$(function(){
+		layui.use('layer', function(){
+		  layer = layui.layer;
+		});  
+		function getParam(){
+			return {
+				user:$("#user").attr("value"),
+				password:$("#password").attr("value")
+			};
+		}
+		$("button.btnLogin").click(function(){
+			$.ajax({
+				url:"http://localhost:3000/login",
+				data:getParam(),
+				type:"post",
+				dataType: "JSON",
+				success:function(ret){
+					if(ret && parseInt(ret['code']) >0){
+						window.location.href=ret['message'];
+					}else{
+						layer.msg(ret['note']);
+						return
+					}
+				}
+			})
+		})
 	})
 </script>
 </body>

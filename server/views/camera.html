@@ -171,7 +171,6 @@
             socket.on("message",function(msg){
                 var blob = new Blob([msg],{"type":"image\/jpeg"});
                 image.src = window.URL.createObjectURL(blob);
-                console.log("get message")
                 image.onload = function(){
                     if(displayWidth == null){
                         //初始化

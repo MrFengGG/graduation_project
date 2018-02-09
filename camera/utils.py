@@ -2,11 +2,25 @@
 import time
 import numpy
 import base64
+import os
+import logging
+import sys
+from settings import *
 from PIL import Image
 from io import BytesIO
-'''
-常用工具类
-'''
+
+#构造日志
+logger = logging.getLogger(logName)
+formatter = logging.Formatter(logFormatter)
+file_handler = logging.FileHandler(logFile,encoding='utf-8')
+file_handler.setFormatter(formatter)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)
+
+#工具类
 class IOUtil(object):
     #流操作工具类
     @staticmethod
@@ -50,4 +64,22 @@ class IOUtil(object):
         headPack = struct.pack("!3I", *head)
         senddata = headPack+byte
         return senddata
-
+    @staticmethod
+    def mkdir(filePath):
+        '''
+        创建文件夹
+        '''
+        if not os.path.exists(filePath):
+            os.mkdir(filePath)
+    @staticmethod
+    def countCenter(box):
+        '''
+        计算一个矩形的中心
+        '''
+        return (int(abs(box[0][0] - box[1][0])*0.5) + box[0][0],int(abs(box[0][1] - box[1][1])*0.5) +box[0][1])
+    @staticmethod
+    def countBox(center):
+        '''
+        根据两个点计算出,x,y,c,r
+        '''
+        return (center[0][0],center[0][1],center[1][0]-center[0][0],center[1][1]-center[0][1])

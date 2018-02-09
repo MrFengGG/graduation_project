@@ -63,7 +63,6 @@ app.get("/login",function(req,res,next){
 //登录请求
 app.post("/login",function(req,res,next){
 	queryMongo(config.userCollection,{},{},0,0,req,res,vaildate);
-	console.log("wanbihou"+JSON.stringify(req.session.user));
 })
 //登出请求
 app.get("/logout",function(req,res,next){

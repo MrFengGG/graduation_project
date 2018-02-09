@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from io import BytesIO
-from utils import IOUtil
+from utils import IOUtil,logger
 from PIL import Image
 import time
 '''
@@ -20,12 +20,24 @@ class Dispatcher(object):
         #初始化udp socket
         self._sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         self.fileName = 0
-    def dispense(self,item,address = ("127.0.0.1",9999)):
-        #分发到指定的地址
-        if item is not None:
-        
-        	#self._sock.sendto(item.getJson().encode(),address)
-        	self._sock.sendto(item.getBinaryFrame(),address)
+        logger.info("分发器初始化完毕")
+    def dispenseImage(self,item,address):
+        #分发图片到指定的地址
+    	if item is None:
+        	return
+    	try:
+    		self._sock.sendto(item.getBinaryFrame(),address)
+    	except Exception as e:
+    		logger.error("分发器错误:"+str(e))
+    def dispenseCommand(self,command,address):
+    	if command is None:
+        	return
+    	try:
+    		self._sock.sendto(bytes(command),address)
+    	except Exception as e:
+    		raise Exception(e)
+    def close(self):
+    	self._sock.close()
 
 class TcpDispatcher(object):
  	def __init__(self):
@@ -35,7 +47,6 @@ class TcpDispatcher(object):
  		self.sock.connect(address)
  		self.isWorking = True
  		print("图片分发器初始化成功")
-
  	def dispatcher(self,item):
  		if not self.isWorking:
  			raise Exception("分发器未初始化,请使用initWorking()进行初始化")
@@ -51,8 +62,8 @@ class EmailClient(object):
 			self.server = smtplib.SMTP_SSL("smtp.qq.com",465)
 			self.server.login(self.user,self.license)
 		except Exception as e:
-			print("服务器初始化错误,错误信息为:"+str(e))
-
+			logger.error("服务器初始化错误:"+str(e))
+		logger.info("邮件分发器初始化完毕")
 	def sendTextEmail(self,targetEmail,subject,content):
 		'''
 		发送普通文本信息
@@ -61,8 +72,11 @@ class EmailClient(object):
 		letter['Subject'] = subject
 		letter['From'] = self.user
 		letter['To'] = targetEmail
-		self.server.sendmail(self.user,targetEmail,letter.as_string())
-
+		try:
+			self.server.sendmail(self.user,targetEmail,letter.as_string())
+			logger.info("普通邮件发送成功")
+		except Exception as e:
+			logger.error("普通邮件发送失败:"+str(e))
 	def sendHtml(self,targetEmail,subject,content,images=["cat.jpg"]):
 		'''
 		发送html格式邮件
@@ -78,8 +92,9 @@ class EmailClient(object):
 					imageMsg = MIMEImage(fp.read())
 					imageMsg.add_header('Content-ID','<'+image+'>')
 					letter.attach(imageMsg)
+			logger.info("构造一条HTML邮件")
 		except Exception as e:
-			print("邮件构造错误,错误信息为:"+str(e))
+			logger.error("HTML邮件构造错误,错误信息为:"+str(e))
 			return
 		try:
 			self.server.sendmail(self.user,targetEmail,letter.as_string())

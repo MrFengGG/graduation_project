@@ -1,4 +1,3 @@
-workon cv
 cd ~/graduation_project/control
 python control.py &
 cd ../server

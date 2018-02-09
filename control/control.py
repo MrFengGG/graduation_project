@@ -4,19 +4,18 @@ import time
 import threading
 import socket
 import json
+from config import *
 
 class Controller(object):
-    def __init__(self,levelPin,virtPin,ip="",port=9997,isWarnings = False):
+    def __init__(self,levelPin,virtPin,ip="",port=9997,maxLevel,minLevel,maxVirt,minVirt):
         '''
         外设控制类,用于接收来自远程端口的命令,默认端口为9997
         '''
         GPIO.setmode(GPIO.BCM)
-        #设置水平舵机输出Pin
+        #设置舵机输出Pin
         self.levelPin = levelPin
-        #设置竖直舵机输出Pin
         self.virtPin = virtPin
         self.shaft = {1:self.levelPin,2:self.virtPin}
-        #设置输出端口
         GPIO.setup(self.levelPin,GPIO.OUT)
         GPIO.setup(self.virtPin,GPIO.OUT)
         #水平方向移动状态
@@ -30,15 +29,15 @@ class Controller(object):
         self.speed = 10
         #标签
         self.label = {1:"水平方向",2:"竖直方向"}
-        #设置转动角度
-        self.maxLevel = 180
-        self.minLevel = 0
-        self.maxVirt = 180
-        self.minVirt = 20
+        #设置最大转动角度
+        self.maxLevel = maxLevel
+        self.minLevel = minLevel
+        self.maxVirt = maxVirt
+        self.minVirt = minVirt
         #初始化错误打印类
         self.printer = MsgPrinter()
     def move(self,angle,shaft):
-        #试图运动到一个角度
+        #试图运动到一个角度(短时间)
         plusewidth = (angle * 11) + 500
         GPIO.output(self.shaft[shaft],GPIO.HIGH)
         time.sleep(plusewidth/1000000.0)
@@ -62,7 +61,6 @@ class Controller(object):
         self.nowAngle[shaft] = angle
         self.status = False
     def moduleTwo(self,jsondata):
-        print(jsondata)
         command = int(jsondata)
         if command == 0:
             self.move(0,1)
@@ -73,15 +71,11 @@ class Controller(object):
         if command == 3:
             self.move(180,2)
     def moduleOne(self,jsondata):
-        print("module1")
-        #模式1,使用陀螺
         try:
             levelAngle = int(jsondata['level']['angle'])
             levelSpeed = int(jsondata['level']['speed'])
-
             virtAngle = int(jsondata['virt']['angle'])
             virtSpeed = int(jsondata['virt']['speed'])
-
             if not self.status:
                 if (levelAngle < self.maxLevel and levelAngle > self.minLevel) and levelAngle != self.nowAngle[1]:
                     level = threading.Thread(
@@ -121,5 +115,5 @@ class MsgPrinter(object):
     def printMessage(self,msg):
         print(msg)
 if __name__ == "__main__":
-    controller = Controller(18,24)
+    controller = Controller(levelPin,virtPin,commandIp,commandPort,maxLevel,minLevel,maxVirt,minVirt);
     controller.run()

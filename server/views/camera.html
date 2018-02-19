@@ -138,6 +138,8 @@
             layui.use('element', function(){
                 var element = layui.element;
             });
+            var nowUrl = window.document.location.href;
+            var rootPath = nowUrl.substring(0,nowUrl.indexOf(window.document.location.pathname));
             //window.addEventListener("deviceorientation", sendCommand, false);
             //显示宽度
             var displayWidth = null;
@@ -155,7 +157,7 @@
 
             var ctx = canvas.getContext("2d");
             //建立websocket连接
-            var socket=io.connect('127.0.0.1:3000')
+            var socket=io.connect(rootPath)
             //设置缩放比例
             var scale = 3/4
             //方向映射

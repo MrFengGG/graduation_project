@@ -23,3 +23,7 @@ logFormatter = "%(asctime)s %(levelname)-8s: %(message)s"
 logName = 'cameraLogger'
 #日志文件路径
 logFile = LOG_DIR + LOG_FILE
+#运动物体拍照间隔
+moveTrackDelay = 0.5 
+#经过多少次运动检测后开启目标追踪
+moveToTrackThreshold = 10

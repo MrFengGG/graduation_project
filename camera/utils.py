@@ -83,3 +83,6 @@ class IOUtil(object):
         根据两个点计算出,x,y,c,r
         '''
         return (center[0][0],center[0][1],center[1][0]-center[0][0],center[1][1]-center[0][1])
+    @staticmethod
+    def getImageFileName():
+        return time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())+'.png'

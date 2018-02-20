@@ -27,3 +27,5 @@ logFile = LOG_DIR + LOG_FILE
 moveTrackDelay = 0.5 
 #经过多少次运动检测后开启目标追踪
 moveToTrackThreshold = 10
+#宿主邮箱
+userEmail = '763484204@qq.com'

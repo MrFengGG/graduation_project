@@ -9,6 +9,7 @@ from threading import Thread
 from settings import *
 import time
 import copy
+import multiprocessing
 from utils import IOUtil,logger
 '''
 主控程序

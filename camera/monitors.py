@@ -172,11 +172,11 @@ class CamShiftTracker(object):
         self._isWorking = True
         logger.info("追踪器开始工作")
     def stopWorking(self):
-            self._isWorking = False
             self.track_window = None
             self.hsv_roi = None
             self.roi_hist = None
             self.term_crit = None
+            self._isWorking = False
             logger.info("追踪器结束工作")
     def isWorking(self):
         return self._isWorking

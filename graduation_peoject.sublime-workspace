@@ -4,6 +4,78 @@
 		"selected_items":
 		[
 			[
+				"wa",
+				"watchDog"
+			],
+			[
+				"im",
+				"image_in〔argument〕"
+			],
+			[
+				"ima",
+				"image_in〔argument〕"
+			],
+			[
+				"imag",
+				"image_in"
+			],
+			[
+				"D",
+				"DlibTracker"
+			],
+			[
+				"start",
+				"startDispense〔function〕"
+			],
+			[
+				"sta",
+				"startWarning〔function〕"
+			],
+			[
+				"dis",
+				"dispense〔function〕"
+			],
+			[
+				"is",
+				"isDispense"
+			],
+			[
+				"myd",
+				"mydict"
+			],
+			[
+				"isW",
+				"isWarning"
+			],
+			[
+				"my",
+				"mydict〔variable〕"
+			],
+			[
+				"get",
+				"getFrame〔function〕"
+			],
+			[
+				"m",
+				"mydict"
+			],
+			[
+				"ca",
+				"captureManager〔variable〕"
+			],
+			[
+				"M",
+				"Manager"
+			],
+			[
+				"_is",
+				"_isWorking〔variable〕"
+			],
+			[
+				"loca",
+				"localhostPaht"
+			],
+			[
 				"E",
 				"Exception〔class〕"
 			],
@@ -56,10 +128,6 @@
 				"startWatching"
 			],
 			[
-				"start",
-				"startTracking"
-			],
-			[
 				"knn",
 				"knnTrack〔function〕"
 			],
@@ -94,22 +162,6 @@
 			[
 				"up",
 				"update"
-			],
-			[
-				"is",
-				"isWorking"
-			],
-			[
-				"isW",
-				"isWarning"
-			],
-			[
-				"sta",
-				"startWarning〔function〕"
-			],
-			[
-				"get",
-				"getMessage"
 			],
 			[
 				"test",
@@ -174,14 +226,6 @@
 			[
 				"send",
 				"sendto"
-			],
-			[
-				"dis",
-				"dispatcher〔argument〕"
-			],
-			[
-				"ca",
-				"captureManager〔argument〕"
 			],
 			[
 				"wi",
@@ -264,10 +308,6 @@
 				"listenPort"
 			],
 			[
-				"im",
-				"imagePort〔variable〕"
-			],
-			[
 				"i",
 				"imageIP〔variable〕"
 			],
@@ -324,10 +364,6 @@
 				"testData"
 			],
 			[
-				"m",
-				"moveClassify"
-			],
-			[
 				"moveC",
 				"moveClassifyData"
 			],
@@ -374,10 +410,6 @@
 			[
 				"soc",
 				"socket〔module〕"
-			],
-			[
-				"_is",
-				"_isWorking"
 			],
 			[
 				"div",
@@ -472,10 +504,6 @@
 				"coords〔variable〕"
 			],
 			[
-				"D",
-				"DisplayManager"
-			],
-			[
 				"ms",
 				"msgs〔variable〕"
 			],
@@ -486,34 +514,6 @@
 			[
 				"dir",
 				"video_dir〔variable〕"
-			],
-			[
-				"W",
-				"WatchDog"
-			],
-			[
-				"trac",
-				"tracker_type"
-			],
-			[
-				"T",
-				"True"
-			],
-			[
-				"M",
-				"MessageItem"
-			],
-			[
-				"w",
-				"width"
-			],
-			[
-				"win",
-				"windowHeight"
-			],
-			[
-				"MIME",
-				"MIMEImage〔module〕"
 			]
 		]
 	},
@@ -559,7 +559,37 @@
 			"file": "camera/scheduler.py",
 			"settings":
 			{
-				"buffer_size": 6949,
+				"buffer_size": 7061,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "camera/main.py",
+			"settings":
+			{
+				"buffer_size": 2979,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "import cv2\nimport time\nimport copy\nimport multiprocessing\nfrom managers import CameraManager\nfrom managers import CommandManager\nfrom items import MessageItem\nfrom transmitters import Dispatcher\nfrom monitors import WatchDog,CamShiftTracker,DlibTracker\nfrom threading import Thread\nfrom settings import *\nfrom utils import IOUtil,logger\n\ndef watch(watchDog,frame):\n\tif not watchDog.isWorking():\n\t\twatchDog.startWorking(frame)\n\telse:\n\t\titem = watchDog.update(frame)\n\treturn item\ndef track(tracker,frame):\n\tif not tracker.isWorking():\n\t\ttracker.startWorking(frame)\n\telse:\n\t\titem = tracker.update(frame)\n\treturn item\ndef dispense(item,dispatcher):\n\tdispatcher.dispenseImage(mydict['item'],(imageIp,imagePort))\ndef main():\n\tcameraManager = CameraManager()\n\tcameraManager.start()\n\t\n\t",
+			"file": "camera/main_with_no_share.py",
+			"file_size": 737,
+			"file_write_time": 131628328360000000,
+			"settings":
+			{
+				"buffer_size": 778,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/views/camera.html",
+			"settings":
+			{
+				"buffer_size": 14093,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -568,7 +598,7 @@
 			"file": "camera/settings.py",
 			"settings":
 			{
-				"buffer_size": 405,
+				"buffer_size": 481,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -671,15 +701,11 @@
 	},
 	"expanded_folders":
 	[
-		"/F/STUDY/graduation",
-		"/F/STUDY/graduation/camera",
-		"/F/STUDY/graduation/camera/__pycache__",
-		"/F/STUDY/graduation/camera/log",
-		"/F/STUDY/graduation/camera/videos",
-		"/F/STUDY/graduation/test"
+		"/D/学习/代码/毕设/工程/graduation"
 	],
 	"file_history":
 	[
+		"/C/Users/JACK/Desktop/毕设参考/共享内存.py",
 		"/F/STUDY/graduation/camera/log/camera.log",
 		"/F/STUDY/graduation/cam-track-master/config.py",
 		"/F/STUDY/graduation/test/testLog.py",
@@ -799,7 +825,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 30.0
 	},
 	"find_in_files":
 	{
@@ -814,6 +840,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"mydic",
+			"    ",
+			"主控程序",
 			"delayTime",
 			"subminor_ver",
 			"minor_ver",
@@ -930,6 +959,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"\\t",
 			"list(self._roi)",
 			"maxLoc",
 			"Classify",
@@ -948,7 +978,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -964,8 +994,8 @@
 						"selection":
 						[
 							[
-								9176,
-								9176
+								12498,
+								12415
 							]
 						],
 						"settings":
@@ -976,10 +1006,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 342.0,
+						"translation.y": 5586.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1010,7 +1040,7 @@
 						"translation.y": 1140.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1026,8 +1056,8 @@
 						"selection":
 						[
 							[
-								200,
-								169
+								1312,
+								1306
 							]
 						],
 						"settings":
@@ -1038,10 +1068,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 918.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -1070,7 +1100,7 @@
 						"translation.y": 228.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -1079,15 +1109,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6949,
+						"buffer_size": 7061,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2366,
-								2366
+								5725,
+								5725
 							]
 						],
 						"settings":
@@ -1098,27 +1128,118 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 798.0,
+						"translation.y": 2997.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "camera/settings.py",
+					"file": "camera/main.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 405,
+						"buffer_size": 2979,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								405,
-								405
+								2385,
+								2445
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "camera/main_with_no_share.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 778,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								776,
+								776
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "server/views/camera.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14093,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4314,
+								4314
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1026.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "camera/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 481,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								476,
+								456
 							]
 						],
 						"settings":
@@ -1127,10 +1248,10 @@
 							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 114.0,
+						"translation.y": 228.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1138,7 +1259,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 30.0
 	},
 	"input":
 	{
@@ -1169,7 +1290,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 137.0
+		"height": 172.0
 	},
 	"output.find_results":
 	{
@@ -1183,7 +1304,7 @@
 	"project": "graduation_peoject.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 55.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1221,7 +1342,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 208.0,
+	"side_bar_width": 114.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

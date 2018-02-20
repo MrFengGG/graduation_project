@@ -2,31 +2,38 @@ import cv2
 import time
 import copy
 import multiprocessing
-from managers import CameraManager
-from managers import CommandManager
-from items import MessageItem
-from transmitters import Dispatcher
 from monitors import WatchDog,CamShiftTracker,DlibTracker
+from utils import IOUtil,logger
+from managers import CameraManager,CommandManager
+from transmitters import Dispatcher,EmailClient
+from items import MessageItem
 from threading import Thread
 from settings import *
-from utils import IOUtil,logger
- 
+
+def sendEmail(images):
+	emailClient = EmailClient()
+	imageHtml = ''
+	for image in images:
+		imageHtml += "<p><image src='cid:"+image+"></p>"
+	emailClient.sendHtml("763484204@qq.com","入侵警报","<p>发现移动物体</p><p>图片</p>"+imageHtml,images)
+def startSendEmail(images):
+	multiprocessing.Process(target=sendEmail,args=(images,)).start()
 def show(mydict):  
 	while True:
-		if 'frame' in mydict and mydict['frame'] is not None:
-			cv2.imshow("track",mydict['frame'])
-		else:
-			print("没有")
-		k = cv2.waitKey(1) & 0xff
-		if k == 27:
-			break
+		item = mydict['item']
+		if item is not None:
+			cv2.imshow("track",item.getFrame())
+			k = cv2.waitKey(1) & 0xff
+			if k == 27:
+				break
 def startShow(mydict):
 	multiprocessing.Process(target=show,args=(mydict,)).start()
 def warning(mydict):
 	#预警线程
-	count = 0   #当前运动目标
 	box = None  #运动目标位置
+	warnImages = []
 	logger.info("是否开启预警模式:"+str(mydict['isWarning']))
+	IOUtil.mkdir(WARN_DIR)
 	watchDog = WatchDog()
 	tracker = DlibTracker()
 	isWatching = True
@@ -43,17 +50,21 @@ def warning(mydict):
 				mydict['item'] = item
 			if item is not None and item.getMessage()['isGet']:
 				#若发现动态物体,延时1秒,拍摄10张照片
-				count+=1
+				imageFileName = WARN_DIR + IOUtil.getImageFileName()
+				warnImages.append(imageFileName)
 				time.sleep(moveTrackDelay)
-				box = IOUtil.countBox(mydict['item'].getMessage()["rect"])
+				box = IOUtil.countBox(item.getMessage()["rect"])
 				logger.info("发现一个运动物体位于"+str(box))
+				cv2.imwrite(imageFileName,item.getFrame())
+				logger.info("写入一张预警图片:"+imageFileName)
 			else:
-				count = 0
-			if count >= moveToTrackThreshold:
+				warnImages = []
+			if len(warnImages) >= moveToTrackThreshold:
 				#一秒后退出动态监控状态,进入运动追踪模式
 				logger.info("累计侦测到目标十次运动,锁定目标,开启目标追踪模式")
-				count = 0
 				logger.info("关闭运动检测")
+				sendEmail(warnImages)
+				logger.info("发送预警邮件")
 				isWatching = False
 				if watchDog.isWorking():
 					watchDog.stopWorking()

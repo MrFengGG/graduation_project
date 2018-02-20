@@ -4,12 +4,16 @@
 		"selected_items":
 		[
 			[
-				"wa",
-				"watchDog"
+				"im",
+				"imageHtml"
 			],
 			[
-				"im",
-				"image_in〔argument〕"
+				"E",
+				"EmailClient"
+			],
+			[
+				"wa",
+				"watchDog"
 			],
 			[
 				"ima",
@@ -74,10 +78,6 @@
 			[
 				"loca",
 				"localhostPaht"
-			],
-			[
-				"E",
-				"Exception〔class〕"
 			],
 			[
 				"log",
@@ -529,76 +529,13 @@
 			}
 		},
 		{
-			"file": "camera/utils.py",
-			"settings":
-			{
-				"buffer_size": 2197,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "camera/managers.py",
-			"settings":
-			{
-				"buffer_size": 6892,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "camera/transmitters.py",
-			"settings":
-			{
-				"buffer_size": 3072,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "camera/scheduler.py",
-			"settings":
-			{
-				"buffer_size": 7061,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
+			"contents": "import cv2\nimport time\nimport copy\nimport multiprocessing\nfrom monitors import WatchDog,CamShiftTracker,DlibTracker\nfrom utils import IOUtil,logger\nfrom managers import CameraManager,CommandManager\nfrom transmitters import Dispatcher,EmailClient\nfrom items import MessageItem\nfrom threading import Thread\nfrom settings import *\n\ndef sendEmail(images):\n\temailClient = EmailClient()\n\timageHtml = ''\n\tfor image in images:\n\t\timageHtml += \"<p><image src='\"+image+\"></p>\"\n\temailClient.sendHtml(\"763484204@qq.com\",\"入侵警报\",\"<p>发现移动物体</p><p>图片</p>\"+imageHtml,[WARN_DIR+image for image in images])\ndef show(mydict):  \n\twhile True:\n\t\tif 'frame' in mydict and mydict['frame'] is not None:\n\t\t\tcv2.imshow(\"track\",mydict['frame'])\n\t\telse:\n\t\t\tprint(\"没有\")\n\t\tk = cv2.waitKey(1) & 0xff\n\t\tif k == 27:\n\t\t\tbreak\ndef startShow(mydict):\n\tmultiprocessing.Process(target=show,args=(mydict,)).start()\ndef warning(mydict):\n\t#预警线程\n\tcount = 0   #当前运动目标\n\tbox = None  #运动目标位置\n\tlogger.info(\"是否开启预警模式:\"+str(mydict['isWarning']))\n\twatchDog = WatchDog()\n\ttracker = DlibTracker()\n\tisWatching = True\n\tisTracking = False\n\twhile mydict['isWarning']: \n\t\titem = None\n\t\t#若为运动检测模式,进入运动检测\n\t\tif isWatching:\n\t\t\t#若未初始化运动检测器,初始化运动检测器\n\t\t\tif not watchDog.isWorking():\n\t\t\t\twatchDog.startWorking(mydict['frame'])\n\t\t\telse:\n\t\t\t\titem = watchDog.update(mydict['frame'])\n\t\t\t\tmydict['item'] = item\n\t\t\tif item is not None and item.getMessage()['isGet']:\n\t\t\t\t#若发现动态物体,延时1秒,拍摄10张照片\n\t\t\t\tcount+=1\n\t\t\t\ttime.sleep(moveTrackDelay)\n\t\t\t\tbox = IOUtil.countBox(mydict['item'].getMessage()[\"rect\"])\n\t\t\t\tlogger.info(\"发现一个运动物体位于\"+str(box))\n\t\t\telse:\n\t\t\t\tcount = 0\n\t\t\tif count >= moveToTrackThreshold:\n\t\t\t\t#一秒后退出动态监控状态,进入运动追踪模式\n\t\t\t\tlogger.info(\"累计侦测到目标十次运动,锁定目标,开启目标追踪模式\")\n\t\t\t\tcount = 0\n\t\t\t\tlogger.info(\"关闭运动检测\")\n\t\t\t\tisWatching = False\n\t\t\t\tif watchDog.isWorking():\n\t\t\t\t\twatchDog.stopWorking()\n\t\t\t\tlogger.info(\"开启目标追踪...\")\n\t\t\t\tisTracking = True\n\t\tif isTracking:\n            #若为运动追踪模式,开启运动追踪\n\t\t\tif not tracker.isWorking():\n\t\t\t\tprint('开始目标追踪,追踪范围为'+str(box))\n\t\t\t\ttracker.startWorking(mydict['frame'],box)\n\t\t\telse:\n\t\t\t\titem = tracker.update(mydict['frame'])\n\t\t\t\tmydict['item'] = tracker.update(mydict['frame'])\n\t\t\tif item is not None and item.getMessage()['isGet']:\n\t\t\t\tpass\n\t\t\telse:\n\t\t\t\tlogger.info(\"目标丢失,退出目标追踪模式,进入运动监控状态\")\n\t\t\t\tlogger.info(\"关闭目标追踪...\")\n\t\t\t\tisTracking = False\n\t\t\t\tif tracker.isWorking():\n\t\t\t\t\ttracker.stopWorking()\n\t\t\t\tlogger.info(\"开启运动检测...\")\n\t\t\t\tisWatching = True\ndef startWarning(mydict):\n\tmultiprocessing.Process(target=warning,args=(mydict,)).start()\ndef dispense(mydict):\n\tlogger.info(\"是否开启图片分发:\"+str(mydict['isDispense']))\n\tdispatcher = Dispatcher()\n\twhile mydict['isDispense']:\n\t\ttry:\n\t\t\tdispatcher.dispenseImage(mydict['item'],(imageIp,imagePort))\n\t\texcept EOFError as e:\n\t\t\tprint(e)\ndef startDispense(mydict):\n\tmultiprocessing.Process(target=dispense,args=(mydict,)).start()\nif __name__==\"__main__\":\n\tmydict=multiprocessing.Manager().dict() \n\tmydict['isWorking'] = True\n\tmydict['isWarning'] = True\n\tmydict['isDispense'] = True\n\tmydict['item'] = None\n\tcaptureManager = CameraManager(cv2.VideoCapture(0))\n\tcaptureManager.start()\n\ttime.sleep(1)\n\tstartShow(mydict)\n\tstartWarning(mydict)\n\tstartDispense(mydict)\n\twhile mydict['isWorking']:\n\t\tmydict['frame'] = captureManager.getFrame()\n",
 			"file": "camera/main.py",
+			"file_size": 3765,
+			"file_write_time": 131635360836896373,
 			"settings":
 			{
-				"buffer_size": 2979,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "import cv2\nimport time\nimport copy\nimport multiprocessing\nfrom managers import CameraManager\nfrom managers import CommandManager\nfrom items import MessageItem\nfrom transmitters import Dispatcher\nfrom monitors import WatchDog,CamShiftTracker,DlibTracker\nfrom threading import Thread\nfrom settings import *\nfrom utils import IOUtil,logger\n\ndef watch(watchDog,frame):\n\tif not watchDog.isWorking():\n\t\twatchDog.startWorking(frame)\n\telse:\n\t\titem = watchDog.update(frame)\n\treturn item\ndef track(tracker,frame):\n\tif not tracker.isWorking():\n\t\ttracker.startWorking(frame)\n\telse:\n\t\titem = tracker.update(frame)\n\treturn item\ndef dispense(item,dispatcher):\n\tdispatcher.dispenseImage(mydict['item'],(imageIp,imagePort))\ndef main():\n\tcameraManager = CameraManager()\n\tcameraManager.start()\n\t\n\t",
-			"file": "camera/main_with_no_share.py",
-			"file_size": 737,
-			"file_write_time": 131628328360000000,
-			"settings":
-			{
-				"buffer_size": 778,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/views/camera.html",
-			"settings":
-			{
-				"buffer_size": 14093,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "camera/settings.py",
-			"settings":
-			{
-				"buffer_size": 481,
+				"buffer_size": 3227,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -663,10 +600,26 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 104.0,
-		"last_filter": "Install Package",
+		"height": 490.0,
+		"last_filter": "insta",
 		"selected_items":
 		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Add Channel"
+			],
+			[
+				"INSTA",
+				"Package Control: Install Package"
+			],
 			[
 				"Install Package",
 				"Package Control: Install Package"
@@ -680,13 +633,14 @@
 				"Install Package Control"
 			]
 		],
-		"width": 540.0
+		"width": 649.0
 	},
 	"console":
 	{
 		"height": 130.0,
 		"history":
 		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-、package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
 			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
 		]
 	},
@@ -701,10 +655,22 @@
 	},
 	"expanded_folders":
 	[
-		"/D/学习/代码/毕设/工程/graduation"
+		"/D/学习/代码/毕设/工程/graduation",
+		"/D/学习/代码/毕设/工程/graduation/camera",
+		"/D/学习/代码/毕设/工程/graduation/camera/log"
 	],
 	"file_history":
 	[
+		"/D/学习/代码/毕设/工程/graduation/camera/utils.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/managers.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/settings.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/transmitters.py",
+		"/D/学习/代码/毕设/工程/graduation/server/views/camera.html",
+		"/D/学习/代码/毕设/工程/graduation/camera/scheduler.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/main.py",
+		"/C/Users/76348/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
+		"/C/Users/76348/.ssh/id_rsa.pub",
+		"/D/学习/代码/毕设/工程/graduation/camera/main_with_no_share.py",
 		"/C/Users/JACK/Desktop/毕设参考/共享内存.py",
 		"/F/STUDY/graduation/camera/log/camera.log",
 		"/F/STUDY/graduation/cam-track-master/config.py",
@@ -978,7 +944,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -994,8 +960,8 @@
 						"selection":
 						[
 							[
-								12498,
-								12415
+								9034,
+								9034
 							]
 						],
 						"settings":
@@ -1004,158 +970,6 @@
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 5586.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "camera/utils.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2197,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1811,
-								1811
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1140.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "camera/managers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6892,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1312,
-								1306
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 918.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "camera/transmitters.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3072,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2741,
-								2741
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 228.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "camera/scheduler.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7061,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5725,
-								5725
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2997.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "camera/main.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2979,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2385,
-								2445
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1165,20 +979,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "camera/main_with_no_share.py",
+					"buffer": 1,
+					"file": "camera/main.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 778,
+						"buffer_size": 3227,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								776,
-								776
+								351,
+								351
 							]
 						],
 						"settings":
@@ -1188,70 +1002,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "server/views/camera.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14093,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4314,
-								4314
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1026.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "camera/settings.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 481,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								476,
-								456
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 228.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1263,7 +1017,7 @@
 	},
 	"input":
 	{
-		"height": 39.0
+		"height": 46.0
 	},
 	"layout":
 	{
@@ -1342,7 +1096,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 114.0,
+	"side_bar_width": 260.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

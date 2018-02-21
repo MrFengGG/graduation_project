@@ -14,8 +14,10 @@ def sendEmail(images):
 	emailClient = EmailClient()
 	imageHtml = ''
 	for image in images:
-		imageHtml += "<p><image src='cid:"+image+"></p>"
-	emailClient.sendHtml("763484204@qq.com","入侵警报","<p>发现移动物体</p><p>图片</p>"+imageHtml,images)
+		timeString = image.split(".")[0].split("/")[1].split("_")
+		timeString = timeString[0]+"-"+timeString[1]+"-"+timeString[2]+" "+timeString[3]+":"+timeString[4]+":"+timeString[5]
+		imageHtml += "<p>"+timeString+"</br><image src='cid:"+image+"></p>"
+	emailClient.sendHtml(userEmail,"入侵警报","<p>发现移动物体</p><p>信息如下</p>"+imageHtml,images)
 def startSendEmail(images):
 	multiprocessing.Process(target=sendEmail,args=(images,)).start()
 def show(mydict):  
@@ -28,7 +30,7 @@ def show(mydict):
 				break
 def startShow(mydict):
 	multiprocessing.Process(target=show,args=(mydict,)).start()
-def warning(mydict):
+def warning(mydict,screenCenter):
 	#预警线程
 	box = None  #运动目标位置
 	warnImages = []
@@ -39,6 +41,7 @@ def warning(mydict):
 	isWatching = True
 	isTracking = False
 	while mydict['isWarning']: 
+		print("quzhi")
 		item = None
 		#若为运动检测模式,进入运动检测
 		if isWatching:
@@ -63,8 +66,7 @@ def warning(mydict):
 				#一秒后退出动态监控状态,进入运动追踪模式
 				logger.info("累计侦测到目标十次运动,锁定目标,开启目标追踪模式")
 				logger.info("关闭运动检测")
-				sendEmail(warnImages)
-				logger.info("发送预警邮件")
+				startSendEmail(warnImages)
 				isWatching = False
 				if watchDog.isWorking():
 					watchDog.stopWorking()
@@ -73,13 +75,13 @@ def warning(mydict):
 		if isTracking:
             #若为运动追踪模式,开启运动追踪
 			if not tracker.isWorking():
-				print('开始目标追踪,追踪范围为'+str(box))
+				logger.info('开始目标追踪,初始化追踪范围为'+str(box))
 				tracker.startWorking(mydict['frame'],box)
 			else:
 				item = tracker.update(mydict['frame'])
-				mydict['item'] = tracker.update(mydict['frame'])
 			if item is not None and item.getMessage()['isGet']:
-				pass
+				mydict['item'] = item
+				print(item.getMessage()['center'])
 			else:
 				logger.info("目标丢失,退出目标追踪模式,进入运动监控状态")
 				logger.info("关闭目标追踪...")
@@ -88,8 +90,8 @@ def warning(mydict):
 					tracker.stopWorking()
 				logger.info("开启运动检测...")
 				isWatching = True
-def startWarning(mydict):
-	multiprocessing.Process(target=warning,args=(mydict,)).start()
+def startWarning(mydict,screenCenter):
+	multiprocessing.Process(target=warning,args=(mydict,screenCenter,)).start()
 def dispense(mydict):
 	logger.info("是否开启图片分发:"+str(mydict['isDispense']))
 	dispatcher = Dispatcher()
@@ -106,11 +108,13 @@ if __name__=="__main__":
 	mydict['isWarning'] = True
 	mydict['isDispense'] = True
 	mydict['item'] = None
-	captureManager = CameraManager(cv2.VideoCapture(0))
+	video = cv2.VideoCapture(0)
+	captureManager = CameraManager(video)
+	screenCenter = (int(video.get(cv2.CAP_PROP_FRAME_WIDTH)/2),int(video.get(cv2.CAP_PROP_FRAME_HEIGHT)/2))
 	captureManager.start()
 	time.sleep(1)
 	startShow(mydict)
-	startWarning(mydict)
+	startWarning(mydict,screenCenter)
 	startDispense(mydict)
 	while mydict['isWorking']:
 		mydict['frame'] = captureManager.getFrame()

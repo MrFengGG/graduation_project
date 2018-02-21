@@ -98,9 +98,9 @@ class EmailClient(object):
 			return
 		try:
 			self.server.sendmail(self.user,targetEmail,letter.as_string())
-			print("邮件发送成功")
+			logger.info("邮件发送成功")
 		except Exception as e:
-			print("邮件发送错误,错误信息为"+str(e))
+			logger.error("邮件发送错误,错误信息为"+str(e))
 
 if __name__ == "__main__":
 	client = EmailClient()

@@ -41,7 +41,6 @@ def warning(mydict,screenCenter):
 	isWatching = True
 	isTracking = False
 	while mydict['isWarning']: 
-		print("quzhi")
 		item = None
 		#若为运动检测模式,进入运动检测
 		if isWatching:
@@ -81,7 +80,8 @@ def warning(mydict,screenCenter):
 				item = tracker.update(mydict['frame'])
 			if item is not None and item.getMessage()['isGet']:
 				mydict['item'] = item
-				print(item.getMessage()['center'])
+				center = item.getMessage()['center']
+				print("x:"+str(screenCenter[0]-center[0])+",y:"+str(screenCenter[1]-center[1]))
 			else:
 				logger.info("目标丢失,退出目标追踪模式,进入运动监控状态")
 				logger.info("关闭目标追踪...")
@@ -92,6 +92,9 @@ def warning(mydict,screenCenter):
 				isWatching = True
 def startWarning(mydict,screenCenter):
 	multiprocessing.Process(target=warning,args=(mydict,screenCenter,)).start()
+def stopWarning(mydict):
+	mydict['isWarning'] = False
+	logger.info("关闭预警")
 def dispense(mydict):
 	logger.info("是否开启图片分发:"+str(mydict['isDispense']))
 	dispatcher = Dispatcher()
@@ -102,10 +105,15 @@ def dispense(mydict):
 			print(e)
 def startDispense(mydict):
 	multiprocessing.Process(target=dispense,args=(mydict,)).start()
+def stopDispense(mydict):
+	mydict['isDispense'] = False
+	logger.info("关闭图片分发")
+def onCommandGet(mydict):
+	pass
 if __name__=="__main__":
 	mydict=multiprocessing.Manager().dict() 
 	mydict['isWorking'] = True
-	mydict['isWarning'] = True
+	mydict['isWarning'] = False
 	mydict['isDispense'] = True
 	mydict['item'] = None
 	video = cv2.VideoCapture(0)
@@ -114,7 +122,14 @@ if __name__=="__main__":
 	captureManager.start()
 	time.sleep(1)
 	startShow(mydict)
-	startWarning(mydict,screenCenter)
+	#startWarning(mydict,screenCenter)
 	startDispense(mydict)
+	onCommandGet(mydict)
 	while mydict['isWorking']:
-		mydict['frame'] = captureManager.getFrame()
+		frame = captureManager.getFrame()
+		mydict['frame'] = frame
+		if not mydict['isWarning']:
+			message = {}
+			message['isGet'] = False
+			mydict['item'] = MessageItem(frame,message)
+

@@ -65,7 +65,7 @@
 		}
 		$("button.btnLogin").click(function(){
 			$.ajax({
-				url:"http://localhost:3000/login",
+				url:window.document.location.href,
 				data:getParam(),
 				type:"post",
 				dataType: "JSON",

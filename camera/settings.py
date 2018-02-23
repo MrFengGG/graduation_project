@@ -3,29 +3,37 @@ import sys
 SCREENSHOT_DIR = "screenshots/"
 #视频保存文件夹
 VIDEO_DIR = "videos/"
-#预警信息文件夹
+#预警图片文件夹
 WARN_DIR = "warn/"
 #日志文件夹
 LOG_DIR = "log/"
 #日志文件
 LOG_FILE = "camera.log"
 #命令监听ip
-commandIp = ""
+IMAGE_COMMAND_IP = ""
 #命令监听端口
-commandPort = 9998
+IMAGE_COMMAND_PORT = 9998
 #图像发送IP
-imageIp = "127.0.0.1"
+IMAGE_IP = "127.0.0.1"
 #图像发送端口
-imagePort = 9999
+IMAGE_PORT = 9999
 #日志输出格式
-logFormatter = "%(asctime)s %(levelname)-8s: %(message)s"
+LOG_FORMATTER = "%(asctime)s %(levelname)-8s: %(message)s"
 #日志输出名称
-logName = 'cameraLogger'
-#日志文件路径
-logFile = LOG_DIR + LOG_FILE
+LOG_NAME = 'cameraLogger'
 #运动物体拍照间隔
-moveTrackDelay = 0.5 
+MOVEMENT_TRACK_DELAY = 0.5 
 #经过多少次运动检测后开启目标追踪
-moveToTrackThreshold = 10
+MOVE_TRACK_COUNT = 10
 #宿主邮箱
-userEmail = '763484204@qq.com'
+USER_EMAIL = '763484204@qq.com'
+#宿主邮箱服务器口令
+USER_LICENSE = "edbecalqanpobefj"
+#预警邮件发送邮箱
+TARGET_EMAIL = '763484204@qq.com'
+#移动阈值
+MOVEMENT_THRESHOLD = 5
+#摄像头命令端口
+CAMERA_COMMAND_PORT = 9997
+#摄像头命令IP
+CAMERA_COMMAND_IP = "127.0.0.1"

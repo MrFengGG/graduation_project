@@ -10,9 +10,9 @@ from PIL import Image
 from io import BytesIO
 
 #构造日志
-logger = logging.getLogger(logName)
-formatter = logging.Formatter(logFormatter)
-file_handler = logging.FileHandler(logFile,encoding='utf-8')
+logger = logging.getLogger(LOG_NAME)
+formatter = logging.Formatter(LOG_FORMATTER)
+file_handler = logging.FileHandler(LOG_DIR + LOG_FILE,encoding='utf-8')
 file_handler.setFormatter(formatter)
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(formatter)

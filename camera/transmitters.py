@@ -38,7 +38,6 @@ class Dispatcher(object):
     		raise Exception(e)
     def close(self):
     	self._sock.close()
-
 class TcpDispatcher(object):
  	def __init__(self):
  		self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -55,7 +54,7 @@ class EmailClient(object):
 	'''
 	邮箱分发者,发送邮件信息
 	'''
-	def __init__(self,user="763484204@qq.com",license="edbecalqanpobefj"):
+	def __init__(self,user,license):
 		self.user = user
 		self.license = license
 		try:
@@ -101,7 +100,6 @@ class EmailClient(object):
 			logger.info("邮件发送成功")
 		except Exception as e:
 			logger.error("邮件发送错误,错误信息为"+str(e))
+	def close(self):
+		self.server.close()
 
-if __name__ == "__main__":
-	client = EmailClient()
-	client.sendHtml("763484204@qq.com","测试邮件","<p>测试图片邮件发送</p><p>图片演示</p><p><image src='cid:cat.jpg'</p>")

@@ -27,6 +27,10 @@ var MongoClient = require("mongodb").MongoClient;
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
+
+//初始化全局变量
+var isWarning = true;
+
 app.use(session({
     secret: 'hubwiz app', //secret的值建议使用随机字符串
     cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
@@ -120,6 +124,12 @@ io.on("connection",function(socket){
 	});
 	socket.on("imageCommand",function(msg,info){
 		if(msg){
+			if(JSON.parse(msg)['command'] == "analyze"){
+				isWarning = !isWarning
+				for(var a of connectionid){
+					connections[a].emit("analyze",isWarning?"1":"0");
+				}
+			}
 			serverSocket.send(msg,0,msg.length,config.imagePort,config.imageIP);
 		}
 	});

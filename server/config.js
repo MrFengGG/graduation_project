@@ -10,7 +10,7 @@ var config = {
 	//用户名集合
 	userCollection:"user",
 	//监听命令IP
-	commandIP:"127.0.0.1,",
+	commandIP:"127.0.0.1",
 	//监听命令端口
 	commandPort:9997,
 	//图像监听IP

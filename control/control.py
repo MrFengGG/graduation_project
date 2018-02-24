@@ -105,15 +105,6 @@ class Controller(object):
             if int(jsondata['module']) == 2:
                 #模式二
                 self.moduleTwo(jsondata['command'])
-
-class MsgPrinter(object):
-    '''
-    用于发布错误信息
-    '''
-    def __init__(self):
-        pass
-    def printMessage(self,msg):
-        print(msg)
 if __name__ == "__main__":
     controller = Controller(levelPin,virtPin,commandIp,commandPort,maxLevel,minLevel,maxVirt,minVirt);
     controller.run()

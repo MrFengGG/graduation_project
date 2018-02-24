@@ -167,35 +167,6 @@ class CommandManager(object):
         #获取命令之前将本地命令置空,防止命令重复执行
         self.command = None
         return result        
-class DisplayManager(object):
-    '''
-    图像控制程序,用于将信息写入图片中
-    '''
-    def __init__(self):
-        pass
-    def drawCoodinate(self,coord,frame,color=(255, 255, 0),fine=2):
-        '''
-        画矩形,根据两个坐标在图像上画出一个矩形
-        '''
-        cv2.rectangle(frame,coord[0],coord[1], (255, 255, 0), 2)
-    def conpose(self,item):
-        '''
-        合成一张图片
-        '''
-        if item is None:
-            return
-        message = item.getMessage()
-        frame = item.getFrame()
-        if not message:
-            return frame
-        coords = message['coord']
-        msgs = message['msg']
-        if coords or len(coords) <= 0:
-            for coord in coords:
-                self.drawCoodinate(coord,frame)
-        if msgs:
-            cv2.putText(frame,msg, (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
-        return frame
 if __name__ == "__main__":
     video = cv2.VideoCapture(0)
     camera = CameraManager(video)

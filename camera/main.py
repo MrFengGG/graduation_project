@@ -3,7 +3,8 @@ import time
 import copy
 import socket
 import multiprocessing
-from monitors import WatchDog,CamShiftTracker,DlibTracker
+import copy
+from monitors import WatchDog,CamShiftTracker,DlibTracker,TemplateTracker
 from utils import IOUtil,logger
 from managers import CameraManager,CommandManager
 from transmitters import Dispatcher,EmailClient
@@ -50,9 +51,16 @@ def warning(mydict,screenCenter):
 	box = None
 	warnImages = []
 	watchDog = WatchDog()
-	tracker = DlibTracker()
+	tracker = None
+	if TRACKER_TYPE is 1:
+		tracker = CamShiftTracker()
+	elif TRACKER_TYPE is 2:
+		tracker = DlibTracker()
+	else:
+		tracker = TemplateTracker()
 	sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 	IOUtil.mkdir(WARN_DIR)
+	lastTrackTime = None
 	isWatching = True
 	isTracking = False
 	direction = {"right":'{"module":2,"command":0}',
@@ -84,7 +92,8 @@ def warning(mydict,screenCenter):
 			if len(warnImages) >= MOVE_TRACK_COUNT:
 				#一秒后退出动态监控状态,进入运动追踪模式
 				logger.info("累计侦测到目标十次运动,锁定目标,开启目标追踪模式,关闭运动检测")
-				startSendEmail(warnImages)
+				if IS_SEND_EMAIL and (lastTrackTime is None or time.time() - lastTrackTime > EMAIL_DELAY):
+					startSendEmail(warnImages)
 				isWatching = False
 				if watchDog.isWorking():
 					watchDog.stopWorking()
@@ -94,19 +103,29 @@ def warning(mydict,screenCenter):
             #若为运动追踪模式,开启运动追踪
 			if not tracker.isWorking():
 				logger.info('开始目标追踪,初始化追踪范围为'+str(box))
-				tracker.startWorking(mydict['frame'],box)
+				tracker.startWorking(item.getFrame(),box)
 			else:
 				item = tracker.update(mydict['frame'])
 			if item is not None and item.getMessage()['isGet']:
-				mydict['item'] = item
+				mydict['item'] = copy.copy(item)
 				center = item.getMessage()['center']
-				levelDirect = "right" if center[0] - screenCenter[0] < 0 else "left"
-				levelDiss = abs(center[0] - screenCenter[0])
-				if levelDiss > MOVEMENT_THRESHOLD:
+				distance = center[0] - screenCenter[0]
+				levelDirect = "mid"
+				if distance < 0:
+					levelDirect = "right"
+				elif distance > 0:
+					levelDirect = "left"
+				levelDiss = abs(distance)
+				if levelDirect is not "mid" and levelDiss > MOVEMENT_THRESHOLD:
 					sock.sendto(direction[levelDirect].encode(),(CAMERA_COMMAND_IP,CAMERA_COMMAND_PORT))
-				virtDirect = "up" if center[1] - screenCenter[1] < 0 else "down"
-				virtDiss = abs(center[1] - screenCenter[1])
-				if virtDiss > MOVEMENT_THRESHOLD:
+				distance = center[1] - screenCenter[1]
+				virtDirect = "mid"
+				if distance < 0:
+					virtDirect = "up"
+				elif distance > 0:
+					virtDirect = "down"
+				virtDiss = abs(distance)
+				if virtDirect is not "mid" and virtDiss > MOVEMENT_THRESHOLD:
 					sock.sendto(direction[virtDirect].encode(),(CAMERA_COMMAND_IP,CAMERA_COMMAND_PORT))
 			else:
 				logger.info("目标丢失,退出目标追踪模式,进入运动监控状态")
@@ -115,6 +134,7 @@ def warning(mydict,screenCenter):
 					tracker.stopWorking()
 				logger.info("开启运动检测...")
 				isWatching = True
+				lastTrackTime = time.time()
 	sock.close()
 	logger.info("预警结束")
 def startWarning(mydict,screenCenter):
@@ -214,7 +234,8 @@ if __name__=="__main__":
 	commandManager.startWorking()
 	captureManager.start()
 	time.sleep(1)
-	#startShow(mydict)
+	if IS_WINDOW_ON:
+		startShow(mydict)
 	startWarning(mydict,screenCenter)
 	startDispense(mydict)
 	while mydict['isWorking']:

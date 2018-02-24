@@ -7,6 +7,7 @@ import logging
 import sys
 from utils import IOUtil,logger
 from items import MessageItem
+from settings import *
 
 #利用侦差法的基本的运动检测模块
 class WatchDog(object):
@@ -189,8 +190,8 @@ class CamShiftTracker(object):
         item = None
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         dst = cv2.calcBackProject([hsv], [0], self.roi_hist, [0,180], 1)
-        #ret, self.track_window = cv2.meanShift(dst, self.track_window, self.term_crit)
-        ret, self.track_window = cv2.CamShift(dst, self.track_window, self.term_crit)
+        ret, self.track_window = cv2.meanShift(dst, self.track_window, self.term_crit)
+        #ret, self.track_window = cv2.CamShift(dst, self.track_window, self.term_crit)
         x,y,w,h = self.track_window
         center = IOUtil.countCenter(((x,y),(x+w,y+h)))
         cv2.circle(frame,center,5,(55,255,155),1)
@@ -210,10 +211,10 @@ class CamShiftTracker(object):
         return MessageItem(frame,message)
 #使用模板查找的追踪器
 class TemplateTracker(object):
-    def __init__(self,method=2):
+    def __init__(self,method=3,):
         self.method = method
-        self.valThre = 0.97
-        self.updateRet = 0.98
+        self.valThre = TRACK_THRESHOLD
+        self.updateRet = TRACKER_UPDATE_THRESHOLD
         self._isWorking = False
         logger.info("追踪器初始化完毕,类型为:"+"TemplateTracker")
     def startWorking(self,frame,box):
@@ -222,11 +223,16 @@ class TemplateTracker(object):
             logger.error('追踪器追踪区域锁定失败')
             return
         c,r,w,h = box
-        self.objectFrame = frame[r:r+h, c:c+w]
+        self.objectFrame = frame[r:r+h,c:c+w]
         self.h = h
         self.w = w
         self._isWorking = True
         logger.info('追踪器开始工作')
+    def stopWorking(self):
+        self.objectFrame = None
+        self._isWorking = False
+        self.h = None
+        self.w = None
     def isWorking(self):
         return self._isWorking
     def update(self,frame):
@@ -240,8 +246,7 @@ class TemplateTracker(object):
         result = cv2.matchTemplate(frame,self.objectFrame,self.method)
         minVal, maxVal, minLoc, maxLoc = cv2.minMaxLoc(result)
         if maxVal > self.updateRet:
-            pass
-            #self.objectFrame = frame[maxLoc[0]:maxLoc[0]+self.w,maxLoc[1]:maxLoc[1]+self.h]
+            self.objectFrame = frame[maxLoc[1]:maxLoc[1]+self.h,maxLoc[0]:maxLoc[0]+self.w]
         if maxVal > self.valThre:
             center = IOUtil.countCenter((maxLoc,(maxLoc[0] + self.w,maxLoc[1] + self.h)))
             cv2.rectangle(frame, maxLoc,(maxLoc[0] + self.w,maxLoc[1] + self.h), 255, 2)
@@ -307,13 +312,10 @@ def testTracker(tracker):
         if(_):
             item = cam.update(frame);
             cv2.imshow("track",item.getFrame())
-            if item.getMessage() and item.getMessage()['isGet']:
-                print("get")
-            else:
-                print("loose");
             k = cv2.waitKey(1) & 0xff
             if k == 27:
                 break
+#测试运动检测器
 def testDog(dog):
     video = cv2.VideoCapture(0)
     for i in range(100):
@@ -338,8 +340,8 @@ def testDog(dog):
 if __name__ == '__main__' :
     '''
     tracker = CamShiftTracker()
-    tracker = TemplateTracker()
     tracker = ContribTracker()
     '''
-    tracker = WatchDog()
-    testDog(tracker);
+    #tracker = WatchDog()
+    tracker = TemplateTracker()
+    testTracker(tracker);

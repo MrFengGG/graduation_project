@@ -18,7 +18,9 @@ var config = {
 	//图像监听端口
 	imagePort:9998,
 	//http请求监听端口
-	listenPort:3000
+	listenPort:3000,
+	//下载目录
+	download_path:"/tmp"
 
 }
 module.exports = config;

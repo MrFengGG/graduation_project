@@ -33,6 +33,7 @@
 <script type="text/javascript" src="scripts/custom.js"></script>
 <script type="text/javascript" src="scripts/framework.js"></script>
 <script type="text/javascript" src="scripts/framework.launcher.js"></script>
+<script type="text/javascript" src="scripts/socket.io.js"></script>
 
 
 </head>
@@ -113,6 +114,33 @@
 </div>
 <div class="bottom-deco"></div>
 
-
 </body>
+<script type="text/javascript">
+  $(function(){
+        var nowUrl = window.document.location.href;
+        var rootPath = nowUrl.substring(0,nowUrl.indexOf(window.document.location.pathname));
+        function downloadUrl(url){
+            var socket=io.connect(rootPath)
+            socket.on("prograss",function(msg){
+                console.log(String.fromCharCode.apply(null, new Uint8Array(msg)));
+            })
+            $.ajax({
+                url:"/data/download",
+                type:"post",
+                data:{
+                  download_url:"http://www.baidu.com"
+                },
+                success:function(data){     
+                  if(data == 0){
+
+                  }else{
+
+                  }
+                  socket.close()
+                }
+            })
+        }
+        downloadUrl();
+  })
+</script>
 </html>

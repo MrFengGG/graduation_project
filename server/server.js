@@ -14,6 +14,9 @@ var httpServer = require("http");
 var config = require("./config");
 //初始化服务器
 var app = express();
+//命令行工具导入
+var spawn = require('child_process').spawn;
+
 app.use(bodyParser.urlencoded({
 	extended:true
 }));
@@ -109,6 +112,14 @@ app.post("/data/move",function(req,res){
 	}
 	queryMongo(config.collection,condition,field,page,pageSize,req,res,sendData);
 })
+app.post("/data/download",function(req,res){
+	var url = req.body.download_url;
+	var command = []
+	command.push("cd "+config.download_path)
+	command.push("aria2c "+url)
+	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+	exec(spawn,command,dataCallBack,exitCallBack,res);
+})
 //监听websocket连接
 io.on("connection",function(socket){
 	//监听到连接时,将socket加入连接池中
@@ -150,6 +161,40 @@ serverSocket.on("message",function(msg,info){
 http.listen(config.listenPort,function(socket){
 	console.log("listening on "+config.listenPort);
 });
+//执行命令行
+function exec(spawn,command,data_callback,exit_callback,res){
+	command_process = spawn("bash");
+	command_process.stdout.on("data",function(data){
+		if(data_callback){
+			data_callback(data,res)
+		}
+	});
+	command_process.stderr.on("data",function(data){
+		if(data_callback){
+			data_callback(data,res)
+		}
+	});
+	command_process.on("exit",function(code,signal){
+		if(exit_callback){
+			exit_callback(code,signal,res)
+		}
+	});
+	for(var i = 0;i < command.length;i++){
+		command_process.stdin.write(command[i]+"\n");
+	}
+	command_process.stdin.end();
+}
+//命令行数据回调函数
+function dataCallBack(data,res){
+	for(var a of connectionid){
+		connections[a].emit("prograss",msg);
+	}
+}
+//命令行结束回调函数
+function exitCallBack(code,signal,res){
+	res.write(code.toString(),'utf-8');
+	res.end()
+}
 //工具函数
 function bufferToJason(bufferdata){
 	//将buf转化为json格式数据

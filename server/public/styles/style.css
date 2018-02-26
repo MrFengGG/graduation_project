@@ -1,7 +1,15 @@
 @charset "utf-8";
 /* CSS Document */
 
-
+#searchForm{
+	text-align: center;
+}
+.center{
+	margin: 0 auto;
+}
+li.wid{
+	float:left;
+}
 body{
 	background-image:url(../images/misc/body-bg.png);
 	background-size:100px 100px;

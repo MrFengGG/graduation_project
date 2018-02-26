@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -22,7 +22,8 @@
 <link href="styles/owl.theme.css" 		rel="stylesheet" type="text/css">
 <link href="styles/swipebox.css"		 rel="stylesheet" type="text/css">
 <link href="styles/colorbox.css"		 rel="stylesheet" type="text/css">
-
+<link href="styles/amazeui.min.css" rel="stylesheet" type="text/css">
+<link href="styles/layui.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/jqueryui.js"></script>
 <script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
@@ -34,8 +35,14 @@
 <script type="text/javascript" src="scripts/framework.js"></script>
 <script type="text/javascript" src="scripts/framework.launcher.js"></script>
 <script type="text/javascript" src="scripts/socket.io.js"></script>
-
-
+<script type="text/javascript" src="scripts/amazeui.min.js"></script>
+<script type="text/javascript" src="scripts/layui.all.js"></script>
+<style type="text/css">  
+    ul li{
+    list-style: none;
+    margin-right:10px;
+    }
+</style>  
 </head>
 <body>
 
@@ -100,7 +107,26 @@
     </div>
 </div>
 
-   
+<div id="searchForm" method="post">
+        <div class="am-form-inline center" style="width:100%">
+            <div class="am-form-group" style="width:70%">
+                <input type="text" class="am-form-field am-radius url" placeholder="输入下载路径" style="width:100%"/>
+            </div>
+            <div class="am-form-group">
+                <button type="submit" class="am-btn am-btn-bg download">
+                    <i class="am-icon-cloud-download"></i>下载</button>
+                </button>  
+            </div>
+        </div>
+        <ul class="icons center">
+            <li class="web wid" title="Web Search">选项1</li>
+            <li class="images wid" title="Image Search">选项2</li>
+            <li class="news wid" title="News Search">选项3</li>
+            <li class="videos wid" title="Video Search">选项4</li>
+        </ul>
+        <div style="height: 300px">
+        </div>
+</div>
 <div class="content">
 <div class="decoration"></div>            
     <div class="footer">
@@ -113,7 +139,6 @@
     
 </div>
 <div class="bottom-deco"></div>
-
 </body>
 <script type="text/javascript">
   $(function(){
@@ -128,7 +153,7 @@
                 url:"/data/download",
                 type:"post",
                 data:{
-                  download_url:"http://www.baidu.com"
+                  download_url:url
                 },
                 success:function(data){     
                   if(data == 0){
@@ -140,7 +165,15 @@
                 }
             })
         }
-        downloadUrl();
+        function initButton(){
+            $("button.download").click(function(){
+                downloadUrl($("input.url").attr("value"));
+            })
+        }
+        function init(){
+            initButton();
+        }
+        init();
   })
 </script>
 </html>

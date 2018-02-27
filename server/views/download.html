@@ -108,22 +108,24 @@
 </div>
 
 <div id="searchForm" method="post">
-        <div class="am-form-inline center" style="width:100%">
+        <div class="am-form-inline center" style="width:100%;margin:80px;">
             <div class="am-form-group" style="width:70%">
                 <input type="text" class="am-form-field am-radius url" placeholder="输入下载路径" style="width:100%"/>
             </div>
             <div class="am-form-group">
-                <button type="submit" class="am-btn am-btn-bg download">
+                <button class="am-btn am-btn-bg download">
                     <i class="am-icon-cloud-download"></i>下载</button>
                 </button>  
             </div>
         </div>
-        <ul class="icons center">
-            <li class="web wid" title="Web Search">选项1</li>
-            <li class="images wid" title="Image Search">选项2</li>
-            <li class="news wid" title="News Search">选项3</li>
-            <li class="videos wid" title="Video Search">选项4</li>
-        </ul>
+        <div class="center am-form-inline chooseBox layui-tab-brief">
+            <ul class="icons am-form-group layui-tab-title" style="">
+                <li class="web wi btnTabs" dataType="normalDownload" title="">普通</li>
+                <li class="images wid btnTabs" dataType="VideoDownload" title="">音视频</li>
+                <li class="news wid btnTabs" dataType="btDownload" title="">bt</li>
+                <li class="videos wid btnTabs" dataType="VideoDownload" title="">图片</li>
+            </ul>
+        </div>
         <div style="height: 300px">
         </div>
 </div>
@@ -132,7 +134,7 @@
     <div class="footer">
         <div class="clear"></div>
         <p class="copyright">
-            COPYRIGHT 2015.<br>
+            COPYRIGHT 2018.<br>
             ALL RIGHTS RESERVED
         </p>
     </div> 
@@ -144,31 +146,86 @@
   $(function(){
         var nowUrl = window.document.location.href;
         var rootPath = nowUrl.substring(0,nowUrl.indexOf(window.document.location.pathname));
-        function downloadUrl(url){
+        var isTip = true;
+        var downloadType;
+        var preMessage = "1111"
+        //发送下载请求
+        function downloadUrl(url,reqUrl){
+            var vaildateResult = vaildate(url,"下载路径",[notEmpty]);
+            if(vaildateResult['code'] < 0){
+                layer.msg(vaildateResult['note']);
+                return;
+            }
+            if(!reqUrl){
+                layer.msg('下载类型不能为空');
+                return;
+            }
             var socket=io.connect(rootPath)
             socket.on("prograss",function(msg){
-                console.log(String.fromCharCode.apply(null, new Uint8Array(msg)));
+                var message = String.fromCharCode.apply(null, new Uint8Array(msg));
+                if(message == "success"){
+                    layer.msg("下载完成,下载结果为"+preMessage);
+                    socket.close();
+                }else if(message == "fail"){
+                    layer.msg("下载失败,下载结果为"+preMessage);
+                    socket.close();
+                }else{
+                    console.log(message);
+                    preMessage = message;
+                }
             })
+            socket.on("disconnect",function(){
+                socket.close();
+            });
             $.ajax({
-                url:"/data/download",
+                url:reqUrl,
                 type:"post",
                 data:{
                   download_url:url
                 },
                 success:function(data){     
                   if(data == 0){
-
+                    layer.msg("下载完成"+preMessage);
                   }else{
-
+                    layer.msg("下载失败"+preMessage);
                   }
                   socket.close()
                 }
             })
         }
+        //参数验证
+        function vaildate(url,name,vaildates){
+            result = {"code":1,note:""};
+            if(!vaildates){
+                return result;
+            }
+            for(var i = 0;i < vaildates.length;i++){
+                var vaildateResult = vaildates[i](url);
+                if(vaildateResult['code'] < 0){
+                    result['note'] = name+vaildateResult['note'];
+                    result['code'] = -1;
+                    return result;
+                }
+            }
+            return result;
+        }
+        //非空验证
+        function notEmpty(url){
+            if(!url || url == ""){
+                return {"code":-1,note:"不能为空"};
+            }
+            return {"code":1};
+        }
+        //初始化按钮
         function initButton(){
             $("button.download").click(function(){
-                downloadUrl($("input.url").attr("value"));
+                downloadUrl($("input.url").attr("value"),downloadType);
             })
+            $("li.btnTabs").each(function(){
+                $(this).click(function(){
+                    downloadType = "data/"+$(this).attr("dataType");
+                });
+            });
         }
         function init(){
             initButton();

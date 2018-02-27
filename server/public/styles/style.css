@@ -5,7 +5,10 @@
 	text-align: center;
 }
 .center{
-	margin: 0 auto;
+	text-align: center;
+}
+.chooseBox{
+	margin:40px;
 }
 li.wid{
 	float:left;

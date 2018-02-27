@@ -20,7 +20,8 @@ var config = {
 	//http请求监听端口
 	listenPort:3000,
 	//下载目录
-	download_path:"/tmp"
-
+	download_path:"/tmp",
+	//youget路径
+	yougetPath:"/usr/local/you-get"
 }
 module.exports = config;

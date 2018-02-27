@@ -112,14 +112,22 @@ app.post("/data/move",function(req,res){
 	}
 	queryMongo(config.collection,condition,field,page,pageSize,req,res,sendData);
 })
-app.post("/data/download",function(req,res){
+app.post("/data/normalDownload",function(req,res){
 	var url = req.body.download_url;
 	var command = []
 	command.push("cd "+config.download_path)
 	command.push("aria2c "+url)
 	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
 	exec(spawn,command,dataCallBack,exitCallBack,res);
-})
+});
+app.post('/data/VideoDownload',function(req,res){
+	var url = req.body.download_url;
+	var command = [];
+	command.push("cd "+config.yougetPath);
+	command.push("./you-get -o "+config.download_path+" "+url);
+	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
+	exec(spawn,command,dataCallBack,exitCallBack,res);
+});
 //监听websocket连接
 io.on("connection",function(socket){
 	//监听到连接时,将socket加入连接池中
@@ -187,11 +195,22 @@ function exec(spawn,command,data_callback,exit_callback,res){
 //命令行数据回调函数
 function dataCallBack(data,res){
 	for(var a of connectionid){
-		connections[a].emit("prograss",msg);
+		connections[a].emit("prograss",data);
 	}
 }
 //命令行结束回调函数
 function exitCallBack(code,signal,res){
+	if(code == 0){
+		console.log("000000");
+		for(var a of connectionid){
+			connections[a].emit("prograss","success");
+		}
+	}else{
+		console.log("1111111");
+		for(var a of connectionid){
+			connections[a].emit("prograss","fail");
+		}
+	}
 	res.write(code.toString(),'utf-8');
 	res.end()
 }

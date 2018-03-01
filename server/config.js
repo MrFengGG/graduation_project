@@ -22,6 +22,20 @@ var config = {
 	//下载目录
 	download_path:"/tmp",
 	//youget路径
-	yougetPath:"/usr/local/you-get"
+	yougetPath:"/usr/local/you-get",
+	//云盘根路径
+	cludPath:"D://Foreign Sorftware",
+	//文件压缩比例
+	compressRate:1,
+	//临时文件名称
+	tempFileName:"/tmp/temp.zip",
+	//文件格式设置
+	图片:['.jepg','.jpg','.gif','.png','.bmp'],
+	文档:['.txt','.log'],
+	视频:['.rmvb','.flv'],
+	种子:['.terroent'],
+	音乐:['.mp3'],
+	其他:['.其他'],
+	全部文件:['']
 }
 module.exports = config;

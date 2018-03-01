@@ -13,6 +13,18 @@
 li.wid{
 	float:left;
 }
+li.childNode{
+	margin:20px;
+	color:#00F;
+}
+ul.bread{
+	padding: .7em .5em;
+    /* margin-bottom: 2rem; */
+    /* list-style: none; */
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 85%;
+}
 body{
 	background-image:url(../images/misc/body-bg.png);
 	background-size:100px 100px;

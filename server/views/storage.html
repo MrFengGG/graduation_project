@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -22,7 +22,9 @@
 <link href="styles/owl.theme.css" 		rel="stylesheet" type="text/css">
 <link href="styles/swipebox.css"		 rel="stylesheet" type="text/css">
 <link href="styles/colorbox.css"		 rel="stylesheet" type="text/css">
-
+<link href="styles/layui.css" rel="stylesheet" type="text/css">
+<link href="styles/amazeui.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="scripts/layui.all.js"></script>
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/jqueryui.js"></script>
 <script type="text/javascript" src="scripts/owl.carousel.min.js"></script>
@@ -34,7 +36,11 @@
 <script type="text/javascript" src="scripts/framework.js"></script>
 <script type="text/javascript" src="scripts/framework.launcher.js"></script>
 <script type="text/javascript" src="scripts/amazeui.min.js"></script>
-
+<style type="text/css">
+    table th,td{
+        text-align: left;
+}
+</style>
 </head>
 <body>
 
@@ -96,12 +102,52 @@
         </div>
     </div>
 </div>
-
-   
-<div class="content">
-
+<div class="">
+    <div class="am-u-sm-2">
+        <ul class="am-nav">
+          <li class="am-nav-header btnClassification"><a class="am-icon-folder-open am-text-center" style="color: #666" href="#">全部文件</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">图片</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">文档</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">视频</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">种子</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">音乐</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">其他</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center" href="#" style="color: #666">下载</a></li>
+          <li class="btnClassification childNode"><a class="am-text-center am-icon-trash" href="#" style="color: #666">回收站</a></li>
+          <div class="am-progress am-progress-striped" style="margin:40px;">
+              <div class="am-progress-bar" style="width: 40%">4G/250G</div>
+          </div>
+        </ul>
+    </div>
+    <div class="am-u-sm-10">
+        <div>
+            <div>
+                <button type="button" class="am-btn am-btn-default">
+                    <i class="am-icon-upload">上传文件</i>
+                </button>
+                <button type="button" class="am-btn am-btn-default btnNormalOpt" optType="ct">
+                    <i class="am-icon-folder">新建文件夹</i>
+                </button>
+                <button type="button" class="am-btn am-btn-default btnOpt" optType="rm" style="display: none;">
+                    <i class="am-icon-trash">删除</i>
+                </button>
+                <button type="button" class="am-btn am-btn-default btnOpt" optType="dd" style="display: none;">
+                    <i class="am-icon-download">下载</i>
+                </button>
+            </div>
+            <div class="file">   
+               <ul class="bread">
+                  <li class="wid" filePath=""><a href="#" class="am-icon-home btnNav">全部文件 >></a></li>
+                </ul>
+                <table class="layui-table" id="fileTable" lay-filter="fileTable">
+ 
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="decoration">
-    
+   
 </div>            
 <div class="footer">
     <div class="clear"></div>
@@ -113,6 +159,206 @@
 </div>
 <div class="bottom-deco"></div>
 
-
 </body>
+<script type="text/javascript">
+    $(function(){
+        var table = layui.table;
+        //当前文件路径
+        var nowPath = "";
+        //选择的文件
+        var selectFile = {};
+
+        /**
+         * [optFile 文件操作函数]
+         * @param  {[type]} fileNames [文件路径]
+         * @param  {[type]} optType   [操作类型]
+         * @param  {[type]} params    [额外参数]
+         * @return {[type]}           [无返回值]
+         */
+        function optFile(fileNames,optType,params){
+            if(optType == "dd"){
+                //如果操作类型为下载文件,单独使用get方法
+                window.open("/data/download?filePath="+fileNames);
+            }else{
+                $.ajax({
+                    dataType:'json',
+                    url:"data/optFile",
+                    data:$.extend({optType:optType,filePath:fileNames},params),
+                    type:'post',
+                    success:function(data){
+                        console.log(data);
+                        if(parseInt(data['code']) > 0){
+                            layer.msg("操作成功");
+                            renderTable(nowPath);
+                        }else{
+                            layer.msg('操作失败');
+
+                        }
+                    }
+                });
+            }
+        }
+        /**
+         * [formatFileArray 格式化文件数组]
+         * @param  {[type]} fileArray [文件信息数组]
+         * @param  {[type]} separator [分隔符]
+         * @param  {[type]} prefix    [前缀]
+         * @return {[type]}           [以分割符分割的文件路径]
+         */
+        function formatFileArray(fileArray,separator,prefix){
+            result = '';
+            for(var i = 0;i < fileArray.length;i++){
+                if(i != fileArray.length-1){
+                    result += prefix+"/"+fileArray[i]['fileName']+separator;
+                }else{
+                    result += prefix+"/"+fileArray[i]['fileName'];
+                }
+            }
+            return result;
+        }
+
+        /**
+         * [getNodeHtml 根据一个路径生成面包屑]
+         * @param  {[type]} path [路径]
+         * @return {[type]}      [面包屑节点]
+         */
+        function getNodeHtml(path){
+            return'<li class="wid" filePath="'+path+'"><a href="#" class="btnNav">'+(path?path:'所有文件')+'  >></a></li>';
+        }
+        /**
+         * [renderBread 渲染面包屑导航栏]
+         * @param  {[type]} completePath [全路径]
+         * @return {[type]}              [description]
+         */
+        function renderBread(completePath){
+            paths = completePath.split("/");
+            html = ""
+            for(var path in paths){
+                html += getNodeHtml(paths[path]);
+            }
+            $("ul.bread").html(html);
+            //导航栏刷新
+            $("a.btnNav").click(function(){
+                var path = "";
+                $(this).parent("li").prevAll("li").each(function(){
+                    path += "/"+$(this).attr("filePath");
+                });
+                path += $(this).parent("li").attr("filePath");
+                renderTable({nowPath:path});
+            });
+        }
+        /**
+         * [bindTableDoubleClick 绑定文件查看事件]
+         * @return {[type]} [description]
+         */
+        function bindTableDoubleClick(){
+            $("tr[data-index]").each(function(){
+                var isFord = $(this).find("td[data-field=isFord]").find("div").html();
+                if(isFord == "文件夹"){
+                    $(this).dblclick(function(){
+                        selectFile = {};
+                        var path = $(this).find("td[data-field=fileName]").find("div").html();
+                        renderTable({nowPath:nowPath+"/"+path});
+                    });
+                }
+            });
+        }
+        
+        /**
+         * [renderTable 表格渲染方法]
+         * @param  {[type]} params [请求参数]
+         * @return {[type]}        [description]
+         */
+        function renderTable(params){
+            table.render({
+                elem:'#fileTable',
+                url:'data/queryFile',
+                method:'post',
+                skin:"line",
+                initSort: {
+                    field: 'birthTime',
+                    type: 'desc'
+                },
+                cols: [[ //表头
+                  {type:'checkbox'},
+                  {field: 'fileName', title: '文件名',sort: true},
+                  {field: 'fileSize', title: '文件大小',sort: true},
+                  {field: 'birthTime', title: '生成时间', sort: true},
+                  {field: 'updateTime', title: '修改时间', sort: true},
+                  {field: 'isFord', title: '类型'}
+                ]],
+                done:function(data){
+                    nowPath = data['msg'];
+                    renderBread(data['msg']);
+                    bindTableDoubleClick();
+                },
+                where:params
+            });
+        }
+        function renderClassificationTable(params){
+            table.render({
+                elem:'#fileTable',
+                url:'data/queryClassificationFile',
+                method:'post',
+                skin:"line",
+                initSort: {
+                    field: 'birthTime',
+                    type: 'desc'
+                },
+                cols: [[ //表头
+                  {type:'checkbox'},
+                  {field: 'fileName', title: '文件名',sort: true},
+                  {field: 'fileSize', title: '文件大小',sort: true},
+                  {field: 'birthTime', title: '生成时间', sort: true},
+                  {field: 'updateTime', title: '修改时间', sort: true},
+                  {field: 'completePath', title: '完整路径'}
+                ]],
+                done:function(data){
+
+                },
+                where:params
+            });
+        }
+        //初始化按钮
+        function initEvent(){
+            //文件类别查询按钮
+            $("li.btnClassification").each(function(){
+                $(this).click(function(){
+                    $(this).addClass('am-nav-header').siblings("li").removeClass('am-nav-header');
+                    renderClassificationTable({nowPath:nowPath,fileType:$(this).find("a").html()});
+                });
+            });
+            $("button.btnOpt").click(function(){
+                var files = formatFileArray(selectFile,"`",nowPath);
+                var optType = $(this).attr("optType");
+                optFile(files,optType,{});
+            });
+            $("button.btnNormalOpt").click(function(){
+                optFile(nowPath,$(this).attr("optType"),{});
+            });
+            //文件选中事件
+            table.on('checkbox(fileTable)', function(obj){     
+                var checkStatus = table.checkStatus("fileTable");
+                var datas = checkStatus.data;
+                selectFile = datas;
+                if(Object.keys(selectFile).length > 0){
+                    $("button.btnOpt").css("display","inline-block");
+                }else{
+                    $("button.btnOpt").css("display","none");
+                }
+            });
+            //文件编辑事件
+            table.on('edit(fileTable)', function(obj){
+                var value = obj.value;
+
+            });
+        }
+
+        function init(){
+            initEvent();
+            renderTable({nowPath:nowPath});
+        }
+        init();
+    })
+</script>
 </html>

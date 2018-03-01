@@ -57,8 +57,9 @@
 </div>
 </div>
 
-<div class="top-deco"></div>
-
+<div class="am-progress am-progress-xs" style="height: 5px">
+    <div class="am-progress-bar am-progress-bar-danger" style="width: 100%"></div>
+</div>   
 <div class="content">
 	<div class="header">
             <a href="#" style="padding: 15px">
@@ -108,8 +109,8 @@
 </div>
 
 <div id="searchForm" method="post">
-        <div class="am-form-inline center" style="width:100%;margin:80px;">
-            <div class="am-form-group" style="width:70%">
+        <div class="am-form-inline center" style="width:90%;margin:80px;">
+            <div class="am-form-group" style="width:50%">
                 <input type="text" class="am-form-field am-radius url" placeholder="输入下载路径" style="width:100%"/>
             </div>
             <div class="am-form-group">
@@ -120,15 +121,18 @@
         </div>
         <div class="center am-form-inline chooseBox layui-tab-brief">
             <ul class="icons am-form-group layui-tab-title" style="">
-                <li class="web wi btnTabs" dataType="normalDownload" title="">普通</li>
                 <li class="images wid btnTabs" dataType="VideoDownload" title="">音视频</li>
+                <li class="web wid btnTabs" dataType="normalDownload" title="">普通</li>
                 <li class="news wid btnTabs" dataType="btDownload" title="">bt</li>
+
                 <li class="videos wid btnTabs" dataType="VideoDownload" title="">图片</li>
+                <li class="videos wid btnTabs" dataType="message" title="">说明</li>
             </ul>
         </div>
         <div style="height: 300px">
         </div>
 </div>
+
 <div class="content">
 <div class="decoration"></div>            
     <div class="footer">
@@ -148,7 +152,9 @@
         var rootPath = nowUrl.substring(0,nowUrl.indexOf(window.document.location.pathname));
         var isTip = true;
         var downloadType;
-        var preMessage = "1111"
+        var preMessage = ""
+        var testVideoStartMessage = /title/;
+        var searchPrograss = /(\d.*?)\%/;
         //发送下载请求
         function downloadUrl(url,reqUrl){
             var vaildateResult = vaildate(url,"下载路径",[notEmpty]);
@@ -162,20 +168,24 @@
             }
             var socket=io.connect(rootPath)
             socket.on("prograss",function(msg){
-                var message = String.fromCharCode.apply(null, new Uint8Array(msg));
-                if(message == "success"){
-                    layer.msg("下载完成,下载结果为"+preMessage);
-                    socket.close();
-                }else if(message == "fail"){
-                    layer.msg("下载失败,下载结果为"+preMessage);
-                    socket.close();
+                if(testVideoStartMessage.test(msg)){
+                    layer.msg("下载信息为："+msg);
+                    console.log(msg);
                 }else{
-                    console.log(message);
-                    preMessage = message;
+                    console.log(msg);
+                    var prograss = searchPrograss.exec(msg)
+                    if(prograss){
+                        setPrograss(prograss[1]);
+                    }
                 }
+                preMessage = msg;
+            })
+            socket.on("over",function(msg){
+                layer.msg("download "+msg);
             })
             socket.on("disconnect",function(){
                 socket.close();
+                setPrograss(100);
             });
             $.ajax({
                 url:reqUrl,
@@ -184,12 +194,7 @@
                   download_url:url
                 },
                 success:function(data){     
-                  if(data == 0){
-                    layer.msg("下载完成"+preMessage);
-                  }else{
-                    layer.msg("下载失败"+preMessage);
-                  }
-                  socket.close()
+                  layer.msg(data);
                 }
             })
         }
@@ -223,9 +228,23 @@
             })
             $("li.btnTabs").each(function(){
                 $(this).click(function(){
-                    downloadType = "data/"+$(this).attr("dataType");
+                    if($(this).attr("dataType") == "message"){
+                        downloadType = null;
+                        layer.open({
+                            title:"说明",
+                            type:2,
+                            content:rootPath+"/message",
+                            area:["70%","60%"]
+                        });
+                    }else{
+                        downloadType = "data/"+$(this).attr("dataType");
+                    }
                 });
             });
+        }
+        //设置进度条
+        function setPrograss(number){
+            $("div.am-progress-bar").attr("style","width: "+number+"%")
         }
         function init(){
             initButton();

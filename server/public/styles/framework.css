@@ -844,7 +844,7 @@ table th {
 }
 
 table th:first-child{
-	text-align: center;
+	text-align: left;
 	padding-left:20px;
 }
 

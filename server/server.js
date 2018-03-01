@@ -12,11 +12,9 @@ var bodyParser = require('body-parser');
 var httpServer = require("http");
 //加载配置文件
 var config = require("./config");
+var util = require("./util");
 //初始化服务器
 var app = express();
-//命令行工具导入
-var spawn = require('child_process').spawn;
-
 app.use(bodyParser.urlencoded({
 	extended:true
 }));
@@ -30,7 +28,6 @@ var MongoClient = require("mongodb").MongoClient;
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
-
 //初始化全局变量
 var isWarning = true;
 
@@ -98,6 +95,9 @@ app.get("/storage",function(req,res){
 app.get("/setting",function(req,res){
 	res.render("setting.html");
 });
+app.get("/message",function(req,res){
+	res.render("message.html");
+});
 app.post("/data/move",function(req,res){
 	var page = parseInt(req.body.page?req.body.page:1);
 	var pageSize = parseInt(req.body.pageSize?req.body.pageSize:0);
@@ -116,18 +116,75 @@ app.post("/data/normalDownload",function(req,res){
 	var url = req.body.download_url;
 	var command = []
 	command.push("cd "+config.download_path)
-	command.push("aria2c "+url)
-	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-	exec(spawn,command,dataCallBack,exitCallBack,res);
+	command.push("aria2c "+ url)
+	util.execCommand(command,dataCallBack,exitCallBack,res);
+	uti.sendData({"code":1,note:"下载开始"},req,res);
 });
 app.post('/data/VideoDownload',function(req,res){
 	var url = req.body.download_url;
 	var command = [];
 	command.push("cd "+config.yougetPath);
 	command.push("./you-get -o "+config.download_path+" "+url);
-	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-	exec(spawn,command,dataCallBack,exitCallBack,res);
+	util.execCommand(command,dataCallBack,exitCallBack,res);
+	util.sendData({"code":1,note:"下载开始"},req,res);
 });
+app.get("/data/download",function(req,res){
+	var filePath = req.query.filePath;
+	var filePaths = filePath.split("`");
+	result = []
+	for(var i = 0;i < filePaths.length;i++){
+		result.push(config.cludPath+filePaths[i]);
+	}
+	if(util.compressFiles(result.join(" "),config.compressRate,config.tempFileName)['code'] > 0){
+		util.downloadFile(config.tempFileName,req,res,"test.zip");
+	}
+	if(util.isExist(config.tempFileName)){
+		util.removeFile(config.tempFileName);
+	}
+})
+app.post('/data/queryFile',function(req,res){
+	var nowPath = req.body.nowPath;
+	nowPath = nowPath || "";
+	var completePath = config.cludPath+nowPath;
+	util.sendData(util.listFile(completePath,nowPath),req,res);
+});
+app.post('/data/queryClassificationFile',function(req,res){
+	var nowPath = req.body.nowPath;
+	var fileType = req.body.fileType;
+	console.log(fileType);
+	console.log(nowPath);
+	nowPath = nowPath || "";
+	var completePath = config.cludPath+nowPath;
+	util.sendData(util.listAllFile(completePath,fileType,config[fileType]),req,res);
+});
+app.post("/data/optFile",function(req,res){
+	var filePath = req.body.filePath;
+	var optType = req.body.optType;
+	var result = {}
+	if(!filePath && optType == "rm"){
+		result['code'] = -1;
+		result['note'] = "文件为空";
+		util.sendData(result,req,res);
+	}
+	if(optType == "rm"){
+		var filePaths = filePath.split("`");
+		result = []
+		for(var i = 0;i < filePaths.length;i++){
+			result.push(config.cludPath+filePaths[i]);
+		}
+		util.sendData(util.removeFile(result.join(' ')),req,res);
+	}else if(optType == "ct"){
+		util.sendData(util.createFile(config.cludPath+filePath,"新建文件夹"),req,res);
+	}else if(optType == "mv"){
+		var newPath = config.cludPath+req.body.newPath;
+		var filePaths = filePath.split("`");
+		result = []
+		for(var i = 0;i < filePaths.length;i++){
+			result.push(config.cludPath+filePaths[i]);
+		}
+		util.sendData(moveFile(filePath,newPath));
+	}
+})
 //监听websocket连接
 io.on("connection",function(socket){
 	//监听到连接时,将socket加入连接池中
@@ -169,66 +226,27 @@ serverSocket.on("message",function(msg,info){
 http.listen(config.listenPort,function(socket){
 	console.log("listening on "+config.listenPort);
 });
-//执行命令行
-function exec(spawn,command,data_callback,exit_callback,res){
-	command_process = spawn("bash");
-	command_process.stdout.on("data",function(data){
-		if(data_callback){
-			data_callback(data,res)
-		}
-	});
-	command_process.stderr.on("data",function(data){
-		if(data_callback){
-			data_callback(data,res)
-		}
-	});
-	command_process.on("exit",function(code,signal){
-		if(exit_callback){
-			exit_callback(code,signal,res)
-		}
-	});
-	for(var i = 0;i < command.length;i++){
-		command_process.stdin.write(command[i]+"\n");
-	}
-	command_process.stdin.end();
-}
 //命令行数据回调函数
-function dataCallBack(data,res){
+function dataCallBack(data){
 	for(var a of connectionid){
-		connections[a].emit("prograss",data);
+		connections[a].emit("prograss",util.bufferToString(data));
 	}
 }
 //命令行结束回调函数
-function exitCallBack(code,signal,res){
+function exitCallBack(code,signal){
 	if(code == 0){
-		console.log("000000");
 		for(var a of connectionid){
-			connections[a].emit("prograss","success");
+			connections[a].emit("over","success");
 		}
 	}else{
-		console.log("1111111");
 		for(var a of connectionid){
-			connections[a].emit("prograss","fail");
+			connections[a].emit("over","fail");
 		}
 	}
-	res.write(code.toString(),'utf-8');
-	res.end()
 }
-//工具函数
-function bufferToJason(bufferdata){
-	//将buf转化为json格式数据
-	return JSON.parse(bufferdata.toString("utf-8"));
-}
-
 function getdbUrl(){
 	//获得mongodburl
 	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
-}
-//发送数据
-function sendData(doc,req,res){
-	res.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});
-	res.write(JSON.stringify(doc),'utf-8');
-	res.end();
 }
 //验证登录信息
 function vaildate(doc,req,res){
@@ -241,13 +259,13 @@ function vaildate(doc,req,res){
 			result['code']=1;
 			result['note']="登录成功"
 			result['message'] = '/';
-			sendData(result,req,res);
+			util.sendData(result,req,res);
 			return
 		}
 	}
 	result['code']=-1;
 	result['note']="用户名不存在或密码错误"
-	sendData(result,req,res);
+	util.sendData(result,req,res);
 }
 function queryMongo(collection,condition,field,page,pageSize,req,res,callback){
 	//查询数据库

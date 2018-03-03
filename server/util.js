@@ -4,6 +4,7 @@ util.fs = require('fs')
 util.textEncoding = require('text-encoding')
 util.spawn = require('child_process').spawn;
 util.decoder = new util.textEncoding.TextDecoder();
+util.MongoClient = require("mongodb").MongoClient;
 /**
  * [parseByteSize 将文件大小转换为合适的单位]
  * @return {[type]} [description]
@@ -69,6 +70,7 @@ util.compressFiles = function(files,compressRate,targetFileName){
 util.moveFiles = function(preFiles,newPath){
 	var result = {}
 	try{
+		console.log('mv '+preFiles+" "+newPath);
 		var cmd = this.execSync('mv '+preFiles+" "+newPath);
 		result['code'] = 1;
 	    result['note']= cmd && cmd.toString("utf-8") || "移动成功";
@@ -92,6 +94,7 @@ util.createFile = function(path,fileName){
 		while(this.fs.existsSync(filePath)){
 			filePath = filePath+(++num);
 		}
+		console.log('mkdir '+filePath);
 	    var cmd = this.execSync('mkdir '+filePath);
 	    result['code'] = 1;
 	    result['note']= cmd && cmd.toString("utf-8") || "创建成功";
@@ -167,29 +170,32 @@ util.listFile = function(dir,msg){
 	}
 	return {"code":0,"msg":msg,count:num,"data":result};
 }
-util.listAllFile = function(dir,msg,pattern){
+util.listAllFile = function(dir,msg,pattern,dePrefer){
 	var result = []
-	this.readFileList(dir,result,pattern);
+	this.readFileList(dir,result,pattern,dePrefer);
 	return {"code":0,"msg":msg,count:result.length,"data":result};
 }
 /**
  * [readFileList 列出所有文件]
  * @param  {[type]} path      [description]
  * @param  {[type]} filesList [description]
+ * @param  {[type]} filesList [需要去掉的前缀]
  * @return {[type]}           [description]
  */
-util.readFileList = function(path, filesList,patterns) {
+util.readFileList = function(path, filesList,patterns,dePrefer) {
 	var that = this;
     var files = this.fs.readdirSync(path);
     files.forEach(function (itm, index) {
         var states = that.fs.statSync(path +'/'+ itm);
         if (states.isDirectory()) {
         //递归读取文件
-            that.readFileList(path + "/"+itm + "/", filesList,patterns);
+            that.readFileList(path + "/"+itm, filesList,patterns,dePrefer);
         } else {
         	for(var i = 0;i < patterns.length;i++){
         		if(itm.indexOf(patterns[i]) > 0){
-            		filesList.push({"fileName":itm,"fileSize":that.parseByteSize(states.size,1024),"birthTime":states.birthtime,"updateTime":states.mtime,"completePath":path});
+        			//console.log(that.dePrefer);
+        			console.log("path:"+path+"defer:"+dePrefer);
+            		filesList.push({"fileName":itm,"fileSize":that.parseByteSize(states.size,1024),"birthTime":states.birthtime,"updateTime":states.mtime,"completePath":path.replace(dePrefer,"")});
             		break;
         		}
         	}
@@ -225,5 +231,23 @@ util.bufferToString = function(arrayBuffer,decoder){
  */
 util.isExist = function(filePath){
 	return this.fs.existsSync(filePath);
+}
+/**
+ * [getdbUrl 根据给定的ip,端口,数据库实例获得链接地址]
+ * @return {[type]} [description]
+ */
+util.getdbUrl = function(ip,port,db){
+	//获得mongodburl
+	return 'mongodb://'+ip+":"+port+'/'+db;
+}
+util.queryMongo = function(url,nextDb,collection,condition,field,page,pageSize,req,res,callback){
+	//查询数据库
+	this.MongoClient.connect(url, function(error, db){
+		var db = db.db(nextDb)
+	    var col = db.collection(collection);
+		col.find(condition).limit(pageSize).skip((page-1)*pageSize).project(field).toArray(function(err,doc){
+			callback(doc,req,res);
+		})
+	});
 }
 module.exports = util;

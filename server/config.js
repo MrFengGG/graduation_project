@@ -9,6 +9,8 @@ var config = {
 	collection:"move",
 	//用户名集合
 	userCollection:"user",
+	//登录过期时间
+	expireTime:60 * 1000 * 60,
 	//监听命令IP
 	commandIP:"127.0.0.1",
 	//监听命令端口
@@ -20,15 +22,18 @@ var config = {
 	//http请求监听端口
 	listenPort:3000,
 	//下载目录
-	download_path:"/tmp",
+	download_path:"D://常用应用",
 	//youget路径
 	yougetPath:"/usr/local/you-get",
 	//云盘根路径
 	cludPath:"D://Foreign Sorftware",
+	garbPath:"D://学习/代码",
 	//文件压缩比例
 	compressRate:1,
 	//临时文件名称
 	tempFileName:"/tmp/temp.zip",
+	//上传文件夹
+	uploadFilePath:"d://",
 	//文件格式设置
 	图片:['.jepg','.jpg','.gif','.png','.bmp'],
 	文档:['.txt','.log'],

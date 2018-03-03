@@ -8,23 +8,27 @@ var express = require('express');
 var session = require('express-session');
 //引入参数解析模块
 var bodyParser = require('body-parser');
+
+var progressStream = require('progress-stream');
 //引入http模块
 var httpServer = require("http");
-//加载配置文件
+//加载配置文件和工具类
 var config = require("./config");
 var util = require("./util");
+//文件上传模块
+const upload = require('multer')({ dest: config.uploadFilePath});
 //初始化服务器
 var app = express();
 app.use(bodyParser.urlencoded({
-	extended:true
+	extended:true,
+	uploadDir:config.uploadFilePath
 }));
+
 var http = httpServer.Server(app);
 //初始化socket连接
 var io = require("socket.io")(http);
 var serverSocket = dgram.createSocket("udp4");
 serverSocket.bind(9999);
-//初始化mongodb
-var MongoClient = require("mongodb").MongoClient;
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
@@ -32,8 +36,8 @@ var connectionid = new Set();
 var isWarning = true;
 
 app.use(session({
-    secret: 'hubwiz app', //secret的值建议使用随机字符串
-    cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
+    secret: 'smartControl app', //secret的值建议使用随机字符串
+    cookie: {maxAge: config.expireTime} // 过期时间（毫秒）
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set("views",path.join(__dirname,"views"));
@@ -59,14 +63,13 @@ app.use(function (req, res, next) {
     	}
   	}
 });
-
 //登录页面
 app.get("/login",function(req,res,next){
 	res.render("login.html");
 });
 //登录请求
 app.post("/login",function(req,res,next){
-	queryMongo(config.userCollection,{},{},0,0,req,res,vaildate);
+	util.queryMongo(util.getdbUrl(config.ip,config.port,config.db),config.db,config.userCollection,{},{},0,0,req,res,vaildate);
 })
 //登出请求
 app.get("/logout",function(req,res,next){
@@ -98,6 +101,12 @@ app.get("/setting",function(req,res){
 app.get("/message",function(req,res){
 	res.render("message.html");
 });
+/**
+ * [电影数据查询接口]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res){	var page          [description]
+ * @return {[type]}            [description]
+ */
 app.post("/data/move",function(req,res){
 	var page = parseInt(req.body.page?req.body.page:1);
 	var pageSize = parseInt(req.body.pageSize?req.body.pageSize:0);
@@ -110,8 +119,16 @@ app.post("/data/move",function(req,res){
 	for(var i in field){
 		field[i] = parseInt(field[i])
 	}
-	queryMongo(config.collection,condition,field,page,pageSize,req,res,sendData);
+	util.queryMongo(util.getdbUrl(config.ip,config.port,config.db),config.db,config.collection,condition,field,page,pageSize,req,res,util.sendData);
 })
+/**
+ * [普通数据离线下载接口]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res){	var url           [description]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res);}    [description]
+ * @return {[type]}            [description]
+ */
 app.post("/data/normalDownload",function(req,res){
 	var url = req.body.download_url;
 	var command = []
@@ -120,6 +137,14 @@ app.post("/data/normalDownload",function(req,res){
 	util.execCommand(command,dataCallBack,exitCallBack,res);
 	uti.sendData({"code":1,note:"下载开始"},req,res);
 });
+/**
+ * [音频数据离线下载接口]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res){	var url           [description]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res);}    [description]
+ * @return {[type]}            [description]
+ */
 app.post('/data/VideoDownload',function(req,res){
 	var url = req.body.download_url;
 	var command = [];
@@ -128,35 +153,84 @@ app.post('/data/VideoDownload',function(req,res){
 	util.execCommand(command,dataCallBack,exitCallBack,res);
 	util.sendData({"code":1,note:"下载开始"},req,res);
 });
+/**
+ * [本地下载接口]
+ * @param  {[type]} req                          [description]
+ * @param  {[type]} res){	var                   filePath      [description]
+ * @param  {[type]} config.compressRate          [description]
+ * @param  {[type]} config.tempFileName)['code'] >             0){		util.downloadFile(config.tempFileName,req,res,"test.zip");	}	if(util.isExist(config.tempFileName)){		util.removeFile(config.tempFileName);	}} [description]
+ * @return {[type]}                              [description]
+ */
 app.get("/data/download",function(req,res){
 	var filePath = req.query.filePath;
 	var filePaths = filePath.split("`");
 	result = []
 	for(var i = 0;i < filePaths.length;i++){
-		result.push(config.cludPath+filePaths[i]);
+		if(req.query.type == "grab"){
+			result.push(config.garbPath+filePaths[i]);
+		}else if(req.query.type == "download"){
+			result.push(config.download_path+filePaths[i]);
+		}else{
+			result.push(config.cludPath+filePaths[i]);
+		}
 	}
+
 	if(util.compressFiles(result.join(" "),config.compressRate,config.tempFileName)['code'] > 0){
-		util.downloadFile(config.tempFileName,req,res,"test.zip");
+		util.downloadFile(config.tempFileName,req,res,"result.zip");
 	}
 	if(util.isExist(config.tempFileName)){
 		util.removeFile(config.tempFileName);
 	}
 })
+/**
+ * [文件查询数据接口]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res){	var nowPath       [description]
+ * @return {[type]}            [description]
+ */
 app.post('/data/queryFile',function(req,res){
 	var nowPath = req.body.nowPath;
+	var completePath = '';
 	nowPath = nowPath || "";
-	var completePath = config.cludPath+nowPath;
+	if(req.body.type == "grab"){
+		completePath = config.garbPath + nowPath;
+	}else if(req.body.type == "download"){
+		completePath = config.download_path + nowPath;
+	}else{
+		completePath = config.cludPath+nowPath;
+	}
 	util.sendData(util.listFile(completePath,nowPath),req,res);
 });
+/**
+ * [分类文件查询接口]
+ * @param  {[type]} req        [description]
+ * @param  {[type]} res){	var nowPath       [description]
+ * @return {[type]}            [description]
+ */
 app.post('/data/queryClassificationFile',function(req,res){
 	var nowPath = req.body.nowPath;
 	var fileType = req.body.fileType;
-	console.log(fileType);
-	console.log(nowPath);
 	nowPath = nowPath || "";
-	var completePath = config.cludPath+nowPath;
-	util.sendData(util.listAllFile(completePath,fileType,config[fileType]),req,res);
+	var completePath = '';
+	if(req.body.type == "garb"){
+		completePath = config.garbPath + nowPath;
+		util.sendData(util.listAllFile(completePath,fileType,config[fileType],config.garbPath),req,res);
+	}else if(req.body.type == "download"){
+		completePath = config.download_path + nowPath;
+		util.sendData(util.listAllFile(completePath,fileType,config[fileType],config.download_path),req,res);
+	}else{
+		completePath = config.cludPath+nowPath;
+		util.sendData(util.listAllFile(completePath,fileType,config[fileType],config.cludPath),req,res);
+	}
 });
+/**
+ * [文件操作接口]
+ * @param  {[type]} req          [description]
+ * @param  {[type]} res){	var   filePath      [description]
+ * @param  {[type]} req          [description]
+ * @param  {[type]} res);	}else if(optType    [description]
+ * @return {[type]}              [description]
+ */
 app.post("/data/optFile",function(req,res){
 	var filePath = req.body.filePath;
 	var optType = req.body.optType;
@@ -166,25 +240,51 @@ app.post("/data/optFile",function(req,res){
 		result['note'] = "文件为空";
 		util.sendData(result,req,res);
 	}
+	var prefix = "";
+	if(req.body.type == "grab"){
+		prefix = config.garbPath;
+	}else if(req.body.type == "download"){
+		prefix = config.download_path;
+	}else{
+		prefix = config.cludPath;
+	}
 	if(optType == "rm"){
 		var filePaths = filePath.split("`");
 		result = []
 		for(var i = 0;i < filePaths.length;i++){
-			result.push(config.cludPath+filePaths[i]);
+			result.push(prefix+filePaths[i]);
 		}
 		util.sendData(util.removeFile(result.join(' ')),req,res);
 	}else if(optType == "ct"){
-		util.sendData(util.createFile(config.cludPath+filePath,"新建文件夹"),req,res);
+		console.log(prefix);
+		util.sendData(util.createFile(prefix+filePath,"新建文件夹"),req,res);
 	}else if(optType == "mv"){
-		var newPath = config.cludPath+req.body.newPath;
+		var newPath = prefix+req.body.newPath;
 		var filePaths = filePath.split("`");
 		result = []
 		for(var i = 0;i < filePaths.length;i++){
-			result.push(config.cludPath+filePaths[i]);
+			result.push(prefix+filePaths[i]);
 		}
 		util.sendData(moveFile(filePath,newPath));
 	}
 })
+//文件上传
+app.post("/data/upload",upload.single('temp'),function(req,res,next){
+	var nowPath = req.body.nowPath;
+	var type = req.body.type;
+	var prefer = "";
+	if(type == "grab"){
+		prefix = config.garbPath;
+	}else if(type == "download"){
+		prefix = config.download_path;
+	}else{
+		prefix = config.cludPath;
+	}
+  	var fileMessage = req.file;
+  	util.moveFiles(fileMessage.path,prefix+nowPath+"/"+fileMessage.originalname);
+  	util.sendData(fileMessage,req,res);
+});
+
 //监听websocket连接
 io.on("connection",function(socket){
 	//监听到连接时,将socket加入连接池中
@@ -198,6 +298,7 @@ io.on("connection",function(socket){
 			serverSocket.send(msg,0,msg.length,config.commandPort,config.commandIP);
 		}
 	});
+	//获得来自网页的视频设置信息
 	socket.on("imageCommand",function(msg,info){
 		if(msg){
 			if(JSON.parse(msg)['command'] == "analyze"){
@@ -226,13 +327,22 @@ serverSocket.on("message",function(msg,info){
 http.listen(config.listenPort,function(socket){
 	console.log("listening on "+config.listenPort);
 });
-//命令行数据回调函数
+/**
+ * [dataCallBack 命令行标准输出回调函数]
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
 function dataCallBack(data){
 	for(var a of connectionid){
 		connections[a].emit("prograss",util.bufferToString(data));
 	}
 }
-//命令行结束回调函数
+/**
+ * [exitCallBack 命令行执行结束回调函数]
+ * @param  {[type]} code   [description]
+ * @param  {[type]} signal [description]
+ * @return {[type]}        [description]
+ */
 function exitCallBack(code,signal){
 	if(code == 0){
 		for(var a of connectionid){
@@ -244,11 +354,14 @@ function exitCallBack(code,signal){
 		}
 	}
 }
-function getdbUrl(){
-	//获得mongodburl
-	return 'mongodb://'+config.ip+":"+config.port+'/'+config.db;
-}
-//验证登录信息
+
+/**
+ * [vaildate 验证登录信息]
+ * @param  {[type]} doc [数据库查询结果]
+ * @param  {[type]} req [description]
+ * @param  {[type]} res [description]
+ * @return {[type]}     [description]
+ */
 function vaildate(doc,req,res){
 	var result = {};
 	var user = req.body;
@@ -266,15 +379,5 @@ function vaildate(doc,req,res){
 	result['code']=-1;
 	result['note']="用户名不存在或密码错误"
 	util.sendData(result,req,res);
-}
-function queryMongo(collection,condition,field,page,pageSize,req,res,callback){
-	//查询数据库
-	MongoClient.connect(getdbUrl(), function(error, db){
-		var db = db.db(config.db)
-	    var col = db.collection(collection);
-		col.find(condition).limit(pageSize).skip((page-1)*pageSize).project(field).toArray(function(err,doc){
-			callback(doc,req,res);
-		})
-	});
 }
 

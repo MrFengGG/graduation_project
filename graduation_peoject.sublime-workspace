@@ -4,8 +4,340 @@
 		"selected_items":
 		[
 			[
+				"up",
+				"uploadFilePath"
+			],
+			[
+				"sto",
+				"storage〔variable〕"
+			],
+			[
+				"upload",
+				"uploadFilePath"
+			],
+			[
+				"file",
+				"fileMessage"
+			],
+			[
+				"pat",
+				"path〔variable〕"
+			],
+			[
+				"now",
+				"nowPath"
+			],
+			[
+				"path",
+				"pathParams"
+			],
+			[
+				"pa",
+				"pathParams"
+			],
+			[
+				"pre",
+				"prefix〔variable〕"
+			],
+			[
+				"down",
+				"download_path"
+			],
+			[
+				"gra",
+				"garbPath"
+			],
+			[
+				"t",
+				"type"
+			],
+			[
+				"de",
+				"dePrefer"
+			],
+			[
+				"is",
+				"isSearch"
+			],
+			[
+				"get",
+				"getdbUrl"
+			],
+			[
+				"render",
+				"renderClassificationTable"
+			],
+			[
+				"list",
+				"listAllFile"
+			],
+			[
+				"exist",
+				"existsSync"
+			],
+			[
+				"opt",
+				"optType"
+			],
+			[
+				"btn",
+				"btnNormalOpt"
+			],
+			[
+				"op",
+				"optFile"
+			],
+			[
+				"new",
+				"newPath"
+			],
+			[
+				"exists",
+				"fs.existsSync"
+			],
+			[
+				"te",
+				"tempFileName"
+			],
+			[
+				"fileP",
+				"filePath〔variable〕"
+			],
+			[
+				"con",
+				"config〔variable〕"
+			],
+			[
+				"f",
+				"fileName"
+			],
+			[
+				"res",
+				"result〔variable〕"
+			],
+			[
+				"comp",
+				"compressFiles〔function〕"
+			],
+			[
+				"com",
+				"compressRate〔variable〕"
+			],
+			[
+				"remo",
+				"removeFile"
+			],
+			[
+				"ren",
+				"renderTable"
+			],
+			[
+				"getO",
+				"getOptParam"
+			],
+			[
+				"self",
+				"selectFile"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"req",
+				"req〔variable〕"
+			],
+			[
+				"prev",
+				"prevAll\t.prevAll()"
+			],
+			[
+				"add",
+				"addBreadNode"
+			],
+			[
+				"bind",
+				"bindTableDoubleClick〔function〕"
+			],
+			[
+				"ch",
+				"checkStatus"
+			],
+			[
+				"che",
+				"checkStatus〔variable〕"
+			],
+			[
 				"dis",
-				"dispatcher〔variable〕"
+				"display"
+			],
+			[
+				"sele",
+				"selectFile"
+			],
+			[
+				"se",
+				"selectFile"
+			],
+			[
+				"chec",
+				"checked"
+			],
+			[
+				"bi",
+				"birthTime"
+			],
+			[
+				"rend",
+				"renderTable"
+			],
+			[
+				"send",
+				"sendData〔function〕"
+			],
+			[
+				"st",
+				"style\tTag"
+			],
+			[
+				"ini",
+				"init"
+			],
+			[
+				"re",
+				"removeClass〔function〕"
+			],
+			[
+				"dow",
+				"downloadType"
+			],
+			[
+				"pro",
+				"prograss〔variable〕"
+			],
+			[
+				"sea",
+				"searchPrograss"
+			],
+			[
+				"set",
+				"setPrograss"
+			],
+			[
+				"test",
+				"testVideoStartMessage"
+			],
+			[
+				"wr",
+				"write"
+			],
+			[
+				"dec",
+				"decoder〔variable〕"
+			],
+			[
+				"buff",
+				"bufferToString"
+			],
+			[
+				"arra",
+				"arrayBuffer"
+			],
+			[
+				"connection",
+				"connections"
+			],
+			[
+				"do",
+				"downloadType"
+			],
+			[
+				"exit",
+				"exitCallBack"
+			],
+			[
+				"data",
+				"dataCallBack"
+			],
+			[
+				"va",
+				"vaildateResult"
+			],
+			[
+				"not",
+				"notEmpty〔function〕"
+			],
+			[
+				"vaildate",
+				"vaildateResult〔variable〕"
+			],
+			[
+				"d",
+				"downloadType"
+			],
+			[
+				"init",
+				"initButton"
+			],
+			[
+				"sty",
+				"style\tAttr"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"comm",
+				"command_process"
+			],
+			[
+				"ex",
+				"exit_callback"
+			],
+			[
+				"err",
+				"err_callback〔argument〕"
+			],
+			[
+				"bo",
+				"body"
+			],
+			[
+				"max",
+				"maxVal"
+			],
+			[
+				"s",
+				"shape"
+			],
+			[
+				"min",
+				"minVal〔variable〕"
+			],
+			[
+				"T",
+				"TemplateTracker"
+			],
+			[
+				"C",
+				"CamShiftTracker"
+			],
+			[
+				"tra",
+				"tracker〔variable〕"
+			],
+			[
+				"ca",
+				"capture〔argument〕"
+			],
+			[
+				"mo",
+				"move"
+			],
+			[
+				"le",
+				"levelDirect〔variable〕"
 			],
 			[
 				"cl",
@@ -16,14 +348,6 @@
 				"stopWarning〔function〕"
 			],
 			[
-				"sto",
-				"stopDispensePlus〔function〕"
-			],
-			[
-				"T",
-				"True"
-			],
-			[
 				"isD",
 				"isDispensePlus"
 			],
@@ -32,20 +356,8 @@
 				"virtDirect〔variable〕"
 			],
 			[
-				"mo",
-				"movementThreshold"
-			],
-			[
 				"scr",
 				"screenCenter〔argument〕"
-			],
-			[
-				"comm",
-				"commandIp"
-			],
-			[
-				"le",
-				"levelDirect"
 			],
 			[
 				"sc",
@@ -64,10 +376,6 @@
 				"isWarning"
 			],
 			[
-				"get",
-				"getMessage〔function〕"
-			],
-			[
 				"sta",
 				"startSendEmail〔function〕"
 			],
@@ -78,10 +386,6 @@
 			[
 				"im",
 				"images〔argument〕"
-			],
-			[
-				"se",
-				"sendEmail〔function〕"
 			],
 			[
 				"wa",
@@ -108,10 +412,6 @@
 				"startDispense〔function〕"
 			],
 			[
-				"is",
-				"isDispense"
-			],
-			[
 				"myd",
 				"mydict"
 			],
@@ -126,10 +426,6 @@
 			[
 				"m",
 				"mydict"
-			],
-			[
-				"ca",
-				"captureManager〔variable〕"
 			],
 			[
 				"M",
@@ -148,20 +444,8 @@
 				"logger〔module〕"
 			],
 			[
-				"add",
-				"addHandler〔function〕"
-			],
-			[
-				"file",
-				"file_handler〔variable〕"
-			],
-			[
 				"lo",
 				"logger〔variable〕"
-			],
-			[
-				"set",
-				"settings〔module〕"
 			],
 			[
 				"LOG",
@@ -170,10 +454,6 @@
 			[
 				"std",
 				"stdout〔variable〕"
-			],
-			[
-				"de",
-				"debug"
 			],
 			[
 				"for",
@@ -192,20 +472,8 @@
 				"knnTrack〔function〕"
 			],
 			[
-				"tra",
-				"tracker"
-			],
-			[
 				"co",
 				"coord〔variable〕"
-			],
-			[
-				"init",
-				"initTracker"
-			],
-			[
-				"re",
-				"rect〔variable〕"
 			],
 			[
 				"rec",
@@ -214,18 +482,6 @@
 			[
 				"IO",
 				"IOUtil〔module〕"
-			],
-			[
-				"up",
-				"update"
-			],
-			[
-				"test",
-				"testCrm〔function〕"
-			],
-			[
-				"max",
-				"maxVal〔variable〕"
 			],
 			[
 				"me",
@@ -256,328 +512,72 @@
 				"dispatcher〔variable〕"
 			],
 			[
-				"st",
-				"stopWorking"
-			],
-			[
-				"com",
-				"command〔variable〕"
-			],
-			[
-				"C",
-				"CommandManager"
-			],
-			[
 				"on",
 				"onCommand〔function〕"
-			],
-			[
-				"send",
-				"sendto"
-			],
-			[
-				"wi",
-				"writeImage"
-			],
-			[
-				"v",
-				"_videoFilename〔variable〕"
-			],
-			[
-				"stopW",
-				"stopWritingVideo"
-			],
-			[
-				"ge",
-				"getFrame〔function〕"
-			],
-			[
-				"fil",
-				"filePath"
-			],
-			[
-				"pa",
-				"path"
-			],
-			[
-				"_vi",
-				"_videoFilename"
-			],
-			[
-				"f",
-				"float32"
-			],
-			[
-				"ro",
-				"roi_hist"
-			],
-			[
-				"COLOR",
-				"COLOR_BGR2HSV"
-			],
-			[
-				"min",
-				"minVirt"
-			],
-			[
-				"mi",
-				"minVirt"
-			],
-			[
-				"stringi",
-				"querystring.stringify"
-			],
-			[
-				"str",
-				"stringify"
-			],
-			[
-				"b",
-				"boundingRect"
-			],
-			[
-				"con",
-				"contours"
-			],
-			[
-				"lis",
-				"listenPort"
-			],
-			[
-				"i",
-				"imageIP〔variable〕"
-			],
-			[
-				"query",
-				"queryMoveList"
-			],
-			[
-				"requ",
-				"require〔function〕"
-			],
-			[
-				"http",
-				"httpServer〔variable〕"
-			],
-			[
-				"clas",
-				"classification〔variable〕"
-			],
-			[
-				"te",
-				"template"
-			],
-			[
-				"getM",
-				"getMoveList"
-			],
-			[
-				"ren",
-				"renderMoveList"
-			],
-			[
-				"tem",
-				"template"
-			],
-			[
-				"class",
-				"classification"
-			],
-			[
-				"que",
-				"queryMoveList"
-			],
-			[
-				"qu",
-				"querymoveClassifycation"
-			],
-			[
-				"classifica",
-				"classifications"
-			],
-			[
-				"tes",
-				"testData"
-			],
-			[
-				"moveC",
-				"moveClassifyData"
-			],
-			[
-				"move",
-				"moveName"
-			],
-			[
-				"req",
-				"req〔argument〕"
-			],
-			[
-				"page",
-				"pageSize"
-			],
-			[
-				"ne",
-				"nextPage"
-			],
-			[
-				"to",
-				"toString"
-			],
-			[
-				"e",
-				"end"
-			],
-			[
-				"q",
-				"queryMongo"
-			],
-			[
-				"h",
-				"hav"
-			],
-			[
-				"r",
-				"roi_hist"
-			],
-			[
-				"cv",
-				"cvtColor"
-			],
-			[
-				"soc",
-				"socket〔module〕"
-			],
-			[
-				"div",
-				"dicdata〔variable〕"
-			],
-			[
-				"a",
-				"ajax〔function〕"
-			],
-			[
-				"resu",
-				"results〔variable〕"
-			],
-			[
-				"readF",
-				"fs.readFileSync"
-			],
-			[
-				"bu",
-				"button\tTag"
-			],
-			[
-				"he",
-				"height"
-			],
-			[
-				"bind",
-				"bindTabs"
-			],
-			[
-				"ali",
-				"text-align"
-			],
-			[
-				"text",
-				"text-align"
-			],
-			[
-				"pos",
-				"position"
-			],
-			[
-				"s",
-				"style\tAttr"
-			],
-			[
-				"t",
-				"type"
-			],
-			[
-				"button",
-				"buttonStatus〔variable〕"
-			],
-			[
-				"but",
-				"buttonStatus"
-			],
-			[
-				"ap",
-				"alpha"
-			],
-			[
-				"pic",
-				"picture"
-			],
-			[
-				"ini",
-				"initVirt〔variable〕"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "camera/monitors.py",
+			"file": "server/server.js",
 			"settings":
 			{
-				"buffer_size": 13347,
+				"buffer_size": 11314,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/managers.py",
+			"file": "server/views/storage.html",
 			"settings":
 			{
-				"buffer_size": 6892,
+				"buffer_size": 17008,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/main.py",
+			"file": "server/views/login.html",
 			"settings":
 			{
-				"buffer_size": 6572,
+				"buffer_size": 2359,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/transmitters.py",
+			"file": "server/views/home.html",
 			"settings":
 			{
-				"buffer_size": 2931,
+				"buffer_size": 5308,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/settings.py",
+			"file": "server/util.js",
 			"settings":
 			{
-				"buffer_size": 698,
+				"buffer_size": 7275,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/utils.py",
+			"file": "test.js",
 			"settings":
 			{
-				"buffer_size": 2331,
+				"buffer_size": 505,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "camera/scheduler.py",
+			"file": "server/config.js",
 			"settings":
 			{
-				"buffer_size": 7061,
+				"buffer_size": 771,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -642,7 +642,7 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 490.0,
+		"height": 467.0,
 		"last_filter": "insta",
 		"selected_items":
 		[
@@ -675,7 +675,7 @@
 				"Install Package Control"
 			]
 		],
-		"width": 649.0
+		"width": 741.0
 	},
 	"console":
 	{
@@ -698,23 +698,50 @@
 	"expanded_folders":
 	[
 		"/D/学习/代码/毕设/工程/graduation",
-		"/D/学习/代码/毕设/工程/graduation/camera",
-		"/D/学习/代码/毕设/工程/graduation/camera/log",
-		"/D/学习/代码/毕设/工程/graduation/camera/screenshots",
-		"/D/学习/代码/毕设/工程/graduation/control",
 		"/D/学习/代码/毕设/工程/graduation/server",
+		"/D/学习/代码/毕设/工程/graduation/server/public",
 		"/D/学习/代码/毕设/工程/graduation/server/views"
 	],
 	"file_history":
 	[
-		"/D/学习/代码/毕设/工程/graduation/server/views/login.html",
+		"/D/学习/代码/毕设/工程/graduation/server/util.js",
+		"/D/学习/代码/毕设/工程/graduation/util.js",
+		"/C/Users/76348/Desktop/storage.html",
+		"/D/学习/代码/毕设/工程/graduation/test.js",
+		"/D/学习/代码/毕设/工程/graduation/server/public/styles/framework.css",
+		"/D/学习/代码/毕设/工程/graduation/server/public/styles/style.css",
+		"/D/学习/代码/毕设/工程/graduation/server/views/download.html",
+		"/C/Users/76348/Desktop/test.js",
+		"/D/学习/代码/毕设/工程/graduation/server/views/message.html",
+		"/D/学习/代码/毕设/工程/graduation/server/package-lock.json",
+		"/D/Foreign Sorftware/plsql/instantclient_11_2/network/admin/tnsnames.ora",
+		"/D/学习/代码/毕设/工程/graduation/server/config.js",
+		"/D/学习/代码/毕设/工程/graduation/server/views/music.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/setting.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/storage.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/theatra.html",
+		"/D/Foreign Sorftware/plsql/plsql/instantclient_11_2/network/admin/tnsnames.ora",
+		"/C/Users/76348/Desktop/tnsnames.ora",
+		"/D/Foreign Sorftware/plsql/plsql/instantclient_11_2/tnsnames.ora",
+		"/D/学习/代码/毕设/参考资料/前端/search/search.html",
+		"/D/学习/代码/毕设/工程/graduation/camera/settings.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/main.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/managers.py",
+		"/D/学习/代码/毕设/工程/graduation/camera/monitors.py",
+		"/D/学习/代码/毕设/参考资料/前端/搜索/201505045/html/index.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/camera.html",
+		"/C/Users/76348/Desktop/hosts",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/D/学习/代码/毕设/参考资料/前端/index.html",
+		"/D/学习/代码/毕设/参考资料/前端/css3-rotate-buttons/index.html",
+		"/C/Users/76348/Desktop/gui-config.json",
+		"/D/学习/代码/毕设/工程/graduation/control/control.py",
 		"/D/学习/代码/毕设/工程/graduation/camera/transmitters.py",
 		"/D/学习/代码/毕设/工程/graduation/camera/utils.py",
-		"/D/学习/代码/毕设/工程/graduation/camera/settings.py",
-		"/D/学习/代码/毕设/工程/graduation/camera/managers.py",
-		"/D/学习/代码/毕设/工程/graduation/server/views/camera.html",
 		"/D/学习/代码/毕设/工程/graduation/camera/scheduler.py",
-		"/D/学习/代码/毕设/工程/graduation/camera/main.py",
+		"/D/学习/代码/毕设/参考资料/模板追踪示例/config.py",
+		"/D/学习/代码/毕设/参考资料/模板追踪示例/cam-track.py",
+		"/D/学习/代码/毕设/工程/graduation/server/views/login.html",
 		"/C/Users/76348/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
 		"/C/Users/76348/.ssh/id_rsa.pub",
 		"/D/学习/代码/毕设/工程/graduation/camera/main_with_no_share.py",
@@ -804,41 +831,11 @@
 		"/F/STUDY/graduation/web/public/storage.html",
 		"/F/STUDY/graduation/web/public/styles/app.css",
 		"/F/STUDY/graduation/web/public/theatra.html",
-		"/F/STUDY/graduation/web/public/music.html",
-		"/F/STUDY/graduation/web/public/setting.html",
-		"/F/STUDY/graduation/web/public/index.html",
-		"/F/STUDY/graduation/web/public/homepage.html",
-		"/F/STUDY/graduation/web/public/styles/style.css",
-		"/F/STUDY/graduation/web/public/styles/owl.carousel.css",
-		"/F/STUDY/graduation/web/public/styles/framework.css",
-		"/F/STUDY/graduation/web/public/styles/colorbox.css",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/homepage.html",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/index.html",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/styles/style.css",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/misc/homepage.png",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/misc/logo.png",
-		"/F/STUDY/graduation/html模板/移动端/不错/web页面/images/colorbox/controls.png",
-		"/F/STUDY/graduation/web/public/html/index.html",
-		"/F/STUDY/graduation/informant/Email.py",
-		"/F/STUDY/graduation/imagecollection/test.py",
-		"/C/Users/JACK/Desktop/cat.jpg",
-		"/F/STUDY/graduation/informant/email.py",
-		"/F/graduation/proj.sublime-project",
-		"/F/STUDY/graduation/JS/FrameStation.js",
-		"/F/STUDY/graduation/JS/public/html/index.html",
-		"/F/STUDY/javascript插件/content/plug/echart/存储图.html",
-		"/F/STUDY/javascript插件/content/plug/echart/存储图.js",
-		"/F/STUDY/graduation/JS/public/index.html",
-		"/H/ceshi.py",
-		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/User/node.sublime-build",
-		"/F/STUDY/graduation/JS/t.py",
-		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/nodejs/Nodejs.sublime-build",
-		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/nodejs/Nodejs.sublime-settings",
-		"/C/Users/JACK/AppData/Roaming/Sublime Text 3/Packages/User/untitled.sublime-build"
+		"/F/STUDY/graduation/web/public/music.html"
 	],
 	"find":
 	{
-		"height": 30.0
+		"height": 29.0
 	},
 	"find_in_files":
 	{
@@ -853,6 +850,58 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"type",
+			"nowPath",
+			"btnGar",
+			"renderTable",
+			"optFile",
+			"then",
+			"garbage",
+			"console.log",
+			"cosole.log",
+			"console.log",
+			"formatFileArray",
+			"optFile",
+			"listAllFile",
+			"btnClassification",
+			"queryMongo",
+			"getdbUrl",
+			"vaildate",
+			"queryMongo",
+			"btnClassification",
+			"bufferToString",
+			"exist",
+			"parseByteSize",
+			"myUtil",
+			"spawn",
+			"exec",
+			"decoder",
+			"bufferToString",
+			"bufferToJason",
+			"listFile",
+			"moveFile",
+			"操作",
+			"--",
+			"btnNav",
+			"<",
+			"layui-tab-item",
+			"alert",
+			"message",
+			"bufferToString",
+			"bottom-deco",
+			"am-progress",
+			"lay-percent",
+			"preMessage",
+			"disco",
+			"column",
+			"Device Det",
+			"Device",
+			"console.log",
+			"form",
+			"dataCallBack",
+			"sendButtonCommand",
+			"停止分析",
+			"captureManager",
 			"mydic",
 			"    ",
 			"主控程序",
@@ -928,43 +977,7 @@
 			"Classifyfy",
 			"classifyfy",
 			"moveClassi",
-			"gallery",
-			"template",
-			"tpl",
-			"Hdata",
-			"move-tp",
-			"点击显示",
-			"queryMongo",
-			"get",
-			"queryMongo",
-			"move-tp",
-			"queryMongo",
-			"datas",
-			"console",
-			"queryMongo",
-			"mongodb",
-			"2222",
-			"print",
-			"favicon.ico",
-			"is ana",
-			"header",
-			"back",
-			"go-home",
-			"go-back",
-			" createWindow",
-			"createWindow",
-			"logging.info",
-			"print",
-			"fps",
-			"analyzers",
-			"isAnalyze",
-			"req",
-			"email",
-			"doc-ipt-email-1",
-			"myapp-login-logo",
-			"am-icon-jsfiddle",
-			"portfolio-icon",
-			"(major_ver, minor_ver, subminor_ver)"
+			"gallery"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -972,6 +985,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"util",
 			"\\t",
 			"list(self._roi)",
 			"maxLoc",
@@ -991,218 +1005,231 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "camera/monitors.py",
+					"file": "server/server.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13347,
+						"buffer_size": 11314,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2301,
-								2277
+								8585,
+								8582
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 960.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "camera/managers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6892,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								53,
-								40
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 410.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "camera/main.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6572,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5231,
-								5231
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1061.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "camera/transmitters.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2931,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1546,
-								1546
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 240.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "camera/settings.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 698,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								203,
-								221
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2549.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "camera/utils.py",
+					"buffer": 1,
+					"file": "server/views/storage.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2331,
+						"buffer_size": 17008,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								246,
-								246
+								16507,
+								16501
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 120.0,
+						"translation.y": 7074.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "camera/scheduler.py",
+					"buffer": 2,
+					"file": "server/views/login.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7061,
+						"buffer_size": 2359,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6225,
-								7016
+								68,
+								68
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
+							"auto_complete": false,
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "server/views/home.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5308,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3789,
+								3789
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2617.0,
+						"translation.y": 1781.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "server/util.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1911,
+								1911
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1080.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "test.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 505,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								455,
+								459
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "server/config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 771,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								589,
+								585
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1210,7 +1237,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 30.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -1241,7 +1268,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 228.0
+		"height": 221.0
 	},
 	"output.find_results":
 	{
@@ -1251,11 +1278,15 @@
 	{
 		"height": 157.0
 	},
+	"output.nodejs":
+	{
+		"height": 118.0
+	},
 	"pinned_build_system": "",
 	"project": "graduation_peoject.sublime-project",
 	"replace":
 	{
-		"height": 55.0
+		"height": 53.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1293,7 +1324,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 274.0,
+	"side_bar_width": 276.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

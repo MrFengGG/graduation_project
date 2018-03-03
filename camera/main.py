@@ -79,7 +79,7 @@ def warning(mydict,screenCenter):
 				item = watchDog.update(mydict['frame'])
 				mydict['item'] = item
 			if item is not None and item.getMessage()['isGet']:
-				#若发现动态物体,延时1秒,拍摄10张照片
+				#若发现动态物体,延时,拍摄10张照片
 				imageFileName = WARN_DIR + IOUtil.getImageFileName()
 				warnImages.append(imageFileName)
 				time.sleep(MOVEMENT_TRACK_DELAY)

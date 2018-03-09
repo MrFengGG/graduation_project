@@ -1,5 +1,6 @@
 //引入UDP模块
 var dgram = require("dgram");
+var net = require('net');
 //引入path模块
 var path = require('path');
 //引入express模块
@@ -23,10 +24,11 @@ app.use(bodyParser.urlencoded({
 	extended:true,
 	uploadDir:config.uploadFilePath
 }));
-
+ 
 var http = httpServer.Server(app);
 //初始化socket连接
 var io = require("socket.io")(http);
+var tcpServer = net.createServer();
 var serverSocket = dgram.createSocket("udp4");
 serverSocket.bind(9999);
 //初始化连接池
@@ -86,8 +88,8 @@ app.get("/camera",function(req,res){
 app.get("/download",function(req,res){
 	res.render("download.html");
 })
-app.get("/music",function(req,res){
-	res.render("music.html");
+app.get("/player",function(req,res){
+	res.render("player.html");
 });
 app.get("/theatra",function(req,res){
 	res.render("theatra.html");
@@ -319,10 +321,29 @@ io.on("connection",function(socket){
 })
 //监听udp连接,如果有画面,将画面广播出去
 serverSocket.on("message",function(msg,info){
+	for(var a of connectionid){
+		connections[a].send(msg);
+	}
+});
+//监听tcp连接,如果有画面,将画面广播出去
+tcpServer.listen(8888,'127.0.0.1')
+tcpServer.on('connection',function(sock){
+	console.log("连接开启");
+	sock.on("data",function(data){
 		for(var a of connectionid){
-			connections[a].send(msg);
+			console.log(typeof data);
+			connections[a].send(data);
 		}
 	});
+	sock.on("close",function(){
+		console.log("连接以关闭")
+		
+	});
+	sock.on("error",function(){
+		
+	})
+});
+
 //开启监听网页
 http.listen(config.listenPort,function(socket){
 	console.log("listening on "+config.listenPort);

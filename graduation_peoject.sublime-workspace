@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"lis",
+				"listen"
+			],
+			[
+				"creat",
+				"createSocket"
+			],
+			[
+				"req",
+				"require〔function〕"
+			],
+			[
+				"borde",
+				"border-style"
+			],
+			[
+				"f",
+				"fmt"
+			],
+			[
 				"up",
 				"uploadFilePath"
 			],
@@ -108,10 +128,6 @@
 				"config〔variable〕"
 			],
 			[
-				"f",
-				"fileName"
-			],
-			[
 				"res",
 				"result〔variable〕"
 			],
@@ -142,10 +158,6 @@
 			[
 				"to",
 				"toString"
-			],
-			[
-				"req",
-				"req〔variable〕"
 			],
 			[
 				"prev",
@@ -502,18 +514,6 @@
 			[
 				"big",
 				"bigC〔variable〕"
-			],
-			[
-				"cont",
-				"contourArea"
-			],
-			[
-				"di",
-				"dispatcher〔variable〕"
-			],
-			[
-				"on",
-				"onCommand〔function〕"
 			]
 		]
 	},
@@ -523,52 +523,16 @@
 			"file": "server/server.js",
 			"settings":
 			{
-				"buffer_size": 11314,
+				"buffer_size": 11705,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "server/views/storage.html",
+			"file": "server/views/camera.html",
 			"settings":
 			{
-				"buffer_size": 17008,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/views/login.html",
-			"settings":
-			{
-				"buffer_size": 2359,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/views/home.html",
-			"settings":
-			{
-				"buffer_size": 5308,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "server/util.js",
-			"settings":
-			{
-				"buffer_size": 7275,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "test.js",
-			"settings":
-			{
-				"buffer_size": 505,
+				"buffer_size": 14408,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -699,27 +663,36 @@
 	[
 		"/D/学习/代码/毕设/工程/graduation",
 		"/D/学习/代码/毕设/工程/graduation/server",
-		"/D/学习/代码/毕设/工程/graduation/server/public",
 		"/D/学习/代码/毕设/工程/graduation/server/views"
 	],
 	"file_history":
 	[
 		"/D/学习/代码/毕设/工程/graduation/server/util.js",
+		"/D/学习/代码/毕设/工程/graduation/server/views/home.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/camera.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/player.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/download.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/setting.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/theatra.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/storage.html",
+		"/D/学习/代码/毕设/工程/graduation/server/views/login.html",
+		"/D/学习/代码/go_workspace/src/hellow/hello.go",
+		"/D/工作/工具/elasticsearch-6.2.2/elasticsearch-6.2.2/config/elasticsearch.yml",
+		"/D/学习/代码/毕设/参考资料/nodejs播放视频文件/video-stream-sample-master/index.htm",
+		"/D/学习/代码/毕设/参考资料/nodejs播放视频文件/video-stream-sample-master/server.js",
+		"/D/学习/代码/毕设/参考资料/nodejs播放视频文件/video-stream-sample-master/public/index.js",
+		"/C/Users/76348/Desktop/video-stream-sample-master/server.js",
+		"/D/学习/代码/毕设/工程/graduation/test.js",
 		"/D/学习/代码/毕设/工程/graduation/util.js",
 		"/C/Users/76348/Desktop/storage.html",
-		"/D/学习/代码/毕设/工程/graduation/test.js",
 		"/D/学习/代码/毕设/工程/graduation/server/public/styles/framework.css",
 		"/D/学习/代码/毕设/工程/graduation/server/public/styles/style.css",
-		"/D/学习/代码/毕设/工程/graduation/server/views/download.html",
 		"/C/Users/76348/Desktop/test.js",
 		"/D/学习/代码/毕设/工程/graduation/server/views/message.html",
 		"/D/学习/代码/毕设/工程/graduation/server/package-lock.json",
 		"/D/Foreign Sorftware/plsql/instantclient_11_2/network/admin/tnsnames.ora",
 		"/D/学习/代码/毕设/工程/graduation/server/config.js",
 		"/D/学习/代码/毕设/工程/graduation/server/views/music.html",
-		"/D/学习/代码/毕设/工程/graduation/server/views/setting.html",
-		"/D/学习/代码/毕设/工程/graduation/server/views/storage.html",
-		"/D/学习/代码/毕设/工程/graduation/server/views/theatra.html",
 		"/D/Foreign Sorftware/plsql/plsql/instantclient_11_2/network/admin/tnsnames.ora",
 		"/C/Users/76348/Desktop/tnsnames.ora",
 		"/D/Foreign Sorftware/plsql/plsql/instantclient_11_2/tnsnames.ora",
@@ -729,7 +702,6 @@
 		"/D/学习/代码/毕设/工程/graduation/camera/managers.py",
 		"/D/学习/代码/毕设/工程/graduation/camera/monitors.py",
 		"/D/学习/代码/毕设/参考资料/前端/搜索/201505045/html/index.html",
-		"/D/学习/代码/毕设/工程/graduation/server/views/camera.html",
 		"/C/Users/76348/Desktop/hosts",
 		"/C/Windows/System32/drivers/etc/hosts",
 		"/D/学习/代码/毕设/参考资料/前端/index.html",
@@ -741,7 +713,6 @@
 		"/D/学习/代码/毕设/工程/graduation/camera/scheduler.py",
 		"/D/学习/代码/毕设/参考资料/模板追踪示例/config.py",
 		"/D/学习/代码/毕设/参考资料/模板追踪示例/cam-track.py",
-		"/D/学习/代码/毕设/工程/graduation/server/views/login.html",
 		"/C/Users/76348/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.sublime-settings",
 		"/C/Users/76348/.ssh/id_rsa.pub",
 		"/D/学习/代码/毕设/工程/graduation/camera/main_with_no_share.py",
@@ -823,19 +794,11 @@
 		"/F/STUDY/graduation/monitor/tracker.py",
 		"/F/STUDY/graduation/imagecollection/camera.py",
 		"/F/STUDY/graduation/imagecollection/managers.py",
-		"/F/STUDY/graduation/imagecollection/sentinel.py",
-		"/F/STUDY/graduation/monitor/init.py",
-		"/F/STUDY/graduation/web/public/camera.html",
-		"/F/STUDY/graduation/web/public/download.html",
-		"/F/STUDY/graduation/web/public/login.html",
-		"/F/STUDY/graduation/web/public/storage.html",
-		"/F/STUDY/graduation/web/public/styles/app.css",
-		"/F/STUDY/graduation/web/public/theatra.html",
-		"/F/STUDY/graduation/web/public/music.html"
+		"/F/STUDY/graduation/imagecollection/sentinel.py"
 	],
 	"find":
 	{
-		"height": 29.0
+		"height": 52.0
 	},
 	"find_in_files":
 	{
@@ -850,6 +813,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"tcpServer",
+			"tcpSocket",
+			"serverSocket",
+			"http.cors",
+			"http.cors.enable",
+			"object",
 			"type",
 			"nowPath",
 			"btnGar",
@@ -971,13 +940,7 @@
 			"moveClassify",
 			"classlistTemplate",
 			"move-classi",
-			"moveClassifyData",
-			"move-classi",
-			"move",
-			"Classifyfy",
-			"classifyfy",
-			"moveClassi",
-			"gallery"
+			"moveClassifyData"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1005,7 +968,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -1014,194 +977,65 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11314,
+						"buffer_size": 11705,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8585,
-								8582
+								10239,
+								10239
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"is_init_dirty_state": false,
+							"is_init_dirty_state": true,
 							"origin_encoding": "UTF-8",
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2549.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "server/views/storage.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 17008,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								16507,
-								16501
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"is_init_dirty_state": false,
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 7074.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "server/views/login.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2359,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								68,
-								68
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"is_init_dirty_state": false,
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "server/views/home.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5308,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3789,
-								3789
-							]
-						],
-						"settings":
-						{
-							"is_init_dirty_state": false,
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1781.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "server/util.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7275,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1911,
-								1911
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"is_init_dirty_state": false,
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1080.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "test.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 505,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								455,
-								459
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"is_init_dirty_state": false,
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5725.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 1,
+					"file": "server/views/camera.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14408,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9839,
+								9839
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3186.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "server/config.js",
 					"semi_transient": false,
 					"settings":
@@ -1226,10 +1060,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 270.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

@@ -9,17 +9,6 @@ from settings import *
 from PIL import Image
 from io import BytesIO
 
-#构造日志
-logger = logging.getLogger(LOG_NAME)
-formatter = logging.Formatter(LOG_FORMATTER)
-file_handler = logging.FileHandler(LOG_DIR + LOG_FILE,encoding='utf-8')
-file_handler.setFormatter(formatter)
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-logger.setLevel(logging.INFO)
-
 #工具类
 class IOUtil(object):
     #流操作工具类
@@ -86,3 +75,15 @@ class IOUtil(object):
     @staticmethod
     def getImageFileName():
         return time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())+'.png'
+
+#构造日志
+logger = logging.getLogger(LOG_NAME)
+formatter = logging.Formatter(LOG_FORMATTER)
+IOUtil.mkdir(LOG_DIR);
+file_handler = logging.FileHandler(LOG_DIR + LOG_FILE,encoding='utf-8')
+file_handler.setFormatter(formatter)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+logger.setLevel(logging.INFO)

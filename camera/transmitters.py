@@ -42,14 +42,14 @@ class TcpDispatcher(object):
  	def __init__(self):
  		self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
  		self.isWorking = False
- 	def initWorking(self,address = ("127.0.0.1",9999)):
+ 	def initWorking(self,address = (TCP_IMAGE_IP,TCP_IMAGE_PORT)):
  		self.sock.connect(address)
  		self.isWorking = True
  		print("图片分发器初始化成功")
  	def dispatcher(self,item):
  		if not self.isWorking:
  			raise Exception("分发器未初始化,请使用initWorking()进行初始化")
- 		self.sock(IOUtil.byte_to_pitem.getBinaryFrame)
+ 		self.sock.send(item.getBinaryFrame());
 class EmailClient(object):
 	'''
 	邮箱分发者,发送邮件信息

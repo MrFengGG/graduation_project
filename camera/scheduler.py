@@ -28,7 +28,7 @@ class Camera(object):
         self.captureManager = captureManager if captureManager is not None else CameraManager(cv2.VideoCapture(0))
         self.dispatcher = dispatcher if dispatcher is not None  else Dispatcher()
         self.watchDog = watchDog if watchDog is not None else WatchDog()
-        self.commandManager = commandManager if commandManager is not None else CommandManager(commandIp,commandPort)
+        self.commandManager = commandManager if commandManager is not None else CommandManager(IMAGE_COMMAND_IP,IMAGE_COMMAND_PORT)
         self.tracker = tracker if tracker is not None else DlibTracker()
         #是否开启运动检测
         self.isWatching = True
@@ -56,7 +56,7 @@ class Camera(object):
         logger.info("是否开启图片分发:"+str(self.isDispense))
         while self.isDispense:
             try:
-                self.dispatcher.dispenseImage(self.item,(imageIp,imagePort))
+                self.dispatcher.dispenseImage(self.item,(IMAGE_IP,IMAGE_PORT))
             except EOFError as e:
                 print(e)
     def _warning(self):

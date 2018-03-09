@@ -16,6 +16,11 @@ IMAGE_COMMAND_PORT = 9998
 IMAGE_IP = "127.0.0.1"
 #图像发送端口
 IMAGE_PORT = 9999
+
+#TCP图像发送IP
+TCP_IMAGE_IP = '127.0.0.1'
+#TCP图像发送端口
+TCP_IMAGE_PORT = '8888'
 #日志输出格式
 LOG_FORMATTER = "%(asctime)s %(levelname)-8s: %(message)s"
 #日志输出名称
@@ -48,3 +53,4 @@ TRACK_THRESHOLD = 0.97
 TRACKER_UPDATE_THRESHOLD = 0.97
 #是否打开本地窗口
 IS_WINDOW_ON = False
+

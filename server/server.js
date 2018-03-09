@@ -9,7 +9,6 @@ var express = require('express');
 var session = require('express-session');
 //引入参数解析模块
 var bodyParser = require('body-parser');
-
 var progressStream = require('progress-stream');
 //引入http模块
 var httpServer = require("http");
@@ -24,13 +23,14 @@ app.use(bodyParser.urlencoded({
 	extended:true,
 	uploadDir:config.uploadFilePath
 }));
- 
+app.use(util.log4js.connectLogger(util.logger, {level:util.log4js.levels.INFO}));
 var http = httpServer.Server(app);
 //初始化socket连接
 var io = require("socket.io")(http);
 var tcpServer = net.createServer();
 var serverSocket = dgram.createSocket("udp4");
-serverSocket.bind(9999);
+serverSocket.bind(config.udpImagePort);
+util.logger.info("开始监听UDP图像端口:"+config.udpImagePort);
 //初始化连接池
 var connections = {};
 var connectionid = new Set();
@@ -288,12 +288,13 @@ app.post("/data/upload",upload.single('temp'),function(req,res,next){
 });
 
 //监听websocket连接
+util.logger.info("开始websocket监听...")
 io.on("connection",function(socket){
 	//监听到连接时,将socket加入连接池中
 	socket.send("连接成功");
 	connections[socket.id] = socket;
 	connectionid.add(socket.id);
-	console.log("增加一个连接,当前连接数量为"+connectionid.size)
+	util.logger.info("增加一个连接,当前连接数量为"+connectionid.size)
 	//获得来自网页的陀螺仪信息,转发
 	socket.on("command",function(msg,info){
 		if(msg){
@@ -303,20 +304,21 @@ io.on("connection",function(socket){
 	//获得来自网页的视频设置信息
 	socket.on("imageCommand",function(msg,info){
 		if(msg){
+			util.logger.info('获得来自网页的图像分析信息'+msg);
 			if(JSON.parse(msg)['command'] == "analyze"){
 				isWarning = !isWarning
 				for(var a of connectionid){
 					connections[a].emit("analyze",isWarning?"1":"0");
 				}
 			}
-			serverSocket.send(msg,0,msg.length,config.imagePort,config.imageIP);
+			serverSocket.send(msg,0,msg.length,config.imageCommandPort,config.imageCommandIp);
 		}
 	});
 	//断开连接时,将连接从连接池中删除
 	socket.on("disconnect",function(){
 		delete connections[socket.id];
 		connectionid.delete(socket.id);
-		console.log("删除一个连接,当前连接数量为"+connectionid.size);
+		util.logger.info("删除一个连接,当前连接数量为"+connectionid.size);
 	});
 })
 //监听udp连接,如果有画面,将画面广播出去
@@ -326,9 +328,10 @@ serverSocket.on("message",function(msg,info){
 	}
 });
 //监听tcp连接,如果有画面,将画面广播出去
-tcpServer.listen(8888,'127.0.0.1')
+util.logger.info("开始监听tcp图像端口,ip:"+config.tcpImageIp+",port:"+config.tcpImagePort);
+tcpServer.listen(config,'127.0.0.1')
 tcpServer.on('connection',function(sock){
-	console.log("连接开启");
+	util.logger.info("TCP连接以建立");
 	sock.on("data",function(data){
 		for(var a of connectionid){
 			console.log(typeof data);
@@ -336,17 +339,17 @@ tcpServer.on('connection',function(sock){
 		}
 	});
 	sock.on("close",function(){
-		console.log("连接以关闭")
+		util.logger.info("TCP连接以断开");
 		
 	});
-	sock.on("error",function(){
-		
+	sock.on("error",function(err){
+		util.logger.info("TCP连接错误:"+err);
 	})
 });
 
 //开启监听网页
 http.listen(config.listenPort,function(socket){
-	console.log("listening on "+config.listenPort);
+	util.logger.info("listening on "+config.listenPort);
 });
 /**
  * [dataCallBack 命令行标准输出回调函数]

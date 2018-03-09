@@ -13,12 +13,18 @@ var config = {
 	expireTime:60 * 1000 * 60,
 	//监听命令IP
 	commandIP:"127.0.0.1",
-	//监听命令端口
+	//监听摄像头操作命令端口
 	commandPort:9997,
-	//图像监听IP
-	imageIP:"127.0.0.1",
-	//图像监听端口
-	imagePort:9998,
+	//图像命令监听IP
+	imageCommandIP:"127.0.0.1",
+	//图像命令监听端口
+	imageCimmandPort:9998,
+	//udp监听图像端口
+	udpImagePort:9999,
+	udpImageIp:'127.0.0.1',
+	//tcp监听图像端口
+	tcpImagePort:8888,
+	tcpImageIp:'127.0.0.1',
 	//http请求监听端口
 	listenPort:3000,
 	//下载目录

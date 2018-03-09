@@ -1,10 +1,28 @@
 var util = {}
+//命令行模块
 util.execSync = require('child_process').execSync;
+//文件模块
 util.fs = require('fs')
+//编码解码模块
 util.textEncoding = require('text-encoding')
+//异步执行命令行模块
 util.spawn = require('child_process').spawn;
+//解码器
 util.decoder = new util.textEncoding.TextDecoder();
+//mongodb模块
 util.MongoClient = require("mongodb").MongoClient;
+//日志模块
+util.log4js = require('log4js');
+util.log4js.configure({
+  appenders: {
+    out: { type: 'stdout' },//设置是否在控制台打印日志
+    info: { type: 'file', filename: './log/info.log' }
+  },
+  categories: {
+    default: { appenders: [ 'out', 'info' ], level: 'info' }//去掉'out'。控制台不打印日志
+  }
+});
+util.logger = util.log4js.getLogger('info');
 /**
  * [parseByteSize 将文件大小转换为合适的单位]
  * @return {[type]} [description]
@@ -34,6 +52,7 @@ util.parseByteSize = function(size,up){
  */
 util.downloadFile = function(path,req,res,fileName){
 	var f = this.fs.createReadStream(path);
+	this.logger.info("下载一个文件:"+path);
 	res.writeHead(200, {
 	    'Content-Type': 'application/force-download',
 	    'Content-Disposition': 'attachment; filename='+fileName
@@ -51,11 +70,12 @@ util.downloadFile = function(path,req,res,fileName){
 util.compressFiles = function(files,compressRate,targetFileName){
 	var result = {};
 	try{
-		console.log('zip -r -'+compressRate+' -q -o '+targetFileName+' '+files);
 	    var cmd = this.execSync('zip -r -'+compressRate+' -q -o '+targetFileName+' '+files);
+	    this.logger.info('执行一条压缩语句:zip -r -'+compressRate+' -q -o '+targetFileName+' '+files);
 	    result['code'] = 1;
     	result['note']= cmd && cmd.toString("utf-8") || "压缩成功";
 	}catch(err){
+		this.logger.info('执行一条压缩语句错误:'+err);
 		result['code'] = -1;
 		result['note']= err && err.toString("utf-8") || "压缩失败";
 	}
@@ -70,13 +90,14 @@ util.compressFiles = function(files,compressRate,targetFileName){
 util.moveFiles = function(preFiles,newPath){
 	var result = {}
 	try{
-		console.log('mv '+preFiles+" "+newPath);
 		var cmd = this.execSync('mv '+preFiles+" "+newPath);
 		result['code'] = 1;
 	    result['note']= cmd && cmd.toString("utf-8") || "移动成功";
+	    this.logger.info('移动文件命令:mv '+preFiles+" "+newPath);
 	}catch(err){
 		result['code'] = -1;
 	    result['note'] = err.toString;
+	    this.logger.info('移动文件命令错误:mv '+preFiles+" "+newPath+"错误信息:"+err);
 	}
 	return result;
 }
@@ -94,12 +115,12 @@ util.createFile = function(path,fileName){
 		while(this.fs.existsSync(filePath)){
 			filePath = filePath+(++num);
 		}
-		console.log('mkdir '+filePath);
 	    var cmd = this.execSync('mkdir '+filePath);
+	    this.logger.info('执行一条创建文件语句:mkdir '+filePath);
 	    result['code'] = 1;
 	    result['note']= cmd && cmd.toString("utf-8") || "创建成功";
 	}catch(err){
-		console.log(err);
+		this.logger.info('执行一条创建文件语句:mkdir '+filePath+"错误:"+err);
 	    result['code'] = -1;
 	    result['note'] = err.toString;
 	}
@@ -117,8 +138,9 @@ util.removeFile = function(files){
 	    var cmd = this.execSync('rm -rf '+files);
 	    result['code'] = 1;
 	    result['note']= cmd && cmd.toString("utf-8") || "删除成功";
+	    this.logger.info('执行一条删除文件语句:rm -rf '+files);
 	}catch(err){
-		console.log(err);
+		this.logger.info('执行一条删除文件语句:rm -rf '+files+"错误:"+err);
 	    result['code'] = -1;
 	    result['note'] = err.toString;
 	}
@@ -160,6 +182,7 @@ util.execCommand = function(command,data_callback,exit_callback){
  * @return {[type]}     [json对象,适配layui的表格的数据接口]
  */
 util.listFile = function(dir,msg){
+	this.logger.info("列出文件夹信息:"+dir);
 	var result = []
 	var num = 0;
 	files = this.fs.readdirSync(dir);//需要用到同步读取
@@ -183,6 +206,7 @@ util.listAllFile = function(dir,msg,pattern,dePrefer){
  * @return {[type]}           [description]
  */
 util.readFileList = function(path, filesList,patterns,dePrefer) {
+	this.logger.info("列出文件夹信息:"+path);
 	var that = this;
     var files = this.fs.readdirSync(path);
     files.forEach(function (itm, index) {

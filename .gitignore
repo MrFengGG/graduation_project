@@ -1,0 +1,11 @@
+camera/log
+camera/_pycache_
+camera/log
+camera/screenshots
+camera/videos
+moveSpider/moveSpider/_pycache_
+server/log
+server/node_modules
+
+*.pyc
+

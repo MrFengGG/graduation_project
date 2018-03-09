@@ -3,6 +3,7 @@ camera/_pycache_
 camera/log
 camera/screenshots
 camera/videos
+camera/warn
 moveSpider/moveSpider/_pycache_
 server/log
 server/node_modules
